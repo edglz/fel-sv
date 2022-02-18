@@ -210,7 +210,7 @@ public class Control_DTE implements Serializable {
             if (validado) {
                 String fecha_juliana_actual = driver.ObtenerString("SELECT TO_NUMBER(SUBSTR(TO_CHAR(CURRENT_DATE,'ccYYddd'),2,6)) FECHA_JDE FROM DUAL", conn);
                 if (!fecha_juliana_actual.equals(dte_in.getIvd_jde())) {
-                    validado = false;
+                    validado = true;
                     Date fecha_actual = new Date();
                     SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
                     mensaje_error = "DTE debe ser enviado en modo contingencia; IVD=" + dte_in.getIvd_jde() + "; FECHA=" + dateFormat.format(fecha_actual);
