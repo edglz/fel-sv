@@ -1,6 +1,7 @@
 package Controles;
 
 import Entidades.JsonIn.DTE_IN;
+import Entidades.JsonOut.RESPUESTA_RECEPCIONDTE_MH;
 import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.Statement;
@@ -186,6 +187,7 @@ public class Control_DTE implements Serializable {
             // VALIDAR DOCUMENTO REPETIDO
             if (validado) {
                 Long id_dte = driver.ObtenerLong("SELECT F.ID_DTE FROM FEL_SV_TBL_DTE F WHERE "
+                        + "RESPONSE_CODIGOMSG='001' AND "
                         + "KCOO_JDE='" + dte_in.getKcoo_jde().trim() + "' AND "
                         + "MCU_JDE='" + dte_in.getMcu_jde().trim() + "' AND "
                         + "DOCO_JDE='" + dte_in.getDoco_jde().trim() + "' AND "
@@ -296,6 +298,30 @@ public class Control_DTE implements Serializable {
         }
 
         return resultado;
+    }
+    
+    public void registro_db_respuesta_mh(Connection conn, RESPUESTA_RECEPCIONDTE_MH respuesta_recepciondte_mh, Long id_dte) {
+        try {
+            String cadenasql = "UPDATE FEL_SV_TBL_DTE SET "
+                    + "RESPONSE_VERSION=" + respuesta_recepciondte_mh.getVersion() + ", "
+                    + "RESPONSE_AMBIENTE='" + respuesta_recepciondte_mh.getAmbiente() + "', "
+                    + "RESPONSE_VERSIONAPP=" + respuesta_recepciondte_mh.getVersionApp() + ", "
+                    + "RESPONSE_ESTADO='" + respuesta_recepciondte_mh.getEstado() + "', "
+                    + "RESPONSE_CODIGOGENERACION='" + respuesta_recepciondte_mh.getCodigoGeneracion() + "', "
+                    + "RESPONSE_NUMVALIDACION='" + respuesta_recepciondte_mh.getNumValidacion() + "', "
+                    + "RESPONSE_FHPROCESAMIENTO='" + respuesta_recepciondte_mh.getFhProcesamiento() + "', "
+                    + "RESPONSE_CODIGOMSG='" + respuesta_recepciondte_mh.getCodigoMsg() + "', "
+                    + "RESPONSE_DESCRIPCIONMSG='" + respuesta_recepciondte_mh.getDescripcionMsg() + "', "
+                    + "RESPONSE_OBSERVACIONES='" + respuesta_recepciondte_mh.getDescripcionMsg() + "' "
+                    + "WHERE "
+                    + "ID_DTE=" + id_dte;
+            Statement stmt = conn.createStatement();
+            // System.out.println("******************** FEL_SV_TBL_DTE: " + cadenasql);
+            stmt.executeUpdate(cadenasql);
+            stmt.close();
+        } catch (Exception ex) {
+            System.out.println("Proyecto: api-grupoterra-test-felsv | Clase: " + this.getClass().getName() + " | Metodo: registro_db_respuesta_mh | Error: " + ex.toString());
+        }
     }
 
 }

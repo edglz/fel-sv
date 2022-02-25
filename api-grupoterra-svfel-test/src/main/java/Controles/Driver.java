@@ -1,10 +1,14 @@
 package Controles;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.PrintWriter;
 import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class Driver implements Serializable {
@@ -119,6 +123,26 @@ public class Driver implements Serializable {
         } catch (Exception ex) {
             resultado = new ArrayList<>();
             resultado = null;
+        }
+
+        return resultado;
+    }
+
+    public String guardar_en_archivo(Long id_dte, String cadena) {
+        String resultado = "";
+
+        try {
+            // String path_file = "C:\\\\FELSV\\";
+            String path_file = "/root/FELSV/py/";
+            File directorio = new File(path_file);
+            directorio.mkdir();
+
+            FileWriter fichero = new FileWriter(path_file + "felsv_" + id_dte + ".dte", true);
+            PrintWriter pw_request = new PrintWriter(fichero);
+            pw_request.println(new Date() + ":: " + cadena);
+            fichero.close();
+        } catch (Exception ex) {
+
         }
 
         return resultado;

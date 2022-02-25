@@ -26,10 +26,33 @@ public class Control_RECEPTOR implements Serializable {
                 id_tipo_documento_receptor = driver.ObtenerLong("SELECT F.ID_TIPO_DOCUMENTO_RECEPTOR FROM FEL_TIPO_DOCUMENTO_RECEPTOR F WHERE TRIM(F.CODIGO) = '" + dte_in.getReceptor().getTipoDocumento() + "'", conn);
             }
             Long id_actividad_economica = driver.ObtenerLong("SELECT F.ID_ACTIVIDAD_ECONOMICA FROM FEL_SV_ACTIVIDAD_ECONOMICA F WHERE TRIM(F.CODIGO) = '" + dte_in.getReceptor().getCodActividad() + "'", conn);
-            Long id_departamento = driver.ObtenerLong("SELECT F.ID_DEPARTAMENTO FROM FEL_SV_TBL_DEPARTAMENTO F WHERE TRIM(F.CODIGO) = '" + dte_in.getReceptor().getDepartamento() + "'", conn);
-            Long id_municipio = driver.ObtenerLong("SELECT F.ID_MUNICIPIO FROM FEL_SV_TBL_MUNICIPIO F WHERE TRIM(F.CODIGO) = '" + dte_in.getReceptor().getMunicipio() + "' AND F.ID_DEPARTAMENTO=" + id_departamento, conn);
+            Long id_departamento = driver.ObtenerLong("SELECT F.ID_DEPARTAMENTO FROM FEL_SV_TBL_DEPARTAMENTO F WHERE TRIM(F.VALOR) = '" + dte_in.getReceptor().getDepartamento().trim().toUpperCase() + "'", conn);
+            Long id_municipio = Long.parseLong("111");
+            if(id_departamento != null) {
+                if(!id_departamento.equals(Long.parseLong("-1"))) {
+                    id_municipio = driver.ObtenerLong("SELECT F.ID_MUNICIPIO FROM FEL_SV_TBL_MUNICIPIO F WHERE TRIM(F.VALOR) = '" + dte_in.getReceptor().getMunicipio().trim().toUpperCase() + "' AND F.ID_DEPARTAMENTO=" + id_departamento, conn);
+                    if(id_municipio == null) {
+                        if(!id_municipio.equals(Long.parseLong("-1"))) {
+                            id_departamento = Long.parseLong("6");
+                            id_municipio = Long.parseLong("111");   
+                        }
+                    }
+                } else {
+                    id_departamento = Long.parseLong("6");
+                    id_municipio = Long.parseLong("111");
+                }
+            } else {
+                id_departamento = Long.parseLong("6");
+                id_municipio = Long.parseLong("111");
+            }
             Long id_categoria_contribuyente = driver.ObtenerLong("SELECT F.ID_CATEGORIA_CONTRIBUYENTE FROM FEL_CATEGORIA_CONTRIBUYENTE F WHERE F.CODIGO='" + dte_in.getReceptor().getCategoria() + "'", conn);
-
+            String telefono_temp = "";
+            if(dte_in.getReceptor().getTelefono().trim().length() == 8) {
+                telefono_temp = dte_in.getReceptor().getTelefono().trim();
+            } else {
+                telefono_temp = "55446677";
+            }
+            
             String cadenasql = "INSERT INTO FEL_SV_TBL_RECEPTOR ("
                     + "ID_DTE, "
                     + "ID_RECEPTOR, "
@@ -54,8 +77,8 @@ public class Control_RECEPTOR implements Serializable {
                     + id_receptor + ","
                     + id_tipo_documento_receptor + ",'"
                     + dte_in.getReceptor().getNumDocumento() + "','"
-                    + dte_in.getReceptor().getNit() + "','"
-                    + dte_in.getReceptor().getNrc() + "','"
+                    + dte_in.getReceptor().getNit().replaceAll("-", "") + "','"
+                    + dte_in.getReceptor().getNrc().replaceAll("-", "") + "','"
                     + dte_in.getReceptor().getNumFacturador() + "','"
                     + dte_in.getReceptor().getNombre() + "',"
                     + id_actividad_economica + ",'"
@@ -64,7 +87,7 @@ public class Control_RECEPTOR implements Serializable {
                     + id_municipio + ",'"
                     + dte_in.getReceptor().getComplemento() + "',"
                     + id_categoria_contribuyente + ",'"
-                    + dte_in.getReceptor().getTelefono() + "','"
+                    + telefono_temp + "','"
                     + dte_in.getReceptor().getCorreo() + "','"
                     + dte_in.getReceptor().getFecSujExcl() + "','"
                     + dte_in.getReceptor().getNumExencion() + "','"

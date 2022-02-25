@@ -40,6 +40,7 @@ public class Control_FelSV implements Serializable {
     public String recepcion_dte(String jsonString, String ambiente) {
         String resultado = "";
         Connection conn = null;
+        Driver driver = new Driver();
 
         try {
             // CONVERTIR JSONSTRING A LA CLASE DTE_IN
@@ -68,34 +69,36 @@ public class Control_FelSV implements Serializable {
             Control_DTE control_dte = new Control_DTE();
             String[] result = control_dte.valida_campos_raiz_dte(conn, dte_in).split(",");
             Long id_dte = Long.parseLong("0");
-            
+
             if (result[0].equals("0")) {
                 id_dte = control_dte.registro_db_tabla_dte(conn, dte_in);
-                
+                driver.guardar_en_archivo(id_dte, "JSON-IN:: " + new Gson().toJson(dte_in));
+
                 // REGISTRO TABLA IDENTIFICACION.
                 Control_IDENTIFICACION control_identificacion = new Control_IDENTIFICACION();
                 control_identificacion.registro_db_tabla_identificacion(conn, dte_in, ambiente, id_dte);
-                
+
                 // REGISTRO TABLA DOCUMENTOS_RELACIONADOS.
                 Control_DOCUMENTOS_RELACIONADOS control_documentos_relacionados = new Control_DOCUMENTOS_RELACIONADOS();
                 control_documentos_relacionados.registro_db_tabla_documentos_relacionados(conn, dte_in, id_dte);
-                
+
                 // REGISTRO TABLA RECEPTOR.
                 Control_RECEPTOR control_receptor = new Control_RECEPTOR();
+
                 control_receptor.registro_db_tabla_receptor(conn, dte_in, id_dte);
-                
+
                 // REGISTRO TABLA CUERPO_DOCUMENTO.
                 Control_CUERPO_DOCUMENTO control_cuerpo_documento = new Control_CUERPO_DOCUMENTO();
                 control_cuerpo_documento.registro_db_tabla_cuerpo_documento(conn, dte_in, id_dte);
-                
+
                 // REGISTRO TABLA RESUMEN.
                 Control_RESUMEN control_resumen = new Control_RESUMEN();
                 control_resumen.registro_db_tabla_resumen(conn, dte_in, id_dte);
-                
+
                 // REGISTRO TABLA EXTENSION.
                 Control_EXTENSION control_extension = new Control_EXTENSION();
                 control_extension.registro_db_tabla_extension(conn, dte_in, id_dte);
-                
+
                 // REGISTRO TABLA APENDICE.
                 Control_APENDICE control_apendice = new Control_APENDICE();
                 control_apendice.registro_db_tabla_apendice(conn, dte_in, id_dte);
@@ -106,41 +109,42 @@ public class Control_FelSV implements Serializable {
                 // GENERAR JSON IDENTIFICACION.
                 IDENTIFICACION_OUT identificacion = control_identificacion.registro_json_identificacion(conn, id_dte);
                 json.setIdentificacion(identificacion);
-                
+
                 // GENERAR JSON DOCUMENTOS RELACIONADOS.
                 DOCUMENTOS_RELACIONADOS_OUT documentoRelacionado = control_documentos_relacionados.registro_json_documentos_relacionados(conn, id_dte, identificacion.getTipoDte());
                 json.setDocumentoRelacionado(documentoRelacionado);
-                
+
                 // GENERAR JSON EMISOR.
                 Control_EMISOR control_emisor = new Control_EMISOR();
                 EMISOR_OUT emisor = control_emisor.registro_json_emisor(conn, id_dte, dte_in.getMcu_jde());
                 json.setEmisor(emisor);
-                
+
                 // GENERAR JSON RECEPTOR.
                 RECEPTOR_OUT receptor = control_receptor.registro_json_receptor(conn, id_dte);
                 json.setReceptor(receptor);
-                
+
                 // GENERAR JSON VENTA TERCERO.
                 Control_VENTA_TERCERO control_venta_tercero = new Control_VENTA_TERCERO();
                 VENTA_TERCERO_OUT ventaTercero = control_venta_tercero.registro_json_venta_tercero(conn, id_dte);
                 json.setVentaTercero(ventaTercero);
-                
+
                 // GENERAR JSON CUERPO DOCUMENTO.
                 List<CUERPO_DOCUMENTO_OUT> cuerpoDocumento = control_cuerpo_documento.registro_json_cuerpo_documento(conn, id_dte);
                 json.setCuerpoDocumento(cuerpoDocumento);
-                
+
                 // GENERAR JSON RESUMEN.
                 RESUMEN_OUT resumen = control_resumen.registro_json_resumen(conn, id_dte);
                 json.setResumen(resumen);
-                
+
                 // GENERAR JSON EXTENSION.
                 EXTENSION_OUT extension = control_extension.registro_json_extension(conn, id_dte);
                 json.setExtension(extension);
-                
+
                 // GENERAR JSON APENDICE.
                 APENDICE_OUT apendice = control_apendice.registro_json_apendice(conn, id_dte);
                 json.setApendice(apendice);
-                // Gson gson = new GsonBuilder().serializeNulls().create();
+                Gson gson = new GsonBuilder().serializeNulls().create();
+                driver.guardar_en_archivo(id_dte, "JSON-OUT:: " + gson.toJson(json));
                 // System.out.println("******************** JSON DTE-OUT: " + gson.toJson(json));
                 // resultado = gson.toJson(json);
 
@@ -149,7 +153,7 @@ public class Control_FelSV implements Serializable {
                 Json_Firmado json_firmado = control_json_firmado.firmardocumento(emisor.getNit(), json);
                 // System.out.println("******************** JSON FIRMADO: " + new Gson().toJson(json_firmado));
                 // resultado = new Gson().toJson(json_firmado);
-                
+
                 // GENERAR TOKEN MINISTERIO DE HACIENDA.
                 Cliente_Rest_MH cliente_rest_mh = new Cliente_Rest_MH();
                 String token_autenticacion = cliente_rest_mh.autenticar(emisor.getNit(), "UNOSV2021*");
@@ -175,6 +179,7 @@ public class Control_FelSV implements Serializable {
                 }.getType();
                 RESPUESTA_RECEPCIONDTE_MH respuesta_recepciondte_mh = new Gson().fromJson(respuesta_mh, listType2);
                 // System.out.println("******************** RESPUESTA_RECEPCIONDTE_MH: " + new Gson().toJson(respuesta_recepciondte_mh));
+                control_dte.registro_db_respuesta_mh(conn, respuesta_recepciondte_mh, id_dte);
                 resultado = new Gson().toJson(respuesta_recepciondte_mh);
 
                 // CLASE PARA LA RESPUESTA DEL SERVICIO.

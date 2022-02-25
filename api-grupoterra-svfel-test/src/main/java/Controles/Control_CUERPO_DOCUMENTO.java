@@ -23,7 +23,7 @@ public class Control_CUERPO_DOCUMENTO implements Serializable {
                 Long id_cuerpo_documento = Long.parseLong(i.toString());
                 id_cuerpo_documento++;
                 Long id_bien_servicio = driver.ObtenerLong("SELECT F.ID_BIEN_SERVICIO FROM FEL_SV_TBL_BIEN_SERVICIO F WHERE F.CODIGO='" + dte_in.getCuerpoDocumento().get(i).getTipoItem() + "'", conn);
-                Long id_unidad_medida = driver.ObtenerLong("SELECT F.ID_UNIDAD_MEDIDA FROM FEL_SV_TBL_UNIDAD_MEDIDA F WHERE F.CODIGO='" + dte_in.getCuerpoDocumento().get(i).getUniMedida() + "'", conn);
+                Long id_unidad_medida = driver.ObtenerLong("SELECT F.ID_UNIDAD_MEDIDA FROM FEL_SV_TBL_UNIDAD_MEDIDA F WHERE F.VALOR_JDE='" + dte_in.getCuerpoDocumento().get(i).getUniMedida() + "'", conn);
 
                 String cadenasql = "INSERT INTO FEL_SV_TBL_CUERPO_DOCUMENTO ("
                         + "ID_DTE,"
