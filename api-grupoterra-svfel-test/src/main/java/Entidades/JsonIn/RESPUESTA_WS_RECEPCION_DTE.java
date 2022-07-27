@@ -21,10 +21,12 @@ public class RESPUESTA_WS_RECEPCION_DTE implements Serializable {
     private String ambiente;
     private Number versionApp;
     private String estado;
+    private String numeroControl;
     private String codigoGeneracion;
-    private String numValidacion;
+    private String selloRecibido;
     private String fhProcesamiento;
-    private String codigoMsg; 
+    private String clasificaMsg;
+    private String codigoMsg;
     private String descripcionMsg;
     private List<String> observaciones;
     private String nombEntrega;
@@ -39,7 +41,7 @@ public class RESPUESTA_WS_RECEPCION_DTE implements Serializable {
     private String codigo_actividad_emisor;
     private String nombre_actividad_emisor;
 
-    public RESPUESTA_WS_RECEPCION_DTE(String kcoo_jde, String mcu_jde, String doco_jde, String dcto_jde, String doc_jde, String dct_jde, String an8_jde, String shan_jde, String crcd_jde, String ivd_jde, Number version, String ambiente, Number versionApp, String estado, String codigoGeneracion, String numValidacion, String fhProcesamiento, String codigoMsg, String descripcionMsg, List<String> observaciones, String nombEntrega, String docuEntrega, String codEmpleado, String nombRecibe, String docuRecibe, String nit_emisor, String nrc_emisor, String num_facturador_emisor, String nombre_razon_social_emisor, String codigo_actividad_emisor, String nombre_actividad_emisor) {
+    public RESPUESTA_WS_RECEPCION_DTE(String kcoo_jde, String mcu_jde, String doco_jde, String dcto_jde, String doc_jde, String dct_jde, String an8_jde, String shan_jde, String crcd_jde, String ivd_jde, Number version, String ambiente, Number versionApp, String estado, String numeroControl, String codigoGeneracion, String selloRecibido, String fhProcesamiento, String clasificaMsg, String codigoMsg, String descripcionMsg, List<String> observaciones, String nombEntrega, String docuEntrega, String codEmpleado, String nombRecibe, String docuRecibe, String nit_emisor, String nrc_emisor, String num_facturador_emisor, String nombre_razon_social_emisor, String codigo_actividad_emisor, String nombre_actividad_emisor) {
         this.kcoo_jde = kcoo_jde;
         this.mcu_jde = mcu_jde;
         this.doco_jde = doco_jde;
@@ -54,9 +56,11 @@ public class RESPUESTA_WS_RECEPCION_DTE implements Serializable {
         this.ambiente = ambiente;
         this.versionApp = versionApp;
         this.estado = estado;
+        this.numeroControl = numeroControl;
         this.codigoGeneracion = codigoGeneracion;
-        this.numValidacion = numValidacion;
+        this.selloRecibido = selloRecibido;
         this.fhProcesamiento = fhProcesamiento;
+        this.clasificaMsg = clasificaMsg;
         this.codigoMsg = codigoMsg;
         this.descripcionMsg = descripcionMsg;
         this.observaciones = observaciones;
@@ -188,6 +192,14 @@ public class RESPUESTA_WS_RECEPCION_DTE implements Serializable {
         this.estado = estado;
     }
 
+    public String getNumeroControl() {
+        return numeroControl;
+    }
+
+    public void setNumeroControl(String numeroControl) {
+        this.numeroControl = numeroControl;
+    }
+
     public String getCodigoGeneracion() {
         return codigoGeneracion;
     }
@@ -196,12 +208,12 @@ public class RESPUESTA_WS_RECEPCION_DTE implements Serializable {
         this.codigoGeneracion = codigoGeneracion;
     }
 
-    public String getNumValidacion() {
-        return numValidacion;
+    public String getSelloRecibido() {
+        return selloRecibido;
     }
 
-    public void setNumValidacion(String numValidacion) {
-        this.numValidacion = numValidacion;
+    public void setSelloRecibido(String selloRecibido) {
+        this.selloRecibido = selloRecibido;
     }
 
     public String getFhProcesamiento() {
@@ -210,6 +222,14 @@ public class RESPUESTA_WS_RECEPCION_DTE implements Serializable {
 
     public void setFhProcesamiento(String fhProcesamiento) {
         this.fhProcesamiento = fhProcesamiento;
+    }
+
+    public String getClasificaMsg() {
+        return clasificaMsg;
+    }
+
+    public void setClasificaMsg(String clasificaMsg) {
+        this.clasificaMsg = clasificaMsg;
     }
 
     public String getCodigoMsg() {
@@ -326,7 +346,7 @@ public class RESPUESTA_WS_RECEPCION_DTE implements Serializable {
 
     @Override
     public String toString() {
-        return "RESPUESTA_WS_RECEPCION_DTE{" + "kcoo_jde=" + kcoo_jde + ", mcu_jde=" + mcu_jde + ", doco_jde=" + doco_jde + ", dcto_jde=" + dcto_jde + ", doc_jde=" + doc_jde + ", dct_jde=" + dct_jde + ", an8_jde=" + an8_jde + ", shan_jde=" + shan_jde + ", crcd_jde=" + crcd_jde + ", ivd_jde=" + ivd_jde + ", version=" + version + ", ambiente=" + ambiente + ", versionApp=" + versionApp + ", estado=" + estado + ", codigoGeneracion=" + codigoGeneracion + ", numValidacion=" + numValidacion + ", fhProcesamiento=" + fhProcesamiento + ", codigoMsg=" + codigoMsg + ", descripcionMsg=" + descripcionMsg + ", observaciones=" + observaciones + ", nombEntrega=" + nombEntrega + ", docuEntrega=" + docuEntrega + ", codEmpleado=" + codEmpleado + ", nombRecibe=" + nombRecibe + ", docuRecibe=" + docuRecibe + ", nit_emisor=" + nit_emisor + ", nrc_emisor=" + nrc_emisor + ", num_facturador_emisor=" + num_facturador_emisor + ", nombre_razon_social_emisor=" + nombre_razon_social_emisor + ", codigo_actividad_emisor=" + codigo_actividad_emisor + ", nombre_actividad_emisor=" + nombre_actividad_emisor + '}';
+        return "RESPUESTA_WS_RECEPCION_DTE{" + "kcoo_jde=" + kcoo_jde + ", mcu_jde=" + mcu_jde + ", doco_jde=" + doco_jde + ", dcto_jde=" + dcto_jde + ", doc_jde=" + doc_jde + ", dct_jde=" + dct_jde + ", an8_jde=" + an8_jde + ", shan_jde=" + shan_jde + ", crcd_jde=" + crcd_jde + ", ivd_jde=" + ivd_jde + ", version=" + version + ", ambiente=" + ambiente + ", versionApp=" + versionApp + ", estado=" + estado + ", numeroControl=" + numeroControl + ", codigoGeneracion=" + codigoGeneracion + ", selloRecibido=" + selloRecibido + ", fhProcesamiento=" + fhProcesamiento + ", clasificaMsg=" + clasificaMsg + ", codigoMsg=" + codigoMsg + ", descripcionMsg=" + descripcionMsg + ", observaciones=" + observaciones + ", nombEntrega=" + nombEntrega + ", docuEntrega=" + docuEntrega + ", codEmpleado=" + codEmpleado + ", nombRecibe=" + nombRecibe + ", docuRecibe=" + docuRecibe + ", nit_emisor=" + nit_emisor + ", nrc_emisor=" + nrc_emisor + ", num_facturador_emisor=" + num_facturador_emisor + ", nombre_razon_social_emisor=" + nombre_razon_social_emisor + ", codigo_actividad_emisor=" + codigo_actividad_emisor + ", nombre_actividad_emisor=" + nombre_actividad_emisor + '}';
     }
     
 }

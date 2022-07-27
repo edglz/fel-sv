@@ -12,20 +12,22 @@ public class RESPUESTA_RECEPCIONDTE_MH implements Serializable {
     private Number versionApp;
     private String estado;
     private String codigoGeneracion;
-    private String numValidacion;
+    private String selloRecibido;
     private String fhProcesamiento;
-    private String codigoMsg; 
+    private String clasificaMsg;
+    private String codigoMsg;
     private String descripcionMsg;
     private List<String> observaciones;
 
-    public RESPUESTA_RECEPCIONDTE_MH(Number version, String ambiente, Number versionApp, String estado, String codigoGeneracion, String numValidacion, String fhProcesamiento, String codigoMsg, String descripcionMsg, List<String> observaciones) {
+    public RESPUESTA_RECEPCIONDTE_MH(Number version, String ambiente, Number versionApp, String estado, String codigoGeneracion, String selloRecibido, String fhProcesamiento, String clasificaMsg, String codigoMsg, String descripcionMsg, List<String> observaciones) {
         this.version = version;
         this.ambiente = ambiente;
         this.versionApp = versionApp;
         this.estado = estado;
         this.codigoGeneracion = codigoGeneracion;
-        this.numValidacion = numValidacion;
+        this.selloRecibido = selloRecibido;
         this.fhProcesamiento = fhProcesamiento;
+        this.clasificaMsg = clasificaMsg;
         this.codigoMsg = codigoMsg;
         this.descripcionMsg = descripcionMsg;
         this.observaciones = observaciones;
@@ -74,12 +76,12 @@ public class RESPUESTA_RECEPCIONDTE_MH implements Serializable {
         this.codigoGeneracion = codigoGeneracion;
     }
 
-    public String getNumValidacion() {
-        return numValidacion;
+    public String getSelloRecibido() {
+        return selloRecibido;
     }
 
-    public void setNumValidacion(String numValidacion) {
-        this.numValidacion = numValidacion;
+    public void setSelloRecibido(String selloRecibido) {
+        this.selloRecibido = selloRecibido;
     }
 
     public String getFhProcesamiento() {
@@ -88,6 +90,14 @@ public class RESPUESTA_RECEPCIONDTE_MH implements Serializable {
 
     public void setFhProcesamiento(String fhProcesamiento) {
         this.fhProcesamiento = fhProcesamiento;
+    }
+
+    public String getClasificaMsg() {
+        return clasificaMsg;
+    }
+
+    public void setClasificaMsg(String clasificaMsg) {
+        this.clasificaMsg = clasificaMsg;
     }
 
     public String getCodigoMsg() {
@@ -116,7 +126,7 @@ public class RESPUESTA_RECEPCIONDTE_MH implements Serializable {
 
     @Override
     public String toString() {
-        return "RESPUESTA_RECEPCIONDTE_MH{" + "version=" + version + ", ambiente=" + ambiente + ", versionApp=" + versionApp + ", estado=" + estado + ", codigoGeneracion=" + codigoGeneracion + ", numValidacion=" + numValidacion + ", fhProcesamiento=" + fhProcesamiento + ", codigoMsg=" + codigoMsg + ", descripcionMsg=" + descripcionMsg + ", observaciones=" + observaciones + '}';
+        return "RESPUESTA_RECEPCIONDTE_MH{" + "version=" + version + ", ambiente=" + ambiente + ", versionApp=" + versionApp + ", estado=" + estado + ", codigoGeneracion=" + codigoGeneracion + ", selloRecibido=" + selloRecibido + ", fhProcesamiento=" + fhProcesamiento + ", clasificaMsg=" + clasificaMsg + ", codigoMsg=" + codigoMsg + ", descripcionMsg=" + descripcionMsg + ", observaciones=" + observaciones + '}';
     }
     
 }

@@ -28,10 +28,10 @@ public class RESUMEN_IN implements Serializable {
     private Number condicionOperacion;
     private String pagos_codigo;
     private String pagos_plazo;
-    private Number pagos_periodo;
+    private String pagos_periodo;
     private String numPagoElectronico;
 
-    public RESUMEN_IN(Number totalNoSuj, Number totalExenta, Number totalGravada, Number subTotalVentas, Number descuento, Number porcentajeDescuento, Number totalIva, Number subTotal, Number ivaPerci1, Number ivaRete1, Number fovial, Number cotrans, Number turismo, Number adValorem, Number montoTotalOperacion, Number totalNoGravado, Number totalPagar, String totalLetras, Number saldoFavor, Number condicionOperacion, String pagos_codigo, String pagos_plazo, Number pagos_periodo, String numPagoElectronico) {
+    public RESUMEN_IN(Number totalNoSuj, Number totalExenta, Number totalGravada, Number subTotalVentas, Number descuento, Number porcentajeDescuento, Number totalIva, Number subTotal, Number ivaPerci1, Number ivaRete1, Number fovial, Number cotrans, Number turismo, Number adValorem, Number montoTotalOperacion, Number totalNoGravado, Number totalPagar, String totalLetras, Number saldoFavor, Number condicionOperacion, String pagos_codigo, String pagos_plazo, String pagos_periodo, String numPagoElectronico) {
         this.totalNoSuj = totalNoSuj;
         this.totalExenta = totalExenta;
         this.totalGravada = totalGravada;
@@ -237,11 +237,11 @@ public class RESUMEN_IN implements Serializable {
         this.pagos_plazo = pagos_plazo;
     }
 
-    public Number getPagos_periodo() {
+    public String getPagos_periodo() {
         return pagos_periodo;
     }
 
-    public void setPagos_periodo(Number pagos_periodo) {
+    public void setPagos_periodo(String pagos_periodo) {
         this.pagos_periodo = pagos_periodo;
     }
 

@@ -22,7 +22,7 @@ public class Control_DOCUMENTOS_RELACIONADOS implements Serializable {
         try {
             if (!dte_in.getDocumentoRelacionado().getTipoDte().trim().equals("-")) {
                 Long id_documentos_relacionados = Long.parseLong("1");
-                Long id_tipo_relacion_documento = Long.parseLong("2");
+                Long id_tipo_relacion_documento = Long.parseLong("1");
                 Long id_tipo_documento_relacionado = driver.ObtenerLong("SELECT F.ID_TIPO_DOCUMENTO FROM FEL_SV_TBL_TIPO_DOCUMENTO F WHERE F.CODIGO='" + dte_in.getDocumentoRelacionado().getTipoDte().trim() + "'", conn);
                 Long id_tipo_generacion_documnto = driver.ObtenerLong("SELECT F.ID_TIPO_GENERACION_DOCUMENTO FROM FEL_TIPO_GENERACION_DOCUMENTO F WHERE F.CODIGO='" + dte_in.getDocumentoRelacionado().getTipoGeneracion() + "'", conn);
                 SimpleDateFormat dateFormat_fechaemision1 = new SimpleDateFormat("yyyy-MM-dd");

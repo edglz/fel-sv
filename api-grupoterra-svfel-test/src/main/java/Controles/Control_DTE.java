@@ -187,7 +187,7 @@ public class Control_DTE implements Serializable {
             // VALIDAR DOCUMENTO REPETIDO
             if (validado) {
                 Long id_dte = driver.ObtenerLong("SELECT F.ID_DTE FROM FEL_SV_TBL_DTE F WHERE "
-                        + "RESPONSE_CODIGOMSG='001' AND "
+                        + "RESPONSE_CODIGOMSG IN ('001','002') AND "
                         + "KCOO_JDE='" + dte_in.getKcoo_jde().trim() + "' AND "
                         + "MCU_JDE='" + dte_in.getMcu_jde().trim() + "' AND "
                         + "DOCO_JDE='" + dte_in.getDoco_jde().trim() + "' AND "
@@ -308,11 +308,12 @@ public class Control_DTE implements Serializable {
                     + "RESPONSE_VERSIONAPP=" + respuesta_recepciondte_mh.getVersionApp() + ", "
                     + "RESPONSE_ESTADO='" + respuesta_recepciondte_mh.getEstado() + "', "
                     + "RESPONSE_CODIGOGENERACION='" + respuesta_recepciondte_mh.getCodigoGeneracion() + "', "
-                    + "RESPONSE_NUMVALIDACION='" + respuesta_recepciondte_mh.getNumValidacion() + "', "
+                    + "RESPONSE_NUMVALIDACION='" + respuesta_recepciondte_mh.getSelloRecibido() + "', "
                     + "RESPONSE_FHPROCESAMIENTO='" + respuesta_recepciondte_mh.getFhProcesamiento() + "', "
                     + "RESPONSE_CODIGOMSG='" + respuesta_recepciondte_mh.getCodigoMsg() + "', "
                     + "RESPONSE_DESCRIPCIONMSG='" + respuesta_recepciondte_mh.getDescripcionMsg() + "', "
-                    + "RESPONSE_OBSERVACIONES='" + respuesta_recepciondte_mh.getDescripcionMsg() + "' "
+                    + "RESPONSE_OBSERVACIONES='" + respuesta_recepciondte_mh.getDescripcionMsg() + "', "
+                    + "RESPONSE_CLASIFICAMSG='" + respuesta_recepciondte_mh.getClasificaMsg() + "' "
                     + "WHERE "
                     + "ID_DTE=" + id_dte;
             Statement stmt = conn.createStatement();

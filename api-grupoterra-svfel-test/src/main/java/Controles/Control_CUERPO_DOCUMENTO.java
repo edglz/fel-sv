@@ -2,6 +2,7 @@ package Controles;
 
 import Entidades.JsonIn.DTE_IN;
 import Entidades.JsonOut.CUERPO_DOCUMENTO_OUT;
+import Entidades.JsonOut.CUERPO_DOCUMENTO_OUT_NC;
 import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.Statement;
@@ -24,7 +25,10 @@ public class Control_CUERPO_DOCUMENTO implements Serializable {
                 id_cuerpo_documento++;
                 Long id_bien_servicio = driver.ObtenerLong("SELECT F.ID_BIEN_SERVICIO FROM FEL_SV_TBL_BIEN_SERVICIO F WHERE F.CODIGO='" + dte_in.getCuerpoDocumento().get(i).getTipoItem() + "'", conn);
                 Long id_unidad_medida = driver.ObtenerLong("SELECT F.ID_UNIDAD_MEDIDA FROM FEL_SV_TBL_UNIDAD_MEDIDA F WHERE F.VALOR_JDE='" + dte_in.getCuerpoDocumento().get(i).getUniMedida() + "'", conn);
-
+                if (id_unidad_medida == null) {
+                    id_unidad_medida = Long.parseLong("56");
+                }
+                
                 String cadenasql = "INSERT INTO FEL_SV_TBL_CUERPO_DOCUMENTO ("
                         + "ID_DTE,"
                         + "ID_CUERPO_DOCUMENTO,"
@@ -108,6 +112,34 @@ public class Control_CUERPO_DOCUMENTO implements Serializable {
                 cuerpo_documento.setPsv(driver.ObtenerDouble("SELECT F.PSV FROM FEL_SV_TBL_CUERPO_DOCUMENTO F WHERE F.ID_DTE=" + id_dte + " AND F.ID_CUERPO_DOCUMENTO=" + lineas_detalle.get(i), conn));
                 cuerpo_documento.setDiferencial(driver.ObtenerDouble("SELECT F.DIFERENCIAL FROM FEL_SV_TBL_CUERPO_DOCUMENTO F WHERE F.ID_DTE=" + id_dte + " AND F.ID_CUERPO_DOCUMENTO=" + lineas_detalle.get(i), conn));
                 cuerpo_documento.setNoGravado(driver.ObtenerDouble("SELECT F.NOGRAVADO FROM FEL_SV_TBL_CUERPO_DOCUMENTO F WHERE F.ID_DTE=" + id_dte + " AND F.ID_CUERPO_DOCUMENTO=" + lineas_detalle.get(i), conn));
+                resultado.add(cuerpo_documento);
+            }
+        } catch (Exception ex) {
+            System.out.println("Proyecto: api-grupoterra-test-felsv | Clase: " + this.getClass().getName() + " | Metodo: registro_json_cuerpo_documento | Error: " + ex.toString());
+        }
+
+        return resultado;
+    }
+    
+    public List<CUERPO_DOCUMENTO_OUT_NC> registro_json_cuerpo_documento_nc(Connection conn, Long id_dte) {
+        List<CUERPO_DOCUMENTO_OUT_NC> resultado = new ArrayList<>();
+        Driver driver = new Driver();
+
+        try {
+            List<String> lineas_detalle = driver.ObtenerVectorString("SELECT F.ID_CUERPO_DOCUMENTO FROM FEL_SV_TBL_CUERPO_DOCUMENTO F WHERE F.ID_DTE=" + id_dte, conn);
+            for (Integer i = 0; i < lineas_detalle.size(); i++) {
+                CUERPO_DOCUMENTO_OUT_NC cuerpo_documento = new CUERPO_DOCUMENTO_OUT_NC();
+                cuerpo_documento.setNumItem(Integer.parseInt(lineas_detalle.get(i)));
+                cuerpo_documento.setTipoItem(driver.ObtenerEntero("SELECT G.CODIGO FROM FEL_SV_TBL_CUERPO_DOCUMENTO F LEFT JOIN FEL_SV_TBL_BIEN_SERVICIO G ON (F.ID_BIEN_SERVICIO=G.ID_BIEN_SERVICIO) WHERE F.ID_DTE=" + id_dte + " AND F.ID_CUERPO_DOCUMENTO=" + lineas_detalle.get(i), conn));
+                cuerpo_documento.setCantidad(driver.ObtenerEntero("SELECT F.CANTIDAD FROM FEL_SV_TBL_CUERPO_DOCUMENTO F WHERE F.ID_DTE=" + id_dte + " AND F.ID_CUERPO_DOCUMENTO=" + lineas_detalle.get(i), conn));
+                cuerpo_documento.setCodigo(driver.ObtenerString("SELECT F.CODIGO FROM FEL_SV_TBL_CUERPO_DOCUMENTO F WHERE F.ID_DTE=" + id_dte + " AND F.ID_CUERPO_DOCUMENTO=" + lineas_detalle.get(i), conn));
+                cuerpo_documento.setUniMedida(driver.ObtenerEntero("SELECT G.CODIGO FROM FEL_SV_TBL_CUERPO_DOCUMENTO F LEFT JOIN FEL_SV_TBL_UNIDAD_MEDIDA G ON (F.ID_UNIDAD_MEDIDA=G.ID_UNIDAD_MEDIDA) WHERE F.ID_DTE=" + id_dte + " AND F.ID_CUERPO_DOCUMENTO=" + lineas_detalle.get(i), conn));
+                cuerpo_documento.setDescripcion(driver.ObtenerString("SELECT F.DESCRIPCION FROM FEL_SV_TBL_CUERPO_DOCUMENTO F WHERE F.ID_DTE=" + id_dte + " AND F.ID_CUERPO_DOCUMENTO=" + lineas_detalle.get(i), conn));
+                cuerpo_documento.setPrecioUni(driver.ObtenerDouble("SELECT F.PRECIOUNI FROM FEL_SV_TBL_CUERPO_DOCUMENTO F WHERE F.ID_DTE=" + id_dte + " AND F.ID_CUERPO_DOCUMENTO=" + lineas_detalle.get(i), conn));
+                cuerpo_documento.setVentaNoSuj(driver.ObtenerDouble("SELECT F.VENTANOSUJ FROM FEL_SV_TBL_CUERPO_DOCUMENTO F WHERE F.ID_DTE=" + id_dte + " AND F.ID_CUERPO_DOCUMENTO=" + lineas_detalle.get(i), conn));
+                cuerpo_documento.setVentaExenta(driver.ObtenerDouble("SELECT F.VENTAEXENTA FROM FEL_SV_TBL_CUERPO_DOCUMENTO F WHERE F.ID_DTE=" + id_dte + " AND F.ID_CUERPO_DOCUMENTO=" + lineas_detalle.get(i), conn));
+                cuerpo_documento.setVentaGravada(driver.ObtenerDouble("SELECT F.VENTAGRAVADA FROM FEL_SV_TBL_CUERPO_DOCUMENTO F WHERE F.ID_DTE=" + id_dte + " AND F.ID_CUERPO_DOCUMENTO=" + lineas_detalle.get(i), conn));
+                cuerpo_documento.setTributos(driver.ObtenerVectorEntero("SELECT G.CODIGO FROM FEL_CUERPO_DOCUMENTO_TRIBUTO F LEFT JOIN FEL_SV_TBL_TRIBUTO G ON (F.ID_TRIBUTO=G.ID_TRIBUTO) WHERE F.ID_DTE=" + id_dte + " AND F.ID_CUERPO_DOCUMENTO=" + lineas_detalle.get(i), conn));
                 resultado.add(cuerpo_documento);
             }
         } catch (Exception ex) {

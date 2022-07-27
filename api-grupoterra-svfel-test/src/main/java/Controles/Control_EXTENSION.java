@@ -2,6 +2,7 @@ package Controles;
 
 import Entidades.JsonIn.DTE_IN;
 import Entidades.JsonOut.EXTENSION_OUT;
+import Entidades.JsonOut.EXTENSION_OUT_NC;
 import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.Statement;
@@ -68,6 +69,27 @@ public class Control_EXTENSION implements Serializable {
             resultado.setObservaciones(driver.ObtenerString("SELECT F.OBSERVACIONES FROM FEL_SV_TBL_EXTENSION F WHERE F.ID_DTE=" + id_dte, conn));
             resultado.setPlacaVehiculo(null);
             resultado.setAutoFitoSanitaria(null);
+        } catch (Exception ex) {
+            System.out.println("Proyecto: api-grupoterra-test-felsv | Clase: " + this.getClass().getName() + " | Metodo: registro_json_extension | Error: " + ex.toString());
+        }
+
+        return resultado;
+    }
+    
+    public EXTENSION_OUT_NC registro_json_extension_nc(Connection conn, Long id_dte) {
+        EXTENSION_OUT_NC resultado = null;
+        Driver driver = new Driver();
+
+        try {
+            resultado = new EXTENSION_OUT_NC();
+            resultado.setTotalItems(driver.ObtenerDouble("SELECT F.TOTALITEMS FROM FEL_SV_TBL_EXTENSION F WHERE F.ID_DTE=" + id_dte, conn));
+            Long id_emisor = driver.ObtenerLong("SELECT F.ID_EMISOR FROM FEL_SV_TBL_DTE F WHERE F.ID_DTE=" + id_dte, conn);
+            resultado.setNombEntrega(driver.ObtenerString("SELECT F.NOMBENTREGA FROM FEL_SV_TBL_EMISOR F WHERE F.ID_EMISOR=" + id_emisor, conn));
+            resultado.setDocuEntrega(driver.ObtenerString("SELECT F.DOCUENTREGA FROM FEL_SV_TBL_EMISOR F WHERE F.ID_EMISOR=" + id_emisor, conn));
+            resultado.setCodEmpleado(driver.ObtenerString("SELECT F.CODEMPLEADO FROM FEL_SV_TBL_EMISOR F WHERE F.ID_EMISOR=" + id_emisor, conn));
+            resultado.setNombRecibe(driver.ObtenerString("SELECT F.NOMBRECIBE FROM FEL_SV_TBL_EMISOR F WHERE F.ID_EMISOR=" + id_emisor, conn));
+            resultado.setDocuRecibe(driver.ObtenerString("SELECT F.DOCURECIBE FROM FEL_SV_TBL_EMISOR F WHERE F.ID_EMISOR=" + id_emisor, conn));
+            resultado.setObservaciones(driver.ObtenerString("SELECT F.OBSERVACIONES FROM FEL_SV_TBL_EXTENSION F WHERE F.ID_DTE=" + id_dte, conn));
         } catch (Exception ex) {
             System.out.println("Proyecto: api-grupoterra-test-felsv | Clase: " + this.getClass().getName() + " | Metodo: registro_json_extension | Error: " + ex.toString());
         }

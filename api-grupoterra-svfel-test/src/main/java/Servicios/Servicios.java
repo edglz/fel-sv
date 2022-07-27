@@ -15,7 +15,7 @@ public class Servicios implements Serializable {
 
     @POST
     @Path("recepcion-dte")
-    @Produces({"application/json", "text/plain"})
+    @Produces({"application/json"})
     public String recepcion_dte(
             String jsonString) {
         
@@ -35,7 +35,7 @@ public class Servicios implements Serializable {
     
     @POST
     @Path("extraer-recepcion-dte")
-    @Produces({"application/json", "text/plain"})
+    @Produces({"application/json"})
     public String extraer_recepcion_dte(
             String jsonString) {
         
