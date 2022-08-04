@@ -46,7 +46,8 @@ public class Ctrl_DTE_CCF_V3 implements Serializable {
                     + "F.FEAN8, "
                     + "F.FESHAN, "
                     + "F.FECRCD, "
-                    + "F.FEIVD "
+                    + "F.FEIVD, "
+                    + "F.FEJEVER "
                     + "FROM "
                     + esquema + ".F5542FEL@" + dblink + " F "
                     + "WHERE "
@@ -67,6 +68,7 @@ public class Ctrl_DTE_CCF_V3 implements Serializable {
                 String SHAN_JDE = rs.getString(8);
                 String CRCD_JDE = rs.getString(9);
                 String IVD_JDE = rs.getString(10);
+                String JEVER_JDE =  rs.getString(11);
                 Long ID_EMISOR = ctrl_base_datos.ObtenerLong("SELECT F.ID_EMISOR FROM EMISOR_ESTABLECIMIENTO_V3 F WHERE F.CODPUNTOVENTA='" + MCU_JDE.trim() + "'", conn);
                 
                 cadenasql = "INSERT INTO DTE_CCF_V3 ("
@@ -81,6 +83,7 @@ public class Ctrl_DTE_CCF_V3 implements Serializable {
                         + "SHAN_JDE, "
                         + "CRCD_JDE, "
                         + "IVD_JDE, "
+                        + "JEVER_JDE, "
                         + "ID_EMISOR, "
                         + "RESPONSE_VERSION, "
                         + "RESPONSE_AMBIENTE, "
@@ -91,7 +94,7 @@ public class Ctrl_DTE_CCF_V3 implements Serializable {
                         + "RESPONSE_FHPROCESAMIENTO, "
                         + "RESPONSE_CODIGOMSG, "
                         + "RESPONSE_DESCRIPCIONMSG, "
-                        + "RESPONSE_OBSERVACIONES,"
+                        + "RESPONSE_OBSERVACIONES, "
                         + "RESPONSE_CLASIFICAMSG) VALUES ("
                         + ID_DTE + ",'"
                         + KCOO_JDE.trim() + "','"
@@ -103,7 +106,8 @@ public class Ctrl_DTE_CCF_V3 implements Serializable {
                         + AN8_JDE.trim() + "','"
                         + SHAN_JDE.trim() + "','"
                         + CRCD_JDE.trim() + "','"
-                        + IVD_JDE + "',"
+                        + IVD_JDE.trim() + "','"
+                        + JEVER_JDE.trim() + "',"
                         + ID_EMISOR + ","
                         + "null, null, null, null, null, null, null, null, null, null, null)";
                 Statement stmt1 = conn.createStatement();
@@ -126,7 +130,7 @@ public class Ctrl_DTE_CCF_V3 implements Serializable {
                 String result_recepor = ctrl_receptor_ccf_v3.extraer_receptor_jde_ccf_v3(ID_DTE, ambiente, SHAN_JDE.trim(), conn);
                 
                 Ctrl_CuerpoDocumento_CCF_V3 ctrl_cuerpo_documento_ccf_v3 = new Ctrl_CuerpoDocumento_CCF_V3();
-                String result_cuerpo_documento = ctrl_cuerpo_documento_ccf_v3.extraer_cuerpo_documento_jde_ccf_v3(ID_DTE, ambiente, KCOO_JDE.trim(), DOCO_JDE.trim(), DCTO_JDE.trim(), conn);
+                String result_cuerpo_documento = ctrl_cuerpo_documento_ccf_v3.extraer_cuerpo_documento_jde_ccf_v3(ID_DTE, ambiente, KCOO_JDE.trim(), DOCO_JDE.trim(), DCTO_JDE.trim(), JEVER_JDE.trim(), conn);
                 
                 Ctrl_Resumen_CCF_V3 ctrl_resumen_ccf_v3 = new Ctrl_Resumen_CCF_V3();
                 String result_resumen = ctrl_resumen_ccf_v3.extraer_resumen_jde_ccf_v3(ID_DTE, ambiente, conn);
@@ -280,7 +284,7 @@ public class Ctrl_DTE_CCF_V3 implements Serializable {
                     + "FESTCD='" + respuesta_recepciondte_mh.getCodigoMsg().trim() + "', "
                     + "FECRSREF01='" + NUMEROCONTROL.trim() + "', "
                     + "FECRSREF02='" + respuesta_recepciondte_mh.getCodigoGeneracion() + "', "
-                    + "FECRSREF03='" + respuesta_recepciondte_mh.getSelloRecibido() + "'"
+                    + "FECRSREF03='" + respuesta_recepciondte_mh.getSelloRecibido() + "' "
                     + "WHERE FEKCOO='" + KCOO_JDE + "' AND FEDOCO=" + DOCO_JDE + " AND FEDCTO='" + DCTO_JDE + "' AND FEDOC=" + DOC_JDE + " AND FEDCT='" + DCT_JDE + "'";
             stmt = conn.createStatement();
             System.out.println(cadenasql);

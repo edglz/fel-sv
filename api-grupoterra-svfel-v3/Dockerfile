@@ -1,21 +1,23 @@
-# fetch basic image
+# FETCH BASIC IMAGE.
 FROM maven:3.8.5-jdk-11
 
-# application placed into /opt/app
+# APPLICATION PLACED INTO /opt/app.
+RUN mkdir -p /FELSV3/py
+RUN chmod -R 777 /FELSV3/py
 RUN mkdir -p /opt/app
+RUN echo "America/Guatemala" > /etc/timezone
 WORKDIR /opt/app
 
-# selectively add the POM file and
-# install dependencies
+# SELECTIVELY ADD THE POM FILE AND INSTALL DEPENDENCIES.
 COPY pom.xml /opt/app/
 RUN mvn install
 
-# rest of the project
+# REST OF THE PROJECTS.
 COPY src /opt/app/src
 RUN mvn package
 
-# local application port
+# LOCAL APPLICATION PORT
 EXPOSE 8080
 
-# execute it
+# EXECUTE IT
 CMD ["mvn", "exec:java"]

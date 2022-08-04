@@ -17,8 +17,8 @@ public class Driver implements Serializable {
         String resultado = "";
 
         try {
-            String path_file = "C:\\\\FELSV3\\py\\";
-            // String path_file = "/root/FELSV3/py/";
+            // String path_file = "C:\\\\FELSV3\\py\\";
+            String path_file = "/FELSV3/py/";
             File directorio = new File(path_file);
             directorio.mkdir();
 

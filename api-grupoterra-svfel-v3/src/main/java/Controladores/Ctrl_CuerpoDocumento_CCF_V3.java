@@ -72,7 +72,7 @@ public class Ctrl_CuerpoDocumento_CCF_V3 implements Serializable {
         return resultado;
     }
 
-    public String extraer_cuerpo_documento_jde_ccf_v3(Long id_dte, String ambiente, String KCOO_JDE, String DOCO_JDE, String DCTO_JDE, Connection conn) {
+    public String extraer_cuerpo_documento_jde_ccf_v3(Long id_dte, String ambiente, String KCOO_JDE, String DOCO_JDE, String DCTO_JDE, String tabla_sales_orders, Connection conn) {
         String resultado = "";
 
         try {
@@ -98,7 +98,7 @@ public class Ctrl_CuerpoDocumento_CCF_V3 implements Serializable {
                     + "F.SDLNID lineaId, "
                     + "TRIM(F.SDTAX1) aplicaImpuesto, "
                     + "TRIM(F.SDTXA1) impuesto "
-                    + "FROM " + esquema + ".F42119@" + dblink + " F "
+                    + "FROM " + esquema + "." + tabla_sales_orders + "@" + dblink + " F "
                     + "WHERE F.SDKCOO='" + KCOO_JDE + "' AND F.SDDOCO=" + DOCO_JDE + " AND F.SDDCTO='" + DCTO_JDE + "' AND F.SDLNTY IN ('M','S','SX')";
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(cadenasql);
@@ -228,7 +228,7 @@ public class Ctrl_CuerpoDocumento_CCF_V3 implements Serializable {
                         + "F.SDUORG cantidad, "
                         + "TRIM(F.SDLITM) codigo, "
                         + "DECODE((SELECT CCCRCD FROM " + esquema + ".F0010@" + dblink + " G WHERE G.CCCO=F.SDKCOO), F.SDCRCD, F.SDUPRC, F.SDFUP)/10000 precioUni "
-                        + "FROM " + esquema + ".F42119@" + dblink + " F "
+                        + "FROM " + esquema + "." + tabla_sales_orders + "@" + dblink + " F "
                         + "WHERE "
                         + "F.SDKCOO='" + KCOO_JDE + "' AND F.SDDOCO=" + DOCO_JDE + " AND F.SDDCTO='" + DCTO_JDE + "' AND "
                         + "F.SDOKCO='" + KCOO_JDE + "' AND F.SDOORN=" + DOCO_JDE + " AND F.SDOCTO='" + DCTO_JDE + "' AND F.SDOGNO=" + rs.getString(7) + " AND "
