@@ -52,13 +52,13 @@ public class Ctrl_CuerpoDocumento_CCF_V3 implements Serializable {
                 }
                 rs1.close();
                 stmt1.close();
-                
-                if(tributos.isEmpty()) {
+
+                if (tributos.isEmpty()) {
                     cuerpo_documento_ccf.setTributos(null);
                 } else {
                     cuerpo_documento_ccf.setTributos(tributos);
                 }
-                
+
                 cuerpo_documento_ccf.setPsv(ctrl_base_datos.ObtenerDouble("SELECT F.PSV FROM CUERPO_DOCU_CCF_V3 F WHERE F.ID_DTE=" + id_dte + " AND F.ID_CUERPO_DOCUMENTO=" + id_cuerpo_documento, conn));
                 cuerpo_documento_ccf.setNoGravado(ctrl_base_datos.ObtenerDouble("SELECT F.NOGRAVADO FROM CUERPO_DOCU_CCF_V3 F WHERE F.ID_DTE=" + id_dte + " AND F.ID_CUERPO_DOCUMENTO=" + id_cuerpo_documento, conn));
                 resultado.add(cuerpo_documento_ccf);
@@ -117,7 +117,7 @@ public class Ctrl_CuerpoDocumento_CCF_V3 implements Serializable {
                 Number PRECIOUNI = rs.getDouble(6);
 
                 // EXTRAE EL AJUSTE COMPETITIVO (DESCUENTO)
-                Number MONTODESCU = ctrl_base_datos.ObtenerDouble("SELECT F.ALUPRC/10000 FROM " + esquema + ".F4074@" + dblink + " F WHERE F.ALKCOO='" + KCOO_JDE + "' AND F.ALDOCO=" + DOCO_JDE + " AND F.ALDCTO='" + DCTO_JDE + "' AND F.ALLNID=" + rs.getString(7) + " AND TRIM(F.ALAST)='SVPSCG'", conn);
+                Number MONTODESCU = ctrl_base_datos.ObtenerDouble("SELECT F.ALUPRC/10000 FROM " + esquema + ".F4074@" + dblink + " F WHERE F.ALKCOO='" + KCOO_JDE + "' AND F.ALDOCO=" + DOCO_JDE + " AND F.ALDCTO='" + DCTO_JDE + "' AND F.ALLNID=" + rs.getString(7) + " AND TRIM(F.ALAST) IN ('SVPSCG')", conn);
                 if (MONTODESCU == null) {
                     MONTODESCU = 0.00;
                 }
@@ -125,7 +125,7 @@ public class Ctrl_CuerpoDocumento_CCF_V3 implements Serializable {
                 MONTODESCU = CANTIDAD * MONTODESCU.doubleValue();
 
                 // EXTRAE EL FLETE SI APLICA MAYOR A 0.00
-                Number PRECIOUNIFLETE = ctrl_base_datos.ObtenerDouble("SELECT F.ALUPRC/10000 FROM " + esquema + ".F4074@" + dblink + " F WHERE F.ALKCOO='" + KCOO_JDE + "' AND F.ALDOCO=" + DOCO_JDE + " AND F.ALDCTO='" + DCTO_JDE + "' AND F.ALLNID=" + rs.getString(7) + " AND TRIM(F.ALAST)='SVFCG2'", conn);
+                Number PRECIOUNIFLETE = ctrl_base_datos.ObtenerDouble("SELECT F.ALUPRC/10000 FROM " + esquema + ".F4074@" + dblink + " F WHERE F.ALKCOO='" + KCOO_JDE + "' AND F.ALDOCO=" + DOCO_JDE + " AND F.ALDCTO='" + DCTO_JDE + "' AND F.ALLNID=" + rs.getString(7) + " AND TRIM(F.ALAST) IN ('SVAVFRGT', 'SVBITFRG', 'SVBITFR', 'SVECSAFR', 'SVCOMBFR', 'SVFCG2', 'SVMARBFG')", conn);
                 if (PRECIOUNIFLETE == null) {
                     PRECIOUNIFLETE = 0.00;
                 }
@@ -133,14 +133,14 @@ public class Ctrl_CuerpoDocumento_CCF_V3 implements Serializable {
                 PRECIOUNIFLETE = CANTIDAD * PRECIOUNIFLETE.doubleValue();
 
                 // EXTRAE EL IMPUESTO ESPECIAL IEC SI APLICA MAYOR A 0.00, ESTE MONTO NO SE RESTA DEL PRECIO UNITARIO BASE
-                Number PRECIOUNIIEC = ctrl_base_datos.ObtenerDouble("SELECT F.ALUPRC/10000 FROM " + esquema + ".F4074@" + dblink + " F WHERE F.ALKCOO='" + KCOO_JDE + "' AND F.ALDOCO=" + DOCO_JDE + " AND F.ALDCTO='" + DCTO_JDE + "' AND F.ALLNID=" + rs.getString(7) + " AND TRIM(F.ALAST)='SVT4'", conn);
+                Number PRECIOUNIIEC = ctrl_base_datos.ObtenerDouble("SELECT F.ALUPRC/10000 FROM " + esquema + ".F4074@" + dblink + " F WHERE F.ALKCOO='" + KCOO_JDE + "' AND F.ALDOCO=" + DOCO_JDE + " AND F.ALDCTO='" + DCTO_JDE + "' AND F.ALLNID=" + rs.getString(7) + " AND TRIM(F.ALAST) IN ('SVECSAT4', 'SVT4')", conn);
                 if (PRECIOUNIIEC == null) {
                     PRECIOUNIIEC = 0.00;
                 }
                 PRECIOUNIIEC = CANTIDAD * PRECIOUNIIEC.doubleValue();
-                
+
                 // EXTRAE LA PROMOCION SI APLICA MAYOR A 0.00, ESTE MONTO NO SE RESTA DEL PRECIO UNITARIO BASE
-                Number PRECIOUNIPROMO = ctrl_base_datos.ObtenerDouble("SELECT F.ALUPRC/10000 FROM " + esquema + ".F4074@" + dblink + " F WHERE F.ALKCOO='" + KCOO_JDE + "' AND F.ALDOCO=" + DOCO_JDE + " AND F.ALDCTO='" + DCTO_JDE + "' AND F.ALLNID=" + rs.getString(7) + " AND TRIM(F.ALAST)='SVP'", conn);
+                Number PRECIOUNIPROMO = ctrl_base_datos.ObtenerDouble("SELECT F.ALUPRC/10000 FROM " + esquema + ".F4074@" + dblink + " F WHERE F.ALKCOO='" + KCOO_JDE + "' AND F.ALDOCO=" + DOCO_JDE + " AND F.ALDCTO='" + DCTO_JDE + "' AND F.ALLNID=" + rs.getString(7) + " AND TRIM(F.ALAST) IN ('SVP')", conn);
                 if (PRECIOUNIPROMO == null) {
                     PRECIOUNIPROMO = 0.00;
                 }
@@ -335,13 +335,13 @@ public class Ctrl_CuerpoDocumento_CCF_V3 implements Serializable {
                         stmt1.close();
                     }
                 }
-                
+
                 // EXTRAE EL IEC DEL PRODUCTO SI APLICA.
                 if (PRECIOUNIIEC.doubleValue() > 0.00) {
                     contador++;
                     ID_CUERPO_DOCUMENTO = Long.parseLong(contador.toString());
                     ID_CAT_011 = Long.parseLong("4");
-                    
+
                     Number PRECIOUNIIEC_TEMP = PRECIOUNIIEC.doubleValue() / CANTIDAD;
                     if (rs.getString(8).equals("Y")) {
                         VENTAGRAVADA = PRECIOUNIIEC;
@@ -388,7 +388,7 @@ public class Ctrl_CuerpoDocumento_CCF_V3 implements Serializable {
                     System.out.println(cadenasql);
                     stmt1.executeUpdate(cadenasql);
                     stmt1.close();
-                    
+
                     // EXTRAE EL IMPUESTO APLICADO A LA LINEA DEL IEC.
                     NUM_TRIBUTO = 0;
                     if (rs.getString(8).equals("Y")) {
@@ -413,13 +413,13 @@ public class Ctrl_CuerpoDocumento_CCF_V3 implements Serializable {
                         stmt1.close();
                     }
                 }
-                
+
                 // EXTRAE LA PROMOCIÓN DEL PRODUCTO SI APLICA.
                 if (PRECIOUNIPROMO.doubleValue() > 0.00) {
                     contador++;
                     ID_CUERPO_DOCUMENTO = Long.parseLong(contador.toString());
                     ID_CAT_011 = Long.parseLong("2");
-                    
+
                     Number PRECIOUNIPROMO_TEMP = PRECIOUNIPROMO.doubleValue() / CANTIDAD;
                     if (rs.getString(8).equals("Y")) {
                         VENTAGRAVADA = PRECIOUNIPROMO;
@@ -466,7 +466,7 @@ public class Ctrl_CuerpoDocumento_CCF_V3 implements Serializable {
                     System.out.println(cadenasql);
                     stmt1.executeUpdate(cadenasql);
                     stmt1.close();
-                    
+
                     // EXTRAE EL IMPUESTO APLICADO A LA LINEA DEL IEC.
                     NUM_TRIBUTO = 0;
                     if (rs.getString(8).equals("Y")) {
@@ -494,7 +494,7 @@ public class Ctrl_CuerpoDocumento_CCF_V3 implements Serializable {
             }
             rs.close();
             stmt.close();
-            
+
             resultado = "0,TRANSACCIONES PROCESADAS.";
         } catch (Exception ex) {
             resultado = "1," + ex.toString();

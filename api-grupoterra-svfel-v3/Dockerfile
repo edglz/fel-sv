@@ -4,6 +4,8 @@ FROM maven:3.8.5-jdk-11
 # APPLICATION PLACED INTO /opt/app.
 RUN mkdir -p /FELSV3/py
 RUN chmod -R 777 /FELSV3/py
+RUN mkdir -p /FELSV3/pdf
+RUN chmod -R 777 /FELSV3/pdf
 RUN mkdir -p /opt/app
 RUN echo "America/Guatemala" > /etc/timezone
 WORKDIR /opt/app

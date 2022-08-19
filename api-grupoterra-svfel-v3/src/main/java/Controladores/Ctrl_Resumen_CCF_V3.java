@@ -22,7 +22,7 @@ public class Ctrl_Resumen_CCF_V3 implements Serializable {
 
         try {
             Ctrl_Base_Datos ctrl_base_datos = new Ctrl_Base_Datos();
-            
+
             resultado.setTotalNoSuj(ctrl_base_datos.ObtenerDouble("SELECT F.TOTALNOSUJ FROM RESUMEN_CCF_V3 F WHERE F.ID_DTE=" + id_dte, conn));
             resultado.setTotalExenta(ctrl_base_datos.ObtenerDouble("SELECT F.TOTALEXENTA FROM RESUMEN_CCF_V3 F WHERE F.ID_DTE=" + id_dte, conn));
             resultado.setTotalGravada(ctrl_base_datos.ObtenerDouble("SELECT F.TOTALGRAVADA FROM RESUMEN_CCF_V3 F WHERE F.ID_DTE=" + id_dte, conn));
@@ -32,13 +32,13 @@ public class Ctrl_Resumen_CCF_V3 implements Serializable {
             resultado.setDescuGravada(ctrl_base_datos.ObtenerDouble("SELECT F.DESCUGRAVADA FROM RESUMEN_CCF_V3 F WHERE F.ID_DTE=" + id_dte, conn));
             resultado.setPorcentajeDescuento(ctrl_base_datos.ObtenerDouble("SELECT F.PORCENTAJEDESCUENTO FROM RESUMEN_CCF_V3 F WHERE F.ID_DTE=" + id_dte, conn));
             resultado.setTotalDescu(ctrl_base_datos.ObtenerDouble("SELECT F.TOTALDESCU FROM RESUMEN_CCF_V3 F WHERE F.ID_DTE=" + id_dte, conn));
-            
+
             List<Tributo> tributos = new ArrayList<>();
             Long id_resumen = ctrl_base_datos.ObtenerLong("SELECT F.ID_RESUMEN FROM RESUMEN_CCF_V3 F WHERE F.ID_DTE=" + id_dte, conn);
             String cadenasql = "SELECT F.NUM_TRIBUTO FROM RESUMEN_TRIBUTO_CCF_V3 F WHERE F.ID_DTE=" + id_dte + " AND F.ID_RESUMEN=" + id_resumen + " ORDER BY F.NUM_TRIBUTO";
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(cadenasql);
-            while(rs.next()) {
+            while (rs.next()) {
                 Long num_tributo = rs.getLong(1);
                 Tributo tributo = new Tributo();
                 tributo.setCodigo(ctrl_base_datos.ObtenerString("SELECT C.CODIGO FROM CAT_015 C WHERE C.ID_CAT IN (SELECT F.ID_CAT_015 FROM RESUMEN_TRIBUTO_CCF_V3 F WHERE F.ID_DTE=" + id_dte + " AND F.ID_RESUMEN=" + id_resumen + " AND F.NUM_TRIBUTO=" + num_tributo + ")", conn));
@@ -48,12 +48,12 @@ public class Ctrl_Resumen_CCF_V3 implements Serializable {
             }
             rs.close();
             stmt.close();
-            
-            if(tributos.isEmpty()) {
+
+            if (tributos.isEmpty()) {
                 tributos = null;
             }
             resultado.setTributos(tributos);
-            
+
             resultado.setSubTotal(ctrl_base_datos.ObtenerDouble("SELECT F.SUBTOTAL FROM RESUMEN_CCF_V3 F WHERE F.ID_DTE=" + id_dte, conn));
             resultado.setIvaPerci1(ctrl_base_datos.ObtenerDouble("SELECT F.IVAPERCI1 FROM RESUMEN_CCF_V3 F WHERE F.ID_DTE=" + id_dte, conn));
             resultado.setIvaRete1(ctrl_base_datos.ObtenerDouble("SELECT F.IVARETE1 FROM RESUMEN_CCF_V3 F WHERE F.ID_DTE=" + id_dte, conn));
@@ -64,7 +64,7 @@ public class Ctrl_Resumen_CCF_V3 implements Serializable {
             resultado.setTotalLetras(ctrl_base_datos.ObtenerString("SELECT F.TOTALLETRAS FROM RESUMEN_CCF_V3 F WHERE F.ID_DTE=" + id_dte, conn));
             resultado.setSaldoFavor(ctrl_base_datos.ObtenerDouble("SELECT F.SALDOFAVOR FROM RESUMEN_CCF_V3 F WHERE F.ID_DTE=" + id_dte, conn));
             resultado.setCondicionOperacion(ctrl_base_datos.ObtenerLong("SELECT C.CODIGO FROM CAT_016 C WHERE C.ID_CAT IN (SELECT F.ID_CAT_016 FROM RESUMEN_CCF_V3 F WHERE F.ID_DTE=" + id_dte + ")", conn));
-            
+
             Pagos pagos = new Pagos();
             pagos.setCodigo(ctrl_base_datos.ObtenerString("SELECT C.CODIGO FROM CAT_017 C WHERE C.ID_CAT IN (SELECT F.ID_CAT_017 FROM RESUMEN_CCF_V3 F WHERE F.ID_DTE=" + id_dte + ")", conn));
             pagos.setMontoPago(ctrl_base_datos.ObtenerDouble("SELECT F.PAGOS_MONTOPAGO FROM RESUMEN_CCF_V3 F WHERE F.ID_DTE=" + id_dte, conn));
@@ -73,7 +73,7 @@ public class Ctrl_Resumen_CCF_V3 implements Serializable {
             pagos.setPeriodo(ctrl_base_datos.ObtenerDouble("SELECT F.PAGOS_PERIODO FROM RESUMEN_CCF_V3 F WHERE F.ID_DTE=" + id_dte, conn));
             pagos = null;
             resultado.setPagos(pagos);
-            
+
             resultado.setTotalNoSuj(ctrl_base_datos.ObtenerDouble("SELECT F.NUMPAGOELECTRONICO FROM RESUMEN_CCF_V3 F WHERE F.ID_DTE=" + id_dte, conn));
         } catch (Exception ex) {
             System.out.println("PROYECTO:api-grupoterra-svfel-v3|CLASE:" + this.getClass().getName() + "|METODO:obtener_resumen_ccf_v3()|ERROR:" + ex.toString());
@@ -81,12 +81,13 @@ public class Ctrl_Resumen_CCF_V3 implements Serializable {
 
         return resultado;
     }
-    
+
     public String extraer_resumen_jde_ccf_v3(Long id_dte, String ambiente, Connection conn) {
         String resultado = "";
 
         try {
             Ctrl_Base_Datos ctrl_base_datos = new Ctrl_Base_Datos();
+            Driver driver = new Driver();
 
             String esquema;
             String dblink;
@@ -97,7 +98,7 @@ public class Ctrl_Resumen_CCF_V3 implements Serializable {
                 esquema = "PRODDTA";
                 dblink = "JDEPD";
             }
-            
+
             Long ID_DTE = id_dte;
             Long ID_RESUMEN = Long.parseLong("1");
             Number TOTALNOSUJ = ctrl_base_datos.ObtenerDouble("SELECT SUM(F.VENTANOSUJ) FROM CUERPO_DOCU_CCF_V3 F WHERE F.ID_DTE=" + ID_DTE, conn);
@@ -116,16 +117,31 @@ public class Ctrl_Resumen_CCF_V3 implements Serializable {
             Number MONTOTOTALOPERACION = SUBTOTAL.doubleValue() + ctrl_base_datos.ObtenerDouble("SELECT SUM(F.VALOR) FROM CUERPO_TRIBUTO_CCF_V3 F WHERE F.ID_DTE=" + ID_DTE, conn);
             Number TOTALNOGRAVADO = ctrl_base_datos.ObtenerDouble("SELECT SUM(F.NOGRAVADO) FROM CUERPO_DOCU_CCF_V3 F WHERE F.ID_DTE=" + ID_DTE, conn);
             Number TOTALPAGAR = MONTOTOTALOPERACION.doubleValue();
-            String TOTALLETRAS = "CAMPO CANTIDAD EN LETRAS PENDIENTE.";
+            // INICIA CONVERTIR TOTALPAGAR A LETRAS.
+            Long TOTALPAGAR_LONG = TOTALPAGAR.longValue();
+            Double TOTALPAGAR_DOUBLE = TOTALPAGAR.doubleValue();
+            String[] NUMERO_PARTES = TOTALPAGAR_DOUBLE.toString().split("\\.");
+            if (NUMERO_PARTES[1] != null) {
+                if (NUMERO_PARTES[1].length() > 2) {
+                    NUMERO_PARTES[1] = NUMERO_PARTES[1].substring(0, 2);
+                }
+            } else {
+                NUMERO_PARTES[1] = "00";
+            }
+            System.out.println("********** PARTE ENTERA: " + NUMERO_PARTES[0]);
+            System.out.println("********** PARTE DECIMAL: " + NUMERO_PARTES[1]);
+            // String TOTALPAGAR_DECIMALES = TOTALPAGAR_DOUBLE.toString().substring(TOTALPAGAR_DOUBLE.toString().indexOf('.'));
+            String TOTALLETRAS = driver.cantidadConLetra(TOTALPAGAR_LONG.toString()).toUpperCase() + " con " + NUMERO_PARTES[1] + "/100";
+            // TERMINA CONVERTIR TOTALPAGAR A LETRAS.
             Number SALDOFAVOR = 0.00;
             Long ID_CAT_016 = Long.parseLong("2");
             Long ID_CAT_017 = null;
             Number PAGOS_MONTOPAGO = null;
             String PAGOS_REFERENCIA = null;
             Long ID_CAT_018 = Long.parseLong("1");
-            Number PAGOS_PERIODO = 30;
+            Number PAGOS_PERIODO = 1;
             String NUMPAGOELECTRONICO = null;
-            
+
             String cadenasql = "INSERT INTO RESUMEN_CCF_V3 ("
                     + "ID_DTE, "
                     + "ID_RESUMEN, "
@@ -185,7 +201,7 @@ public class Ctrl_Resumen_CCF_V3 implements Serializable {
             System.out.println(cadenasql);
             stmt.executeUpdate(cadenasql);
             stmt.close();
-            
+
             cadenasql = "SELECT F.ID_CAT_015, SUM(F.VALOR) VALOR FROM CUERPO_TRIBUTO_CCF_V3 F WHERE F.ID_DTE=" + ID_DTE + " GROUP BY F.ID_CAT_015";
             stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(cadenasql);
@@ -213,7 +229,7 @@ public class Ctrl_Resumen_CCF_V3 implements Serializable {
             }
             rs.close();
             stmt.close();
-            
+
             resultado = "0,TRANSACCIONES PROCESADAS.";
         } catch (Exception ex) {
             resultado = "1," + ex.toString();
