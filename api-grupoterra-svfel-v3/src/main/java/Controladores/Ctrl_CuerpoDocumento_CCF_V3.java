@@ -112,7 +112,7 @@ public class Ctrl_CuerpoDocumento_CCF_V3 implements Serializable {
                 Long CANTIDAD = rs.getLong(2);
                 String CODIGO = rs.getString(3);
                 Long ID_CAT_015 = null;
-                Long ID_CAT_014 = ctrl_base_datos.ObtenerLong("SELECT C.ID_CAT FROM CAT_014 C WHERE C.VALOR_JDE IN ('" + rs.getString(4) + "')", conn);
+                Long ID_CAT_014 = ctrl_base_datos.ObtenerLong("SELECT C.ID_CAT FROM CAT_014 C WHERE C.VALOR_JDE LIKE '%[" + rs.getString(4) + "]%'", conn);
                 String DESCRIPCION = rs.getString(5);
                 Number PRECIOUNI = rs.getDouble(6);
 

@@ -63,15 +63,16 @@ RES.TOTALPAGAR Total_A_Pagar,
 DTE.DCTO_JDE || '-' || DTE.DOCO_JDE Orden_JDE,
 DTE.DCT_JDE || '-' || DTE.DOC_JDE Documento_JDE,
 C16.VALOR || ' - ' || RES.PAGOS_PERIODO || ' días' Condicion_Operacion,
-EXT.NOMBENTREGA Nombre_Emisor_Responsable,
-EXT.DOCUENTREGA Documento_Emisor_Responsable,
-EXT.NOMBRECIBE Nombre_Receptor_Responsable,
-EXT.DOCURECIBE Documento_Receptor_Responsable,
+CASE WHEN RES.TOTALPAGAR > 11428.57 THEN EXT.NOMBENTREGA ELSE '-' END Nombre_Emisor_Responsable,
+CASE WHEN RES.TOTALPAGAR > 11428.57 THEN EXT.DOCUENTREGA ELSE '-' END Documento_Emisor_Responsable,
+CASE WHEN RES.TOTALPAGAR > 11428.57 THEN EXT.NOMBRECIBE ELSE '-' END Nombre_Receptor_Responsable,
+CASE WHEN RES.TOTALPAGAR > 11428.57 THEN EXT.DOCURECIBE ELSE '-' END Documento_Receptor_Responsable,
 EXT.OBSERVACIONES Observaciones,
 APE.VALOR Sellos,
 RES.TOTALLETRAS Valor_Letras,
 RES.MONTOTOTALOPERACION Monto_Total_Operacion,
-DTE.AN8_JDE Codigo_Cliente_JDE
+DTE.AN8_JDE Codigo_Cliente_JDE,
+'https://gtitapp.endtoend.com.mx/api-rest-qr-dte/felsv/qr-file/PY/' || DTE.RESPONSE_NUMVALIDACION || '/' || DTE.RESPONSE_CODIGOGENERACION QR
 FROM
 DTE_CCF_V3 DTE
 LEFT JOIN IDENTIFICACION_CCF_V3 IDE ON (DTE.ID_DTE=IDE.ID_DTE)
@@ -331,6 +332,10 @@ CUE.ID_CUERPO_DOCUMENTO]]>
 		<property name="com.jaspersoft.studio.field.name" value="CODIGO_CLIENTE_JDE"/>
 		<property name="com.jaspersoft.studio.field.label" value="CODIGO_CLIENTE_JDE"/>
 	</field>
+	<field name="QR" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="QR"/>
+		<property name="com.jaspersoft.studio.field.label" value="QR"/>
+	</field>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -409,11 +414,11 @@ CUE.ID_CUERPO_DOCUMENTO]]>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<jr:QRCode xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
-					<jr:codeExpression><![CDATA["https://gtitapp.endtoend.com.mx/itapp2/"]]></jr:codeExpression>
+					<jr:codeExpression><![CDATA[$F{QR}]]></jr:codeExpression>
 				</jr:QRCode>
 			</componentElement>
 			<textField>
-				<reportElement mode="Opaque" x="0" y="91" width="592" height="10" backcolor="#E5F1FB" uuid="aca514d6-5e98-412d-a34e-8c867d57f3fd">
+				<reportElement mode="Opaque" x="0" y="91" width="592" height="10" forecolor="#FFFFFF" backcolor="#193769" uuid="aca514d6-5e98-412d-a34e-8c867d57f3fd">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -545,7 +550,7 @@ CUE.ID_CUERPO_DOCUMENTO]]>
 				<textFieldExpression><![CDATA[$F{FECHA_HORA_EMISION}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement mode="Opaque" x="0" y="131" width="592" height="10" backcolor="#E5F1FB" uuid="cf298580-954a-47bb-bb1b-a6d9138102fb">
+				<reportElement mode="Opaque" x="0" y="131" width="592" height="10" forecolor="#FFFFFF" backcolor="#193769" uuid="cf298580-954a-47bb-bb1b-a6d9138102fb">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -723,7 +728,7 @@ CUE.ID_CUERPO_DOCUMENTO]]>
 				<textFieldExpression><![CDATA[$F{EMISOR_DIRECCION}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement mode="Opaque" x="0" y="201" width="592" height="10" backcolor="#E5F1FB" uuid="ed07848f-12dc-4a59-ab63-d4df83878c05">
+				<reportElement mode="Opaque" x="0" y="201" width="592" height="10" forecolor="#FFFFFF" backcolor="#193769" uuid="ed07848f-12dc-4a59-ab63-d4df83878c05">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -1064,7 +1069,7 @@ CUE.ID_CUERPO_DOCUMENTO]]>
 				<text><![CDATA[Precio Unitario]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="0" y="0" width="592" height="10" backcolor="#E5F1FB" uuid="6cfd809b-ef7a-4547-b418-5065d955b50d">
+				<reportElement mode="Opaque" x="0" y="0" width="592" height="10" forecolor="#FFFFFF" backcolor="#193769" uuid="6cfd809b-ef7a-4547-b418-5065d955b50d">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -1142,7 +1147,7 @@ CUE.ID_CUERPO_DOCUMENTO]]>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{DESCRIPCION}]]></textFieldExpression>
 			</textField>
-			<textField textAdjust="StretchHeight" pattern="#,##0.00##;(#,##0.00##-)">
+			<textField textAdjust="StretchHeight" pattern="#,##0.00;(#,##0.00-)">
 				<reportElement stretchType="RelativeToTallestObject" x="342" y="0" width="50" height="10" uuid="40bbec4d-ea4e-4662-83ff-38e57c788977">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="b86f418d-fe47-40cf-8d04-1575f1417449"/>
 				</reportElement>
@@ -1158,7 +1163,7 @@ CUE.ID_CUERPO_DOCUMENTO]]>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{DESCUENTO_ITEM}]]></textFieldExpression>
 			</textField>
-			<textField textAdjust="StretchHeight" pattern="#,##0.00##;(#,##0.00##-)">
+			<textField textAdjust="StretchHeight" pattern="#,##0.00;(#,##0.00-)">
 				<reportElement stretchType="RelativeToTallestObject" x="392" y="0" width="50" height="10" uuid="78118e0b-b999-460d-9cee-66e37c9b8140">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="1a6bed3f-2e2b-4e3a-a40f-5333f7e6539a"/>
 				</reportElement>
@@ -1174,7 +1179,7 @@ CUE.ID_CUERPO_DOCUMENTO]]>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{VENTA_NO_AFECTA}]]></textFieldExpression>
 			</textField>
-			<textField textAdjust="StretchHeight" pattern="#,##0.00##;(#,##0.00##-)">
+			<textField textAdjust="StretchHeight" pattern="#,##0.00;(#,##0.00-)">
 				<reportElement stretchType="RelativeToTallestObject" x="442" y="0" width="50" height="10" uuid="03641fd4-4108-4614-8481-3fe16cedbf48">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="3b369e01-7d84-4fc5-a8e3-e1b15a61ba02"/>
 				</reportElement>
@@ -1190,7 +1195,7 @@ CUE.ID_CUERPO_DOCUMENTO]]>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{VENTA_NO_SUJETA}]]></textFieldExpression>
 			</textField>
-			<textField textAdjust="StretchHeight" pattern="#,##0.00##;(#,##0.00##-)">
+			<textField textAdjust="StretchHeight" pattern="#,##0.00;(#,##0.00-)">
 				<reportElement stretchType="RelativeToTallestObject" x="492" y="0" width="50" height="10" uuid="2169f0df-4c02-4c16-81c2-cc23502f3cfb">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="f4874e2e-35e5-44fb-b732-ffe0bce90862"/>
 				</reportElement>
@@ -1206,7 +1211,7 @@ CUE.ID_CUERPO_DOCUMENTO]]>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{VENTA_EXENTA}]]></textFieldExpression>
 			</textField>
-			<textField textAdjust="StretchHeight" pattern="#,##0.00##;(#,##0.00##-)">
+			<textField textAdjust="StretchHeight" pattern="#,##0.00;(#,##0.00-)">
 				<reportElement stretchType="RelativeToTallestObject" x="542" y="0" width="50" height="10" uuid="3fa9617d-f959-4eba-859f-abd7d3e36b06">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="bdc030fa-3e25-432f-b238-d2ab88d6ec45"/>
 				</reportElement>
@@ -1618,7 +1623,7 @@ CUE.ID_CUERPO_DOCUMENTO]]>
 				<textElement textAlignment="Right" verticalAlignment="Top">
 					<font fontName="Arial" size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{TOTAL_COTRANS}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{TOTAL_COTRANS} == null ? 0.00 : $F{TOTAL_COTRANS}]]></textFieldExpression>
 			</textField>
 			<textField textAdjust="StretchHeight" pattern="#,##0.00;(#,##0.00-)">
 				<reportElement stretchType="RelativeToTallestObject" x="542" y="70" width="50" height="10" uuid="414920ef-22fa-4e7f-8cfa-49d40459e93b">
@@ -1634,7 +1639,7 @@ CUE.ID_CUERPO_DOCUMENTO]]>
 				<textElement textAlignment="Right" verticalAlignment="Top">
 					<font fontName="Arial" size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{TOTAL_FOVIAL}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{TOTAL_FOVIAL} == null ? 0.00 : $F{TOTAL_FOVIAL}]]></textFieldExpression>
 			</textField>
 			<textField textAdjust="StretchHeight" pattern="#,##0.00;(#,##0.00-)">
 				<reportElement stretchType="RelativeToTallestObject" x="542" y="80" width="50" height="10" uuid="d02763cb-8302-40e3-9283-8680ed0920e9">
