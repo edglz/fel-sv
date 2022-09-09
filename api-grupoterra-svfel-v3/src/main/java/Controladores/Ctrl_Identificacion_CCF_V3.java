@@ -99,7 +99,7 @@ public class Ctrl_Identificacion_CCF_V3 implements Serializable {
                     + ID_CAT_004 + ","
                     + ID_CAT_005 + ","
                     + MOTIVOCONTIN + ","
-                    + FECHA_HORA_EMISION + ",'"
+                    + "TO_DATE('" + FECHA_HORA_EMISION + "','YYYY/MM/DD HH24:MI:SS')" + ",'"
                     + TIPOMONEDA + "')";
             stmt = conn.createStatement();
             System.out.println(cadenasql);

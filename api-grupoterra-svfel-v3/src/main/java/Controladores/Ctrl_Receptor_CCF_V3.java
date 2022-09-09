@@ -60,9 +60,17 @@ public class Ctrl_Receptor_CCF_V3 implements Serializable {
             Long ID_DTE = id_dte;
             Long ID_RECEPTOR = Long.parseLong("1");
             String NIT = ctrl_base_datos.ObtenerString("SELECT NVL(REPLACE(TRIM(F.ABTX2),'-',''),'-') FROM " + esquema + ".F0101@" + dblink + " F WHERE F.ABAN8=" + SHAN_JDE, conn);
+            NIT = NIT.replaceAll(" ", "");
+            if(NIT.length() > 14) {
+                NIT = NIT.substring(0, 14);
+            }
             String NRC = ctrl_base_datos.ObtenerString("SELECT NVL(REPLACE(TRIM(F.ABTAX),'-',''),'-') FROM " + esquema + ".F0101@" + dblink + " F WHERE F.ABAN8=" + SHAN_JDE, conn);
-            String NOMBRE = ctrl_base_datos.ObtenerString("SELECT NVL(TRIM(F.WWMLNM),'-') FROM " + esquema + ".F0111@" + dblink + " F WHERE F.WWIDLN=0 AND F.WWAN8=" + SHAN_JDE, conn);
-            Long ID_CAT_019 = ctrl_base_datos.ObtenerLong("SELECT C.ID_CAT FROM CAT_019 C WHERE C.VALOR_JDE IN (SELECT TRIM(G.ABAC06) FROM " + esquema + ".F0101@" + dblink + " G WHERE G.ABAN8=" + SHAN_JDE + ")", conn);
+            NRC = NRC.replaceAll(" ", "");
+            if(NRC.length() > 8) {
+                NRC = NRC.substring(0, 8);
+            }
+            String NOMBRE = ctrl_base_datos.ObtenerString("SELECT UPPER(NVL(TRIM(F.WWMLNM),'-') || (SELECT NVL(TRIM(F.ALADD1),' ') FROM " + esquema + ".F0116@" + dblink + " F WHERE F.ALAN8=" + SHAN_JDE + ")) NOMBRE_FISCAL FROM " + esquema + ".F0111@" + dblink + " F WHERE F.WWIDLN=0 AND F.WWAN8=" + SHAN_JDE, conn);
+            Long ID_CAT_019 = ctrl_base_datos.ObtenerLong("SELECT C.ID_CAT FROM CAT_019 C WHERE C.VALOR_JDE IN (SELECT TRIM(G.ABAC12) FROM " + esquema + ".F0101@" + dblink + " G WHERE G.ABAN8=" + SHAN_JDE + ")", conn);
             if (ID_CAT_019 == null) {
                 ID_CAT_019 = Long.parseLong("772");
             }
@@ -74,17 +82,17 @@ public class Ctrl_Receptor_CCF_V3 implements Serializable {
                 ID_CAT_012 = Long.parseLong("6");
                 ID_CAT_013 = Long.parseLong("111");
             }
-            String DIRECCION_COMPLEMENTO = ctrl_base_datos.ObtenerString("SELECT NVL(TRIM(F.ALADD1),' ') || ' ' || NVL(TRIM(F.ALADD2),' ') || ' ' || NVL(TRIM(F.ALADD3),' ') || ' ' || NVL(TRIM(F.ALADD4),' ') FROM " + esquema + ".F0116@" + dblink + " F WHERE F.ALAN8=" + SHAN_JDE, conn);
+            String DIRECCION_COMPLEMENTO = ctrl_base_datos.ObtenerString("SELECT NVL(TRIM(F.ALADD2),' ') || ' ' || NVL(TRIM(F.ALADD3),' ') FROM " + esquema + ".F0116@" + dblink + " F WHERE F.ALAN8=" + SHAN_JDE, conn);
             if (DIRECCION_COMPLEMENTO == null) {
-                DIRECCION_COMPLEMENTO = "AV. ALBERT EINSTEIN Y BLVD LOS PROCERES, URB. LOMAS DE SAN FRANCISCO, # 1, TORRE CUSCATLAN, NIVEL 15, ANTGO CUSCATLAN, LA LIBERTAD.";
+                DIRECCION_COMPLEMENTO = "Sin dirección registrada en el código del cliente";
             }
-            String TELEFONO = ctrl_base_datos.ObtenerString("SELECT NVL(REPLACE(TRIM(F.WPPH1),'-',''),'-') FROM " + esquema + ".F0115@" + dblink + " F WHERE F.WPIDLN=0 AND F.WPCNLN=0 AND F.WPAN8=" + SHAN_JDE, conn);
+            String TELEFONO = ctrl_base_datos.ObtenerString("SELECT NVL(TRIM(F.WPAR1) || TRIM(F.WPPH1),'-') PHONE FROM " + esquema + ".F0115@" + dblink + " F WHERE (F.WPAN8, F.WPIDLN) IN (SELECT F.WWAN8, F.WWIDLN FROM " + esquema + ".F0111@" + dblink + " F WHERE F.WWAN8=" + SHAN_JDE + " AND TRIM(F.WWALPH)='FELSV')", conn);
             if (TELEFONO == null) {
                 TELEFONO = "25288000";
             }
-            String CORREO = ctrl_base_datos.ObtenerString("SELECT NVL(TRIM(F.EAEMAL),'-') FROM " + esquema + ".F01151@" + dblink + " F WHERE F.EAIDLN=0 AND TRIM(F.EAETP) = 'E' AND F.EAAN8=" + SHAN_JDE, conn);
+            String CORREO = ctrl_base_datos.ObtenerString("SELECT NVL(TRIM(F.EAEMAL),'-') EMAIL FROM " + esquema + ".F01151@" + dblink + " F WHERE TRIM(F.EAETP)='E' AND (F.EAAN8, F.EAIDLN) IN (SELECT F.WWAN8, F.WWIDLN FROM " + esquema + ".F0111@" + dblink + " F WHERE F.WWAN8=" + SHAN_JDE + " AND TRIM(F.WWALPH)='FELSV')", conn);
             if (CORREO == null) {
-                CORREO = "replegal-unosv@uno-terra.com";
+                CORREO = "sinregistro@terra-uno.com";
             }
             
             String cadenasql = "INSERT INTO RECEPTOR_CCF_V3 ("

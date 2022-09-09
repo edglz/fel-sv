@@ -305,6 +305,81 @@ public class Ctrl_DTE_CCF_V3 implements Serializable {
             conn.commit();
             conn.setAutoCommit(true);
 
+            String cuerpo_html_correo = "<!DOCTYPE html>"
+                    + "<html>"
+                    + "<head>"
+                    + "<style>"
+                    + "table {"
+                    + "font-family: arial, sans-serif;"
+                    + "border-collapse: collapse;"
+                    + "width: 100%;"
+                    + "}"
+                    + "td,"
+                    + "th {"
+                    + "border: 1px solid #dddddd;"
+                    + "text-align: left;"
+                    + "padding: 8px;"
+                    + "}"
+                    + "tr:nth-child(even) {"
+                    + "background-color: #dddddd;"
+                    + "}"
+                    + "</style>"
+                    + "</head>"
+                    + "<body>"
+                    + "<h2>Documento DTE: " + respuesta_recepciondte_mh.getCodigoGeneracion() + "</h2>"
+                    + "<table>"
+                    + "<tr>"
+                    + "<th>Respuesta</th>"
+                    + "<th>Valor</th>"
+                    + "</tr>"
+                    + "<tr>"
+                    + "<td>Versión</td>"
+                    + "<td>" + respuesta_recepciondte_mh.getVersion() + "</td>"
+                    + "</tr>"
+                    + "<tr>"
+                    + "<td>Ambiente</td>"
+                    + "<td>" + respuesta_recepciondte_mh.getAmbiente() + "</td>"
+                    + "</tr>"
+                    + "<tr>"
+                    + "<td>Versión-APP</td>"
+                    + "<td>" + respuesta_recepciondte_mh.getVersionApp() + "</td>"
+                    + "</tr>"
+                    + "<tr>"
+                    + "<td>Estado</td>"
+                    + "<td>" + respuesta_recepciondte_mh.getEstado() + "</td>"
+                    + "</tr>"
+                    + "<tr>"
+                    + "<td>Código Generación</td>"
+                    + "<td>" + respuesta_recepciondte_mh.getCodigoGeneracion() + "</td>"
+                    + "</tr>"
+                    + "<tr>"
+                    + "<td>Sello Recibido</td>"
+                    + "<td>" + respuesta_recepciondte_mh.getSelloRecibido() + "</td>"
+                    + "</tr>"
+                    + "<tr>"
+                    + "<td>Fecha Procesamiento</td>"
+                    + "<td>" + respuesta_recepciondte_mh.getFhProcesamiento() + "</td>"
+                    + "</tr>"
+                    + "<tr>"
+                    + "<td>Código Mensaje</td>"
+                    + "<td>" + respuesta_recepciondte_mh.getCodigoMsg() + "</td>"
+                    + "</tr>"
+                    + "<tr>"
+                    + "<td>Descripción Mensaje</td>"
+                    + "<td>" + respuesta_recepciondte_mh.getDescripcionMsg() + "</td>"
+                    + "</tr>"
+                    + "<tr>"
+                    + "<td>Observaciones</td>"
+                    + "<td>" + respuesta_recepciondte_mh.getObservaciones().toString() + "</td>"
+                    + "</tr>"
+                    + "<tr>"
+                    + "<td>Clasificación Mensaje</td>"
+                    + "<td>" + respuesta_recepciondte_mh.getClasificaMsg() + "</td>"
+                    + "</tr>"
+                    + "</table>"
+                    + "</body>"
+                    + "</html>";
+
             if (respuesta_recepciondte_mh.getCodigoMsg().trim().equals("001") || respuesta_recepciondte_mh.getCodigoMsg().trim().equals("002")) {
                 Cliente_Rest_Jasper cliente_rest_jasper = new Cliente_Rest_Jasper();
                 InputStream inputstream = cliente_rest_jasper.reporte_pdf(id_dte.toString());
@@ -312,7 +387,7 @@ public class Ctrl_DTE_CCF_V3 implements Serializable {
                 FileUtils.copyInputStreamToFile(inputstream, TargetFile);
 
                 Adjunto adjunto = new Adjunto();
-                adjunto.setName("felsv_" + id_dte + ".pdf");
+                adjunto.setName(respuesta_recepciondte_mh.getCodigoGeneracion() + ".pdf");
                 adjunto.setType("application/pdf");
                 InputStream inputstream_mail = new FileInputStream(TargetFile);
                 byte[] bytes = IOUtils.toByteArray(inputstream_mail);
@@ -325,12 +400,23 @@ public class Ctrl_DTE_CCF_V3 implements Serializable {
                 Mensaje_Correo mensaje_correo = new Mensaje_Correo();
                 mensaje_correo.setRecipients("enavas@servicioscompartidos.com, lrios@servicioscompartidos.com");
                 mensaje_correo.setCc("dpineda@servicioscompartidos.com");
-                mensaje_correo.setSubject("FEL-SV emisión DTE");
-                mensaje_correo.setBody("DTE adjunto en formato PDF.");
-                mensaje_correo.setBodyHtml(null);
+                mensaje_correo.setSubject("Emisión DTE.");
+                mensaje_correo.setBody(null);
+                mensaje_correo.setBodyHtml(cuerpo_html_correo);
                 mensaje_correo.setFiles(files);
-
-                // System.out.println("Mensaje Correo: " + new Gson().toJson(mensaje_correo));
+                
+                Cliente_Rest_SendMail cliente_rest_sendmail = new Cliente_Rest_SendMail();
+                String resul_envio_correo = cliente_rest_sendmail.sendmail(new Gson().toJson(mensaje_correo));
+                System.out.println("Notificación Correo: " + resul_envio_correo);
+            } else {
+                Mensaje_Correo mensaje_correo = new Mensaje_Correo();
+                mensaje_correo.setRecipients("enavas@servicioscompartidos.com, lrios@servicioscompartidos.com");
+                mensaje_correo.setCc("dpineda@servicioscompartidos.com");
+                mensaje_correo.setSubject("Error Emisión DTE.");
+                mensaje_correo.setBody(null);
+                mensaje_correo.setBodyHtml(cuerpo_html_correo);
+                mensaje_correo.setFiles(null);
+                
                 Cliente_Rest_SendMail cliente_rest_sendmail = new Cliente_Rest_SendMail();
                 String resul_envio_correo = cliente_rest_sendmail.sendmail(new Gson().toJson(mensaje_correo));
                 System.out.println("Notificación Correo: " + resul_envio_correo);

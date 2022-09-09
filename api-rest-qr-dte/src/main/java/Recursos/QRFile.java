@@ -33,24 +33,31 @@ public class QRFile implements Serializable {
             @PathParam("ambiente") String ambiente,
             @PathParam("numvalidacion") String numvalidacion,
             @PathParam("codigogeneracion") String codigogeneracion) {
-        
+
         Connection conn = null;
-        
+
         try {
             Ctrl_Base_Datos ctrl_base_datos = new Ctrl_Base_Datos();
             conn = ctrl_base_datos.obtener_conexion(ambiente);
-            
+
             conn.setAutoCommit(false);
-            
+
             Long id_dte = ctrl_base_datos.ObtenerLong("SELECT F.ID_DTE FROM DTE_CCF_V3 F WHERE F.RESPONSE_NUMVALIDACION='" + numvalidacion + "' AND F.RESPONSE_CODIGOGENERACION='" + codigogeneracion + "'", conn);
-            
-            Cliente_Rest_Jasper cliente_rest_jasper = new Cliente_Rest_Jasper();
-            InputStream inputstream = cliente_rest_jasper.reporte_pdf(id_dte.toString());
-            ResponseBuilder responseBuilder = Response.ok(inputstream);
-            responseBuilder.header("Content-Disposition", "filename=dte" + id_dte + ".pdf");
-            return responseBuilder.build();
+
+            System.out.println("ID-DTE: " + id_dte);
+            if (id_dte.equals(Long.parseLong("-1"))) {
+                ResponseBuilder responseBuilder = Response.status(Response.Status.NO_CONTENT);
+                return responseBuilder.build();
+            } else {
+                Cliente_Rest_Jasper cliente_rest_jasper = new Cliente_Rest_Jasper();
+                InputStream inputstream = cliente_rest_jasper.reporte_pdf(id_dte.toString());
+                ResponseBuilder responseBuilder = Response.ok(inputstream);
+                responseBuilder.header("Content-Disposition", "filename=" + codigogeneracion + ".pdf");
+                return responseBuilder.build();
+            }
         } catch (Exception ex) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+            ResponseBuilder responseBuilder = Response.status(Response.Status.INTERNAL_SERVER_ERROR);
+            return responseBuilder.build();
         } finally {
             try {
                 if (conn != null) {
@@ -61,5 +68,5 @@ public class QRFile implements Serializable {
             }
         }
     }
-    
+
 }

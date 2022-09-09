@@ -80,7 +80,7 @@ public class Ctrl_Base_Datos implements Serializable {
     }
 
     public Long ObtenerLong(String cadenasql, Connection conn) {
-        Long resultado = null;
+        Long resultado = Long.parseLong("-1");
 
         try {
             Statement stmt = conn.createStatement();
@@ -91,7 +91,7 @@ public class Ctrl_Base_Datos implements Serializable {
             rs.close();
             stmt.close();
         } catch (Exception ex) {
-            resultado = new Long(-1);
+            resultado = Long.parseLong("-1");
             System.out.println("PROYECTO:api-grupoterra-svfel-v3|CLASE:" + this.getClass().getName() + "|METODO:ObtenerLong()|ERROR:" + ex.toString());
         }
 
