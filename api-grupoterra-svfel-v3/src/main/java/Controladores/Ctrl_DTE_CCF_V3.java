@@ -147,7 +147,7 @@ public class Ctrl_DTE_CCF_V3 implements Serializable {
                 String result_resumen = ctrl_resumen_ccf_v3.extraer_resumen_jde_ccf_v3(ID_DTE, ambiente, conn);
 
                 Ctrl_Extension_CCF_V3 ctrl_extension_ccf_v3 = new Ctrl_Extension_CCF_V3();
-                String result_extension = ctrl_extension_ccf_v3.extraer_extension_jde_ccf_v3(ID_DTE, ambiente, conn);
+                String result_extension = ctrl_extension_ccf_v3.extraer_extension_jde_ccf_v3(ID_DTE, ambiente, AN8_JDE.trim(), conn);
 
                 Ctrl_Apendice_CCF_V3 ctrl_apendice_ccf_v3 = new Ctrl_Apendice_CCF_V3();
                 String result_apendice = ctrl_apendice_ccf_v3.extraer_apendice_jde_ccf_v3(ID_DTE, ambiente, DOCO_JDE.trim(), DCTO_JDE.trim(), MCU_JDE.trim(), conn);
@@ -402,6 +402,7 @@ public class Ctrl_DTE_CCF_V3 implements Serializable {
                 mensaje_correo.setCc("dpineda@servicioscompartidos.com");
                 mensaje_correo.setSubject("Emisión DTE.");
                 mensaje_correo.setBody(null);
+                mensaje_correo.setFrom("replegal-unosv@uno-terra.com");
                 mensaje_correo.setBodyHtml(cuerpo_html_correo);
                 mensaje_correo.setFiles(files);
                 
@@ -410,10 +411,11 @@ public class Ctrl_DTE_CCF_V3 implements Serializable {
                 System.out.println("Notificación Correo: " + resul_envio_correo);
             } else {
                 Mensaje_Correo mensaje_correo = new Mensaje_Correo();
-                mensaje_correo.setRecipients("enavas@servicioscompartidos.com, lrios@servicioscompartidos.com");
-                mensaje_correo.setCc("dpineda@servicioscompartidos.com");
+                mensaje_correo.setRecipients("enavas@servicioscompartidos.com, lrios@servicioscompartidos.com, dpineda@servicioscompartidos.com");
+                mensaje_correo.setCc("jsoberanis@servicioscompartidos.com");
                 mensaje_correo.setSubject("Error Emisión DTE.");
                 mensaje_correo.setBody(null);
+                mensaje_correo.setFrom("replegal-unosv@uno-terra.com");
                 mensaje_correo.setBodyHtml(cuerpo_html_correo);
                 mensaje_correo.setFiles(null);
                 

@@ -11,14 +11,16 @@ public class Mensaje_Correo implements Serializable {
     private String cc;
     private String subject;
     private String body;
+    private String from;
     private String bodyHtml;
     private List<Adjunto> files;
 
-    public Mensaje_Correo(String recipients, String cc, String subject, String body, String bodyHtml, List<Adjunto> files) {
+    public Mensaje_Correo(String recipients, String cc, String subject, String body, String from, String bodyHtml, List<Adjunto> files) {
         this.recipients = recipients;
         this.cc = cc;
         this.subject = subject;
         this.body = body;
+        this.from = from;
         this.bodyHtml = bodyHtml;
         this.files = files;
     }
@@ -58,6 +60,14 @@ public class Mensaje_Correo implements Serializable {
         this.body = body;
     }
 
+    public String getFrom() {
+        return from;
+    }
+
+    public void setFrom(String from) {
+        this.from = from;
+    }
+
     public String getBodyHtml() {
         return bodyHtml;
     }
@@ -76,7 +86,7 @@ public class Mensaje_Correo implements Serializable {
 
     @Override
     public String toString() {
-        return "Mensaje_Correo{" + "recipients=" + recipients + ", cc=" + cc + ", subject=" + subject + ", body=" + body + ", bodyHtml=" + bodyHtml + ", files=" + files + '}';
+        return "Mensaje_Correo{" + "recipients=" + recipients + ", cc=" + cc + ", subject=" + subject + ", body=" + body + ", from=" + from + ", bodyHtml=" + bodyHtml + ", files=" + files + '}';
     }
-
+    
 }

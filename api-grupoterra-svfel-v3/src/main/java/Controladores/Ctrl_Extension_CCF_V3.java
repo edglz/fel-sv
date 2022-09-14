@@ -31,7 +31,7 @@ public class Ctrl_Extension_CCF_V3 implements Serializable {
         return resultado;
     }
     
-    public String extraer_extension_jde_ccf_v3(Long id_dte, String ambiente, Connection conn) {
+    public String extraer_extension_jde_ccf_v3(Long id_dte, String ambiente, String AN8_JDE, Connection conn) {
         String resultado = "";
 
         try {
@@ -51,8 +51,16 @@ public class Ctrl_Extension_CCF_V3 implements Serializable {
             Long ID_EXTENSION = Long.parseLong("1");
             String NOMBENTREGA = "UNO EL SALVADOR";
             String DOCUENTREGA = "06140404600015";
-            String NOMBRECIBE = "UNO EL SALVADOR";
-            String DOCURECIBE = "06140404600015";
+            
+            String NOMBRECIBE = ctrl_base_datos.ObtenerString("SELECT TRIM(F.WWMLNM) NOMBRECIBE FROM " + esquema + ".F0111@" + dblink + " F WHERE F.WWAN8=" + AN8_JDE + " AND TRIM(F.WWALPH)='FELSV'", conn);
+            if (NOMBRECIBE == null) {
+                NOMBRECIBE = "Sin registro";
+            }
+            String DOCURECIBE = ctrl_base_datos.ObtenerString("SELECT TRIM(F.WWNICK) DOCURECIBE FROM " + esquema + ".F0111@" + dblink + " F WHERE F.WWAN8=" + AN8_JDE + " AND TRIM(F.WWALPH)='FELSV'", conn);
+            if (DOCURECIBE == null) {
+                DOCURECIBE = "Sin registro";
+            }
+            
             String OBSERVACIONES = "Fase de pruebas.";
             String PLACAVEHICULO = null;
             

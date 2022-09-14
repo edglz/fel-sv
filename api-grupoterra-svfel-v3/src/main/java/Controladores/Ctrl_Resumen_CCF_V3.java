@@ -130,9 +130,7 @@ public class Ctrl_Resumen_CCF_V3 implements Serializable {
             }
             System.out.println("********** PARTE ENTERA: " + NUMERO_PARTES[0]);
             System.out.println("********** PARTE DECIMAL: " + NUMERO_PARTES[1]);
-            // String TOTALPAGAR_DECIMALES = TOTALPAGAR_DOUBLE.toString().substring(TOTALPAGAR_DOUBLE.toString().indexOf('.'));
-            String TOTALLETRAS = driver.cantidadConLetra(TOTALPAGAR_LONG.toString()).toUpperCase() + " con " + NUMERO_PARTES[1] + "/100";
-            // TERMINA CONVERTIR TOTALPAGAR A LETRAS.
+            String TOTALLETRAS = driver.cantidadConLetra(TOTALPAGAR_LONG.toString()).toUpperCase() + " CON " + NUMERO_PARTES[1] + "/100";
             Number SALDOFAVOR = 0.00;
             Long ID_CAT_016 = Long.parseLong("2");
             Long ID_CAT_017 = null;
