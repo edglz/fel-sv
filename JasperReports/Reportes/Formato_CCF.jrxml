@@ -28,7 +28,7 @@ EMI_E.DIRECCION_COMPLEMENTO Emisor_Direccion,
 EMI_E.TELEFONO Emisor_Telefono,
 EMI_E.CORREO Emisor_Correo,
 C09.VALOR Emisor_Tipo_Establecimiento,
-REP.NOMBRECOMERCIAL Receptor_Razon_Social,
+REP.NOMBRE Receptor_Razon_Social,
 REP.NIT Receptor_Nit,
 REP.NRC Receptor_Nrc,
 C19R.VALOR Receptor_Actividad_Economica,
@@ -67,7 +67,8 @@ CASE WHEN RES.TOTALPAGAR > 11428.57 THEN EXT.NOMBENTREGA ELSE '-' END Nombre_Emi
 CASE WHEN RES.TOTALPAGAR > 11428.57 THEN EXT.DOCUENTREGA ELSE '-' END Documento_Emisor_Responsable,
 CASE WHEN RES.TOTALPAGAR > 11428.57 THEN EXT.NOMBRECIBE ELSE '-' END Nombre_Receptor_Responsable,
 CASE WHEN RES.TOTALPAGAR > 11428.57 THEN EXT.DOCURECIBE ELSE '-' END Documento_Receptor_Responsable,
-EXT.OBSERVACIONES Observaciones,
+DTE.SHAN_JDE Enviar_A_Codigo,
+SHI.NOMBRECOMERCIAL Enviar_A_Nombre,
 APE.VALOR Sellos,
 RES.TOTALLETRAS Valor_Letras,
 RES.MONTOTOTALOPERACION Monto_Total_Operacion,
@@ -91,6 +92,7 @@ LEFT JOIN RESUMEN_CCF_V3 RES ON (IDE.ID_DTE=RES.ID_DTE)
 LEFT JOIN CAT_016 C16 ON (RES.ID_CAT_016=C16.ID_CAT)
 LEFT JOIN EXTENSION_CCF_V3 EXT ON (IDE.ID_DTE=EXT.ID_DTE)
 LEFT JOIN APENDICE_CCF_V3 APE ON (IDE.ID_DTE=APE.ID_DTE)
+LEFT JOIN SHIPTO_CCF_V3 SHI ON (IDE.ID_DTE=SHI.ID_DTE)
 WHERE 
 IDE.ID_DTE = $P{id_dte} 
 ORDER BY 
@@ -312,9 +314,13 @@ CUE.ID_CUERPO_DOCUMENTO]]>
 		<property name="com.jaspersoft.studio.field.name" value="DOCUMENTO_RECEPTOR_RESPONSABLE"/>
 		<property name="com.jaspersoft.studio.field.label" value="DOCUMENTO_RECEPTOR_RESPONSABLE"/>
 	</field>
-	<field name="OBSERVACIONES" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.name" value="OBSERVACIONES"/>
-		<property name="com.jaspersoft.studio.field.label" value="OBSERVACIONES"/>
+	<field name="ENVIAR_A_CODIGO" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="ENVIAR_A_CODIGO"/>
+		<property name="com.jaspersoft.studio.field.label" value="ENVIAR_A_CODIGO"/>
+	</field>
+	<field name="ENVIAR_A_NOMBRE" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="ENVIAR_A_NOMBRE"/>
+		<property name="com.jaspersoft.studio.field.label" value="ENVIAR_A_NOMBRE"/>
 	</field>
 	<field name="SELLOS" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.name" value="SELLOS"/>
@@ -388,7 +394,7 @@ CUE.ID_CUERPO_DOCUMENTO]]>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="Arial" size="8" isBold="false"/>
 				</textElement>
-				<text><![CDATA[Torre Cuscatlán, Nivel 15, Antiguo Custatlán, La Libertad PBX: (503) 2528-8000.]]></text>
+				<text><![CDATA[Torre Cuscatlán, Nivel 15, Antiguo Cuscatlán, La Libertad PBX: (503) 2528-8000.]]></text>
 			</staticText>
 			<staticText>
 				<reportElement mode="Opaque" x="157" y="55" width="345" height="12" backcolor="#F7F7F7" uuid="7460a815-c3f9-43eb-83d4-f1eca5f7d7ef">
@@ -1960,39 +1966,23 @@ CUE.ID_CUERPO_DOCUMENTO]]>
 				<textFieldExpression><![CDATA[$F{DOCUMENTO_RECEPTOR_RESPONSABLE}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="90" width="292" height="10" uuid="57b67ed2-e794-478b-b6a2-320509a60b70">
+				<reportElement x="0" y="90" width="120" height="10" uuid="57b67ed2-e794-478b-b6a2-320509a60b70">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="12bef44e-5013-4d7f-8b4d-bfbec0a70952"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
-				<box leftPadding="2" rightPadding="0">
+				<box leftPadding="0" rightPadding="2">
 					<pen lineWidth="0.5" lineStyle="Solid"/>
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Arial" size="8" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Observaciones:]]></text>
+				<text><![CDATA[Código Enviar a:]]></text>
 			</staticText>
-			<textField textAdjust="StretchHeight">
-				<reportElement stretchType="RelativeToTallestObject" x="0" y="100" width="292" height="40" uuid="0fa42dde-ddb4-4eb9-8153-f2b48969f237">
-					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="12bef44e-5013-4d7f-8b4d-bfbec0a70952"/>
-				</reportElement>
-				<box leftPadding="2">
-					<pen lineWidth="0.5" lineStyle="Solid"/>
-					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Justified" verticalAlignment="Top">
-					<font fontName="Arial" size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{OBSERVACIONES}]]></textFieldExpression>
-			</textField>
 			<staticText>
 				<reportElement x="0" y="150" width="70" height="20" uuid="b4653c60-a892-46e8-870b-46211f89429e">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="12bef44e-5013-4d7f-8b4d-bfbec0a70952"/>
@@ -2130,6 +2120,56 @@ CUE.ID_CUERPO_DOCUMENTO]]>
 					<font fontName="Arial" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{CODIGO_CLIENTE_JDE}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="100" width="292" height="10" uuid="34c3baec-3482-43eb-8dab-b6dcd447c7aa">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="12bef44e-5013-4d7f-8b4d-bfbec0a70952"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box leftPadding="0" rightPadding="0">
+					<pen lineWidth="0.5" lineStyle="Solid"/>
+					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nombre Enviar a:]]></text>
+			</staticText>
+			<textField textAdjust="StretchHeight">
+				<reportElement stretchType="RelativeToTallestObject" x="120" y="90" width="172" height="10" uuid="8cf7e6f2-d8ee-41c7-aa4a-4c87602dacb6">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="12bef44e-5013-4d7f-8b4d-bfbec0a70952"/>
+				</reportElement>
+				<box leftPadding="2">
+					<pen lineWidth="0.5" lineStyle="Solid"/>
+					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ENVIAR_A_CODIGO}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight">
+				<reportElement stretchType="RelativeToTallestObject" x="0" y="110" width="292" height="30" uuid="3970307d-7e5c-4030-8e0a-7a1e42142986">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="12bef44e-5013-4d7f-8b4d-bfbec0a70952"/>
+				</reportElement>
+				<box leftPadding="2" rightPadding="2">
+					<pen lineWidth="0.5" lineStyle="Solid"/>
+					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ENVIAR_A_NOMBRE}]]></textFieldExpression>
 			</textField>
 		</band>
 	</summary>

@@ -138,7 +138,7 @@ public class Ctrl_DTE_CCF_V3 implements Serializable {
                 String result_edentificacion = ctrl_identificacion_ccf_v3.extraer_identificacion_jde_ccf_v3(ID_DTE, ambiente, DCTO_JDE.trim(), MCU_JDE.trim(), CRCD_JDE.trim(), IVD_JDE.trim(), conn);
 
                 Ctrl_Receptor_CCF_V3 ctrl_receptor_ccf_v3 = new Ctrl_Receptor_CCF_V3();
-                String result_recepor = ctrl_receptor_ccf_v3.extraer_receptor_jde_ccf_v3(ID_DTE, ambiente, AN8_JDE.trim(), conn);
+                String result_recepor = ctrl_receptor_ccf_v3.extraer_receptor_jde_ccf_v3(ID_DTE, ambiente, AN8_JDE.trim(), SHAN_JDE.trim(), conn);
 
                 Ctrl_CuerpoDocumento_CCF_V3 ctrl_cuerpo_documento_ccf_v3 = new Ctrl_CuerpoDocumento_CCF_V3();
                 String result_cuerpo_documento = ctrl_cuerpo_documento_ccf_v3.extraer_cuerpo_documento_jde_ccf_v3(ID_DTE, ambiente, KCOO_JDE.trim(), DOCO_JDE.trim(), DCTO_JDE.trim(), JEVER_JDE.trim(), conn);
@@ -398,8 +398,10 @@ public class Ctrl_DTE_CCF_V3 implements Serializable {
                 files.add(adjunto);
 
                 Mensaje_Correo mensaje_correo = new Mensaje_Correo();
-                mensaje_correo.setRecipients("enavas@servicioscompartidos.com, lrios@servicioscompartidos.com");
-                mensaje_correo.setCc("dpineda@servicioscompartidos.com");
+                String send_to = ctrl_base_datos.ObtenerString("SELECT LISTAGG(TO_CHAR(TRIM(F.CUENTA_CORREO)),', ') WITHIN GROUP (ORDER BY TO_CHAR(TRIM(F.CUENTA_CORREO))) CUENTAS_CORREO FROM NOTIFIACION_CORREO_V3 F WHERE F.ACTIVO=1", conn);
+                mensaje_correo.setRecipients(send_to);
+                String send_to_cc = ctrl_base_datos.ObtenerString("SELECT LISTAGG(TO_CHAR(TRIM(F.CUENTA_CORREO)),', ') WITHIN GROUP (ORDER BY TO_CHAR(TRIM(F.CUENTA_CORREO))) CUENTAS_CORREO FROM NOTIFIACION_CORREO_V3 F WHERE F.ACTIVO=2", conn);
+                mensaje_correo.setCc(send_to_cc);
                 mensaje_correo.setSubject("Emisión DTE.");
                 mensaje_correo.setBody(null);
                 mensaje_correo.setFrom("replegal-unosv@uno-terra.com");
@@ -411,8 +413,10 @@ public class Ctrl_DTE_CCF_V3 implements Serializable {
                 System.out.println("Notificación Correo: " + resul_envio_correo);
             } else {
                 Mensaje_Correo mensaje_correo = new Mensaje_Correo();
-                mensaje_correo.setRecipients("enavas@servicioscompartidos.com, lrios@servicioscompartidos.com, dpineda@servicioscompartidos.com");
-                mensaje_correo.setCc("jsoberanis@servicioscompartidos.com");
+                String send_to = ctrl_base_datos.ObtenerString("SELECT LISTAGG(TO_CHAR(TRIM(F.CUENTA_CORREO)),', ') WITHIN GROUP (ORDER BY TO_CHAR(TRIM(F.CUENTA_CORREO))) CUENTAS_CORREO FROM NOTIFIACION_CORREO_V3 F WHERE F.ACTIVO=1", conn);
+                mensaje_correo.setRecipients(send_to);
+                String send_to_cc = ctrl_base_datos.ObtenerString("SELECT LISTAGG(TO_CHAR(TRIM(F.CUENTA_CORREO)),', ') WITHIN GROUP (ORDER BY TO_CHAR(TRIM(F.CUENTA_CORREO))) CUENTAS_CORREO FROM NOTIFIACION_CORREO_V3 F WHERE F.ACTIVO=2", conn);
+                mensaje_correo.setCc(send_to_cc);
                 mensaje_correo.setSubject("Error Emisión DTE.");
                 mensaje_correo.setBody(null);
                 mensaje_correo.setFrom("replegal-unosv@uno-terra.com");
