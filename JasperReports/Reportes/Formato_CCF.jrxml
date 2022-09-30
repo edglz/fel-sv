@@ -7,6 +7,8 @@
 	<property name="ireport.jasperserver.user" value="jasperadmin"/>
 	<property name="ireport.jasperserver.report.resource" value="/FELSV/DTEs/Formato_CCF_files/main_jrxml"/>
 	<property name="ireport.jasperserver.reportUnit" value="/FELSV/DTEs/Formato_CCF"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="195"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="799"/>
 	<parameter name="id_dte" class="java.lang.Long">
 		<parameterDescription><![CDATA[Parametro id_dte.]]></parameterDescription>
 		<defaultValueExpression><![CDATA[Long.parseLong("0")]]></defaultValueExpression>
@@ -68,12 +70,12 @@ CASE WHEN RES.TOTALPAGAR > 11428.57 THEN EXT.DOCUENTREGA ELSE '-' END Documento_
 CASE WHEN RES.TOTALPAGAR > 11428.57 THEN EXT.NOMBRECIBE ELSE '-' END Nombre_Receptor_Responsable,
 CASE WHEN RES.TOTALPAGAR > 11428.57 THEN EXT.DOCURECIBE ELSE '-' END Documento_Receptor_Responsable,
 DTE.SHAN_JDE Enviar_A_Codigo,
-SHI.NOMBRECOMERCIAL Enviar_A_Nombre,
+SHI.NOMBRECOMERCIAL || ' ' || SHI.DIRECCION_COMPLEMENTO Enviar_A_Nombre,
 APE.VALOR Sellos,
 RES.TOTALLETRAS Valor_Letras,
 RES.MONTOTOTALOPERACION Monto_Total_Operacion,
 DTE.AN8_JDE Codigo_Cliente_JDE,
-'https://gtitapp.endtoend.com.mx/api-rest-qr-dte/felsv/qr-file/PY/' || DTE.RESPONSE_NUMVALIDACION || '/' || DTE.RESPONSE_CODIGOGENERACION QR
+'https://webapp.dtes.mh.gob.sv/consultaPublica?ambiente=' || C01.CODIGO || '&codGen=' || IDE.CODIGOGENERACION || '&fechaEmi=' || TO_CHAR(IDE.FECHA_HORA_EMISION, 'YYYY-MM-DD') QR
 FROM
 DTE_CCF_V3 DTE
 LEFT JOIN IDENTIFICACION_CCF_V3 IDE ON (DTE.ID_DTE=IDE.ID_DTE)
@@ -93,6 +95,7 @@ LEFT JOIN CAT_016 C16 ON (RES.ID_CAT_016=C16.ID_CAT)
 LEFT JOIN EXTENSION_CCF_V3 EXT ON (IDE.ID_DTE=EXT.ID_DTE)
 LEFT JOIN APENDICE_CCF_V3 APE ON (IDE.ID_DTE=APE.ID_DTE)
 LEFT JOIN SHIPTO_CCF_V3 SHI ON (IDE.ID_DTE=SHI.ID_DTE)
+LEFT JOIN CAT_001 C01 ON (IDE.ID_CAT_001=C01.ID_CAT)
 WHERE 
 IDE.ID_DTE = $P{id_dte} 
 ORDER BY 

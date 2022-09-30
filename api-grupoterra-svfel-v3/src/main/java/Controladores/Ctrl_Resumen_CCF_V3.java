@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -111,19 +112,24 @@ public class Ctrl_Resumen_CCF_V3 implements Serializable {
             Number PORCENTAJEDESCUENTO = 0.00;
             Number TOTALDESCU = ctrl_base_datos.ObtenerDouble("SELECT SUM(F.MONTODESCU) FROM CUERPO_DOCU_CCF_V3 F WHERE F.ID_DTE=" + ID_DTE, conn);
             Number SUBTOTAL = SUBTOTALVENTAS.doubleValue();
-            Number IVAPERCI1 = 0.00;
+            Number IVAPERCI1 = ctrl_base_datos.ObtenerDouble("SELECT NVL(SUM(F.VALOR),0) VALOR FROM CUERPO_TRIBUTO_CCF_V3 F WHERE F.ID_CAT_015=8 AND F.ID_DTE=" + ID_DTE, conn);
             Number IVARETE1 = 0.00;
             Number RETERENTA = 0.00;
-            Number MONTOTOTALOPERACION = SUBTOTAL.doubleValue() + ctrl_base_datos.ObtenerDouble("SELECT SUM(F.VALOR) FROM CUERPO_TRIBUTO_CCF_V3 F WHERE F.ID_DTE=" + ID_DTE, conn);
+            Number MONTOTOTALOPERACION = SUBTOTAL.doubleValue() + ctrl_base_datos.ObtenerDouble("SELECT ROUND(SUM(F.VALOR),2) FROM CUERPO_TRIBUTO_CCF_V3 F WHERE F.ID_CAT_015 NOT IN (8) AND F.ID_DTE=" + ID_DTE, conn);
             Number TOTALNOGRAVADO = ctrl_base_datos.ObtenerDouble("SELECT SUM(F.NOGRAVADO) FROM CUERPO_DOCU_CCF_V3 F WHERE F.ID_DTE=" + ID_DTE, conn);
-            Number TOTALPAGAR = MONTOTOTALOPERACION.doubleValue();
-            // INICIA CONVERTIR TOTALPAGAR A LETRAS.
+            Number TOTALPAGAR = MONTOTOTALOPERACION.doubleValue() + IVAPERCI1.doubleValue() + IVARETE1.doubleValue() + RETERENTA.doubleValue();
             Long TOTALPAGAR_LONG = TOTALPAGAR.longValue();
             Double TOTALPAGAR_DOUBLE = TOTALPAGAR.doubleValue();
             String[] NUMERO_PARTES = TOTALPAGAR_DOUBLE.toString().split("\\.");
             if (NUMERO_PARTES[1] != null) {
                 if (NUMERO_PARTES[1].length() > 2) {
-                    NUMERO_PARTES[1] = NUMERO_PARTES[1].substring(0, 2);
+                    DecimalFormat decimalFormat = new DecimalFormat("#.00");
+                    NUMERO_PARTES[1] = decimalFormat.format(TOTALPAGAR_DOUBLE - TOTALPAGAR_LONG);
+                    NUMERO_PARTES[1] = NUMERO_PARTES[1].substring(1, NUMERO_PARTES[1].length());
+                } else {
+                    if (NUMERO_PARTES[1].length() == 1) {
+                        NUMERO_PARTES[1] = NUMERO_PARTES[1] + "0";
+                    }
                 }
             } else {
                 NUMERO_PARTES[1] = "00";

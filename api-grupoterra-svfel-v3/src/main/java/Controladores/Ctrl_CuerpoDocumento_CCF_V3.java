@@ -73,7 +73,7 @@ public class Ctrl_CuerpoDocumento_CCF_V3 implements Serializable {
     }
 
     public String extraer_cuerpo_documento_jde_ccf_v3(Long id_dte, String ambiente, String KCOO_JDE, String DOCO_JDE, String DCTO_JDE, String tabla_sales_orders, Connection conn) {
-        String resultado = "";
+        String resultado;
 
         try {
             Ctrl_Base_Datos ctrl_base_datos = new Ctrl_Base_Datos();
@@ -148,9 +148,9 @@ public class Ctrl_CuerpoDocumento_CCF_V3 implements Serializable {
 
                 Number VENTANOSUJ = 0.00;
                 Number VENTAEXENTA = 0.00;
-                Number VENTAGRAVADA = 0.00;
+                Number VENTAGRAVADA;
                 Number PSV = 0.00;
-                Number NOGRAVADO = 0.00;
+                Number NOGRAVADO;
                 if (rs.getString(8).equals("Y")) {
                     MONTODESCU = MONTODESCU.doubleValue() * -1.00;
                     VENTAGRAVADA = (CANTIDAD * PRECIOUNI.doubleValue()) - MONTODESCU.doubleValue();
@@ -221,6 +221,28 @@ public class Ctrl_CuerpoDocumento_CCF_V3 implements Serializable {
                     System.out.println(cadenasql);
                     stmt1.executeUpdate(cadenasql);
                     stmt1.close();
+                    
+                    if (rs.getString(9).trim().equals("EIVAC")) {
+                        NUM_TRIBUTO++;
+                        Long ID_CAT_015_TRIBUTO_EIVAC = Long.parseLong("8");
+                        Number TRIBUTO_VALOR_EIVAC = ctrl_base_datos.ObtenerDouble("SELECT F.TATXR2/100000 FROM " + esquema + ".F4008@" + dblink + " F WHERE TRIM(F.TATXA1)='" + rs.getString(9) + "' AND F.TAITM=0", conn);
+                        TRIBUTO_VALOR = VENTAGRAVADA.doubleValue() * TRIBUTO_VALOR_EIVAC.doubleValue();
+                        cadenasql = "INSERT INTO CUERPO_TRIBUTO_CCF_V3 ( "
+                                + "ID_DTE, "
+                                + "ID_CUERPO_DOCUMENTO, "
+                                + "NUM_TRIBUTO, "
+                                + "ID_CAT_015, "
+                                + "VALOR) VALUES ("
+                                + ID_DTE + ","
+                                + ID_CUERPO_DOCUMENTO + ","
+                                + NUM_TRIBUTO + ","
+                                + ID_CAT_015_TRIBUTO_EIVAC + ","
+                                + TRIBUTO_VALOR + ")";
+                        stmt1 = conn.createStatement();
+                        System.out.println(cadenasql);
+                        stmt1.executeUpdate(cadenasql);
+                        stmt1.close();
+                    }
                 }
 
                 // EXTRAE EL FOVIAL Y CONTRAN SI APLICA EN LA LINEA DEL PRODUCTO.
@@ -333,6 +355,28 @@ public class Ctrl_CuerpoDocumento_CCF_V3 implements Serializable {
                         System.out.println(cadenasql);
                         stmt1.executeUpdate(cadenasql);
                         stmt1.close();
+
+                        if (rs.getString(9).trim().equals("EIVAC")) {
+                            NUM_TRIBUTO++;
+                            Long ID_CAT_015_TRIBUTO_EIVAC = Long.parseLong("8");
+                            Number TRIBUTO_VALOR_EIVAC = ctrl_base_datos.ObtenerDouble("SELECT F.TATXR2/100000 FROM " + esquema + ".F4008@" + dblink + " F WHERE TRIM(F.TATXA1)='" + rs.getString(9) + "' AND F.TAITM=0", conn);
+                            TRIBUTO_VALOR = VENTAGRAVADA.doubleValue() * TRIBUTO_VALOR_EIVAC.doubleValue();
+                            cadenasql = "INSERT INTO CUERPO_TRIBUTO_CCF_V3 ( "
+                                    + "ID_DTE, "
+                                    + "ID_CUERPO_DOCUMENTO, "
+                                    + "NUM_TRIBUTO, "
+                                    + "ID_CAT_015, "
+                                    + "VALOR) VALUES ("
+                                    + ID_DTE + ","
+                                    + ID_CUERPO_DOCUMENTO + ","
+                                    + NUM_TRIBUTO + ","
+                                    + ID_CAT_015_TRIBUTO_EIVAC + ","
+                                    + TRIBUTO_VALOR + ")";
+                            stmt1 = conn.createStatement();
+                            System.out.println(cadenasql);
+                            stmt1.executeUpdate(cadenasql);
+                            stmt1.close();
+                        }
                     }
                 }
 
@@ -341,6 +385,8 @@ public class Ctrl_CuerpoDocumento_CCF_V3 implements Serializable {
                     contador++;
                     ID_CUERPO_DOCUMENTO = Long.parseLong(contador.toString());
                     ID_CAT_011 = Long.parseLong("4");
+                    
+                    Long ID_CAT_015_IEC = ctrl_base_datos.ObtenerLong("SELECT C.ID_CAT FROM CAT_015 C WHERE C.VALOR_JDE LIKE '%[" + rs.getString(9) + "]%'", conn);
 
                     Number PRECIOUNIIEC_TEMP = PRECIOUNIIEC.doubleValue() / CANTIDAD;
                     if (rs.getString(8).equals("Y")) {
@@ -374,7 +420,7 @@ public class Ctrl_CuerpoDocumento_CCF_V3 implements Serializable {
                             + NUMERODOCUMENTO + ","
                             + CANTIDAD + ",'"
                             + "IEC" + "',"
-                            + ID_CAT_015 + ","
+                            + ID_CAT_015_IEC + ","
                             + ID_CAT_014 + ",'"
                             + "IEC " + DESCRIPCION + "',"
                             + PRECIOUNIIEC_TEMP + ","
@@ -411,6 +457,28 @@ public class Ctrl_CuerpoDocumento_CCF_V3 implements Serializable {
                         System.out.println(cadenasql);
                         stmt1.executeUpdate(cadenasql);
                         stmt1.close();
+                        
+                        if (rs.getString(9).trim().equals("EIVAC")) {
+                            NUM_TRIBUTO++;
+                            Long ID_CAT_015_TRIBUTO_EIVAC = Long.parseLong("8");
+                            Number TRIBUTO_VALOR_EIVAC = ctrl_base_datos.ObtenerDouble("SELECT F.TATXR2/100000 FROM " + esquema + ".F4008@" + dblink + " F WHERE TRIM(F.TATXA1)='" + rs.getString(9) + "' AND F.TAITM=0", conn);
+                            TRIBUTO_VALOR = VENTAGRAVADA.doubleValue() * TRIBUTO_VALOR_EIVAC.doubleValue();
+                            cadenasql = "INSERT INTO CUERPO_TRIBUTO_CCF_V3 ( "
+                                    + "ID_DTE, "
+                                    + "ID_CUERPO_DOCUMENTO, "
+                                    + "NUM_TRIBUTO, "
+                                    + "ID_CAT_015, "
+                                    + "VALOR) VALUES ("
+                                    + ID_DTE + ","
+                                    + ID_CUERPO_DOCUMENTO + ","
+                                    + NUM_TRIBUTO + ","
+                                    + ID_CAT_015_TRIBUTO_EIVAC + ","
+                                    + TRIBUTO_VALOR + ")";
+                            stmt1 = conn.createStatement();
+                            System.out.println(cadenasql);
+                            stmt1.executeUpdate(cadenasql);
+                            stmt1.close();
+                        }
                     }
                 }
 
@@ -489,6 +557,28 @@ public class Ctrl_CuerpoDocumento_CCF_V3 implements Serializable {
                         System.out.println(cadenasql);
                         stmt1.executeUpdate(cadenasql);
                         stmt1.close();
+                        
+                        if (rs.getString(9).trim().equals("EIVAC")) {
+                            NUM_TRIBUTO++;
+                            Long ID_CAT_015_TRIBUTO_EIVAC = Long.parseLong("8");
+                            Number TRIBUTO_VALOR_EIVAC = ctrl_base_datos.ObtenerDouble("SELECT F.TATXR2/100000 FROM " + esquema + ".F4008@" + dblink + " F WHERE TRIM(F.TATXA1)='" + rs.getString(9) + "' AND F.TAITM=0", conn);
+                            TRIBUTO_VALOR = VENTAGRAVADA.doubleValue() * TRIBUTO_VALOR_EIVAC.doubleValue();
+                            cadenasql = "INSERT INTO CUERPO_TRIBUTO_CCF_V3 ( "
+                                    + "ID_DTE, "
+                                    + "ID_CUERPO_DOCUMENTO, "
+                                    + "NUM_TRIBUTO, "
+                                    + "ID_CAT_015, "
+                                    + "VALOR) VALUES ("
+                                    + ID_DTE + ","
+                                    + ID_CUERPO_DOCUMENTO + ","
+                                    + NUM_TRIBUTO + ","
+                                    + ID_CAT_015_TRIBUTO_EIVAC + ","
+                                    + TRIBUTO_VALOR + ")";
+                            stmt1 = conn.createStatement();
+                            System.out.println(cadenasql);
+                            stmt1.executeUpdate(cadenasql);
+                            stmt1.close();
+                        }
                     }
                 }
             }

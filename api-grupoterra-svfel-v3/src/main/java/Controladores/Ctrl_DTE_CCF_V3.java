@@ -135,7 +135,7 @@ public class Ctrl_DTE_CCF_V3 implements Serializable {
                 stmt1.close();
 
                 Ctrl_Identificacion_CCF_V3 ctrl_identificacion_ccf_v3 = new Ctrl_Identificacion_CCF_V3();
-                String result_edentificacion = ctrl_identificacion_ccf_v3.extraer_identificacion_jde_ccf_v3(ID_DTE, ambiente, DCTO_JDE.trim(), MCU_JDE.trim(), CRCD_JDE.trim(), IVD_JDE.trim(), conn);
+                String result_edentificacion = ctrl_identificacion_ccf_v3.extraer_identificacion_jde_ccf_v3(ID_DTE, ambiente, DCTO_JDE.trim(), MCU_JDE.trim(), CRCD_JDE.trim(), conn);
 
                 Ctrl_Receptor_CCF_V3 ctrl_receptor_ccf_v3 = new Ctrl_Receptor_CCF_V3();
                 String result_recepor = ctrl_receptor_ccf_v3.extraer_receptor_jde_ccf_v3(ID_DTE, ambiente, AN8_JDE.trim(), SHAN_JDE.trim(), conn);
@@ -375,6 +375,14 @@ public class Ctrl_DTE_CCF_V3 implements Serializable {
                     + "<tr>"
                     + "<td>Clasificación Mensaje</td>"
                     + "<td>" + respuesta_recepciondte_mh.getClasificaMsg() + "</td>"
+                    + "</tr>"
+                    + "<tr>"
+                    + "<td>Orden-Venta</td>"
+                    + "<td>" + DCTO_JDE + "-" + DOCO_JDE + "</td>"
+                    + "</tr>"
+                    + "<tr>"
+                    + "<td>Documento-Interno</td>"
+                    + "<td>" + DCT_JDE + "-" + DOC_JDE + "</td>"
                     + "</tr>"
                     + "</table>"
                     + "</body>"

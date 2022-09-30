@@ -1,5 +1,5 @@
 -- ***************************************************************************************************************************
--- *          CONSULTA DE TABLAS FEL-SV.                                                                                     *
+-- *          CONSULTA DE TABLAS CATÁLOGO FEL-SV.                                                                            *
 -- ***************************************************************************************************************************
 SELECT C.* FROM CAT_000 C ORDER BY C.ID_CAT;
 SELECT C.* FROM CAT_001 C ORDER BY C.ID_CAT;
@@ -34,16 +34,36 @@ SELECT C.* FROM CAT_030 C ORDER BY C.ID_CAT;
 SELECT C.* FROM CAT_031 C ORDER BY C.ID_CAT;
 SELECT C.* FROM CAT_032 C ORDER BY C.ID_CAT;
 
+-- ***************************************************************************************************************************
+-- *          CONSULTA DE TABLAS EMISOR, SHAN, COMPAÑIA Y ESTABLECIMIENTO FEL-SV.                                            *
+-- ***************************************************************************************************************************
 SELECT F.* FROM EMISOR_V3 F;
 SELECT F.* FROM EMISOR_KCOO_V3 F;
-SELECT F.* FROM EMISOR_ESTABLECIMIENTO_V3 F;
+SELECT F.* FROM EMISOR_ESTABLECIMIENTO_V3 F; -- EN LAS NOTAS DE CRÉDITO ESTRUCTURA JAVA SE DEBE ANULAR LOS CAMPOS {codEstableMH, codEstable, codPuntoVentaMH, codPuntoVenta}.
+SELECT F.* FROM NOTIFIACION_CORREO_V3 F ORDER BY ID_NOTIFICACION;
+SELECT F.* FROM NOTIFIACION_CORREO_V3 F WHERE F.ACTIVO=1 ORDER BY ID_NOTIFICACION;
 
+-- UPDATE NOTIFIACION_CORREO_V3 SET ACTIVO=0 WHERE ID_NOTIFICACION IN (1, 2, 4, 5, 6, 7, 8, 9);
+-- UPDATE NOTIFIACION_CORREO_V3 SET ACTIVO=1 WHERE ID_NOTIFICACION IN (1, 3, 4, 7, 8, 9, 10);
+-- INSERT INTO NOTIFIACION_CORREO_V3 (ID_NOTIFICACION, CUENTA_CORREO, ACTIVO) VALUES (10, 'rasafacturacion@uno-terra.com', 0);
+-- COMMIT;
+
+-- ***************************************************************************************************************************
+-- *          CONSULTA DE TABLA FEL JD EDWARDS FEL-SV.                                                                       *
+-- ***************************************************************************************************************************
 SELECT F.* FROM CRPDTA.F5542FEL@JDEPY F;
 
 SELECT F.FEKCOO, F.FEDOCO, F.FEDCTO, F.FEDOC, F.FEDCT, F.FEMCU, F.FEAN8, F.FESHAN, F.FECRCD, F.FESTCD, F.FEIVD, F.FECRSREF01, F.FECRSREF02, F.FECRSREF03, F.FECRSREF04, F.FECRSREF05, F.FEJEVER
 FROM CRPDTA.F5542FEL@JDEPY F
 WHERE F.FESTCD='000' AND F.FEDCTO='S3';
 
+SELECT F.* FROM CRPDTA.F5542FEL@JDEPY F WHERE F.FEDOCO=72959053;
+UPDATE CRPDTA.F5542FEL@JDEPY SET FESTCD='000', FECRSREF01='-', FECRSREF02='-', FECRSREF03='-', FECRSREF04='-', FECRSREF05='-' WHERE FEDOCO=72959053;
+COMMIT;
+
+-- ***************************************************************************************************************************
+-- *          COMPROBANTE DE CRÉDITO FISCAL.                                                                                 *
+-- ***************************************************************************************************************************
 SELECT F.* FROM DTE_CCF_V3 F ORDER BY F.ID_DTE DESC;
 SELECT F.* FROM IDENTIFICACION_CCF_V3 F ORDER BY F.ID_DTE DESC;
 SELECT F.* FROM DOCU_RELA_CCF_V3 F ORDER BY F.ID_DTE DESC;
@@ -58,58 +78,33 @@ SELECT F.* FROM RESUMEN_TRIBUTO_CCF_V3 F ORDER BY F.ID_DTE DESC;
 SELECT F.* FROM EXTENSION_CCF_V3 F ORDER BY F.ID_DTE DESC;
 SELECT F.* FROM APENDICE_CCF_V3 F ORDER BY F.ID_DTE DESC;
 
--- TABLAS FEL-GUATEMALA.
+SELECT F.* FROM DTE_CCF_V3 F WHERE F.ID_DTE IN (211);
+SELECT F.* FROM IDENTIFICACION_CCF_V3 F WHERE F.ID_DTE IN (211);
+SELECT F.* FROM DOCU_RELA_CCF_V3 F WHERE F.ID_DTE IN (211);
+SELECT F.* FROM RECEPTOR_CCF_V3 F WHERE F.ID_DTE IN (211);
+SELECT F.* FROM SHIPTO_CCF_V3 F WHERE F.ID_DTE IN (211);
+SELECT F.* FROM OTROS_DOCU_CCF_V3 F WHERE F.ID_DTE IN (211);
+SELECT F.* FROM VENTA_TERCERO_CCF_V3 F WHERE F.ID_DTE IN (211);
+SELECT F.* FROM CUERPO_DOCU_CCF_V3 F WHERE F.ID_DTE IN (211);
+SELECT F.* FROM CUERPO_TRIBUTO_CCF_V3 F WHERE F.ID_DTE IN (211);
+SELECT F.* FROM RESUMEN_CCF_V3 F WHERE F.ID_DTE IN (211);
+SELECT F.* FROM RESUMEN_TRIBUTO_CCF_V3 F WHERE F.ID_DTE IN (211);
+SELECT F.* FROM EXTENSION_CCF_V3 F WHERE F.ID_DTE IN (211);
+SELECT F.* FROM APENDICE_CCF_V3 F WHERE F.ID_DTE IN (211);
+
+-- ***************************************************************************************************************************
+-- *          NOTA DE CRÉDITO.                                                                                               *
+-- ***************************************************************************************************************************
+SELECT F.* FROM DTE_NC_V3 F ORDER BY F.ID_DTE DESC;
+SELECT F.* FROM IDENTIFICACION_NC_V3 F ORDER BY F.ID_DTE DESC;
+SELECT F.* FROM DOCU_RELA_NC_V3 F ORDER BY F.ID_DTE DESC;
+
+SELECT F.* FROM DTE_NC_V3 F WHERE F.ID_DTE IN (1);
+SELECT F.* FROM IDENTIFICACION_NC_V3 F WHERE F.ID_DTE IN (1);
+SELECT F.* FROM DOCU_RELA_NC_V3 F WHERE F.ID_DTE IN (1);
+-- ***************************************************************************************************************************
+-- *          TABLAS FEL-GUATEMALA.                                                                                          *
+-- ***************************************************************************************************************************
 SELECT F.* FROM CRPDTA.F59421CA@JDEPY F;
-SELECT F.* FROM CRPDTA.F59421DE@JDEPY F;
+SELECT F.* FROM CRPDTA.F59421DE@JDEPY F; -- ESTA TABLA NO SE PUEDE CONSULTAR A TRAVES DE DBLINK.
 SELECT F.* FROM CRPDTA.F5942PAR@JDEPY F;
-
-SELECT TRIM(F.WWMLNM) NOMBRECIBE FROM CRPDTA.F0111@JDEPY F WHERE F.WWAN8=730866 AND TRIM(F.WWALPH)='FELSV';
-SELECT TRIM(F.WWNICK) DOCURECIBE FROM CRPDTA.F0111@JDEPY F WHERE F.WWAN8=730866 AND TRIM(F.WWALPH)='FELSV';
-
-CREATE TABLE SHIPTO_CCF_V3 (	
-    ID_DTE NUMBER(13,0) NOT NULL ENABLE, 
-	ID_SHIPTO NUMBER(13,0) NOT NULL ENABLE, 
-	NIT VARCHAR2(14 BYTE) NOT NULL ENABLE, 
-	NRC VARCHAR2(8 BYTE) NOT NULL ENABLE, 
-	NOMBRE VARCHAR2(250 BYTE) NOT NULL ENABLE, 
-	ID_CAT_019 NUMBER(13,0) NOT NULL ENABLE, 
-	NOMBRECOMERCIAL VARCHAR2(150 BYTE), 
-	ID_CAT_012 NUMBER(13,0) NOT NULL ENABLE, 
-	ID_CAT_013 NUMBER(13,0) NOT NULL ENABLE, 
-	DIRECCION_COMPLEMENTO VARCHAR2(200 BYTE) NOT NULL ENABLE, 
-	TELEFONO VARCHAR2(30 BYTE) NOT NULL ENABLE, 
-	CORREO VARCHAR2(100 BYTE) NOT NULL ENABLE, 
-    CONSTRAINT PK_SHIPTO_CCF_V3 PRIMARY KEY (ID_DTE, ID_SHIPTO),
-    CONSTRAINT FK_SHIPTO_CCF_V3_1 FOREIGN KEY (ID_DTE) REFERENCES DTE_CCF_V3 (ID_DTE),
-    CONSTRAINT FK_SHIPTO_CCF_V3_2 FOREIGN KEY (ID_CAT_019) REFERENCES CAT_019 (ID_CAT),
-    CONSTRAINT FK_SHIPTO_CCF_V3_3 FOREIGN KEY (ID_CAT_012) REFERENCES CAT_012 (ID_CAT),
-    CONSTRAINT FK_SHIPTO_CCF_V3_4 FOREIGN KEY (ID_CAT_013) REFERENCES CAT_013 (ID_CAT)
-);
-
-CREATE TABLE SHIPTO_CCF_V3 (	
-    ID_DTE NUMBER(13,0) NOT NULL ENABLE, 
-	ID_SHIPTO NUMBER(13,0) NOT NULL ENABLE, 
-	NIT VARCHAR2(14 BYTE) NOT NULL ENABLE, 
-	NRC VARCHAR2(8 BYTE) NOT NULL ENABLE, 
-	NOMBRE VARCHAR2(250 BYTE) NOT NULL ENABLE, 
-	ID_CAT_019 NUMBER(13,0) NOT NULL ENABLE, 
-	NOMBRECOMERCIAL VARCHAR2(150 BYTE), 
-	ID_CAT_012 NUMBER(13,0) NOT NULL ENABLE, 
-	ID_CAT_013 NUMBER(13,0) NOT NULL ENABLE, 
-	DIRECCION_COMPLEMENTO VARCHAR2(200 BYTE) NOT NULL ENABLE, 
-	TELEFONO VARCHAR2(30 BYTE) NOT NULL ENABLE, 
-	CORREO VARCHAR2(100 BYTE) NOT NULL ENABLE, 
-    CONSTRAINT PK_SHIPTO_CCF_V3 PRIMARY KEY (ID_DTE, ID_SHIPTO),
-    CONSTRAINT FK_SHIPTO_CCF_V3_1 FOREIGN KEY (ID_DTE) REFERENCES DTE_CCF_V3 (ID_DTE),
-    CONSTRAINT FK_SHIPTO_CCF_V3_2 FOREIGN KEY (ID_CAT_019) REFERENCES CAT_019 (ID_CAT),
-    CONSTRAINT FK_SHIPTO_CCF_V3_3 FOREIGN KEY (ID_CAT_012) REFERENCES CAT_012 (ID_CAT),
-    CONSTRAINT FK_SHIPTO_CCF_V3_4 FOREIGN KEY (ID_CAT_013) REFERENCES CAT_013 (ID_CAT)
-);
-
-
-'Av. Albert Einstein y blvd Los Proceres, Urb. Lomas de San Francisco, # 1, Torre Cuscatlán, nivel 15, Antgo Cuscatlán, La Libertad.'
-
-
-
-
-

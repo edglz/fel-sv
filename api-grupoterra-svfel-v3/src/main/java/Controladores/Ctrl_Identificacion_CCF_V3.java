@@ -28,8 +28,7 @@ public class Ctrl_Identificacion_CCF_V3 implements Serializable {
             resultado.setTipoOperacion(ctrl_base_datos.ObtenerEntero("SELECT C.CODIGO FROM CAT_004 C WHERE C.ID_CAT IN (SELECT F.ID_CAT_004 FROM IDENTIFICACION_CCF_V3 F WHERE F.ID_DTE=" + id_dte + ")", conn));
             resultado.setTipoContingencia(ctrl_base_datos.ObtenerEntero("SELECT C.CODIGO FROM CAT_005 C WHERE C.ID_CAT IN (SELECT F.ID_CAT_005 FROM IDENTIFICACION_CCF_V3 F WHERE F.ID_DTE=" + id_dte + ")", conn));
             resultado.setMotivoContin(ctrl_base_datos.ObtenerString("SELECT F.MOTIVOCONTIN FROM IDENTIFICACION_CCF_V3 F WHERE F.ID_DTE=" + id_dte, conn));
-            // resultado.setFecEmi(ctrl_base_datos.ObtenerString("SELECT TO_CHAR(F.FECHA_HORA_EMISION,'YYYY-MM-DD') FROM IDENTIFICACION_CCF_V3 F WHERE F.ID_DTE=" + id_dte, conn));
-            resultado.setFecEmi(ctrl_base_datos.ObtenerString("SELECT TO_CHAR(CURRENT_DATE,'YYYY-MM-DD') FROM DUAL", conn));
+            resultado.setFecEmi(ctrl_base_datos.ObtenerString("SELECT TO_CHAR(F.FECHA_HORA_EMISION,'YYYY-MM-DD') FROM IDENTIFICACION_CCF_V3 F WHERE F.ID_DTE=" + id_dte, conn));
             resultado.setHorEmi(ctrl_base_datos.ObtenerString("SELECT TO_CHAR(F.FECHA_HORA_EMISION,'HH24:MI:SS') FROM IDENTIFICACION_CCF_V3 F WHERE F.ID_DTE=" + id_dte, conn));
             resultado.setTipoMoneda(ctrl_base_datos.ObtenerString("SELECT F.TIPOMONEDA FROM IDENTIFICACION_CCF_V3 F WHERE F.ID_DTE=" + id_dte, conn));
         } catch (Exception ex) {
@@ -39,7 +38,7 @@ public class Ctrl_Identificacion_CCF_V3 implements Serializable {
         return resultado;
     }
     
-    public String extraer_identificacion_jde_ccf_v3(Long id_dte, String ambiente, String DCTO_JDE, String MCU_JDE, String CRCD_JDE, String IVD_JDE, Connection conn) {
+    public String extraer_identificacion_jde_ccf_v3(Long id_dte, String ambiente, String DCTO_JDE, String MCU_JDE, String CRCD_JDE, Connection conn) {
         String resultado = "";
 
         try {
@@ -70,8 +69,7 @@ public class Ctrl_Identificacion_CCF_V3 implements Serializable {
             Long ID_CAT_004 = Long.parseLong("1");
             Long ID_CAT_005 = null;
             String MOTIVOCONTIN = null;
-            String FECHA_HORA_EMISION = ctrl_base_datos.ObtenerString("SELECT TO_CHAR(TO_DATE(TO_CHAR(" + IVD_JDE + " + 1900000,'9999999'),'YYYYDDD'),'YYYY/MM/DD') || ' ' || TO_CHAR(CURRENT_TIMESTAMP,'HH24:MI:SS') FECHA_HORA_EMISION FROM DUAL", conn);
-            // String FECHA_HORA_EMISION = "CURRENT_TIMESTAMP";
+            String FECHA_HORA_EMISION = ctrl_base_datos.ObtenerString("SELECT TO_CHAR(CURRENT_DATE,'YYYY/MM/DD') || ' ' || TO_CHAR(CURRENT_TIMESTAMP,'HH24:MI:SS') FECHA_HORA_EMISION FROM DUAL", conn);
             String TIPOMONEDA = CRCD_JDE;
             
             cadenasql = "INSERT INTO IDENTIFICACION_CCF_V3 ("
