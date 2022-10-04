@@ -42,7 +42,7 @@ public class Ctrl_CuerpoDocumento_CCF_V3 implements Serializable {
                 cuerpo_documento_ccf.setVentaGravada(ctrl_base_datos.ObtenerDouble("SELECT F.VENTAGRAVADA FROM CUERPO_DOCU_CCF_V3 F WHERE F.ID_DTE=" + id_dte + " AND F.ID_CUERPO_DOCUMENTO=" + id_cuerpo_documento, conn));
 
                 List<String> tributos = new ArrayList();
-                String cadenasql_1 = "SELECT F.NUM_TRIBUTO FROM CUERPO_TRIBUTO_CCF_V3 F WHERE F.ID_DTE=" + id_dte + " AND F.ID_CUERPO_DOCUMENTO=" + id_cuerpo_documento;
+                String cadenasql_1 = "SELECT F.NUM_TRIBUTO FROM CUERPO_TRIBUTO_CCF_V3 F WHERE F.ID_DTE=" + id_dte + " AND F.ID_CAT_015 NOT IN (18) AND F.ID_CUERPO_DOCUMENTO=" + id_cuerpo_documento;
                 Statement stmt1 = conn.createStatement();
                 ResultSet rs1 = stmt1.executeQuery(cadenasql_1);
                 while (rs1.next()) {
@@ -224,7 +224,7 @@ public class Ctrl_CuerpoDocumento_CCF_V3 implements Serializable {
                     
                     if (rs.getString(9).trim().equals("EIVAC")) {
                         NUM_TRIBUTO++;
-                        Long ID_CAT_015_TRIBUTO_EIVAC = Long.parseLong("8");
+                        Long ID_CAT_015_TRIBUTO_EIVAC = Long.parseLong("18");
                         Number TRIBUTO_VALOR_EIVAC = ctrl_base_datos.ObtenerDouble("SELECT F.TATXR2/100000 FROM " + esquema + ".F4008@" + dblink + " F WHERE TRIM(F.TATXA1)='" + rs.getString(9) + "' AND F.TAITM=0", conn);
                         TRIBUTO_VALOR = VENTAGRAVADA.doubleValue() * TRIBUTO_VALOR_EIVAC.doubleValue();
                         cadenasql = "INSERT INTO CUERPO_TRIBUTO_CCF_V3 ( "
@@ -358,7 +358,7 @@ public class Ctrl_CuerpoDocumento_CCF_V3 implements Serializable {
 
                         if (rs.getString(9).trim().equals("EIVAC")) {
                             NUM_TRIBUTO++;
-                            Long ID_CAT_015_TRIBUTO_EIVAC = Long.parseLong("8");
+                            Long ID_CAT_015_TRIBUTO_EIVAC = Long.parseLong("18");
                             Number TRIBUTO_VALOR_EIVAC = ctrl_base_datos.ObtenerDouble("SELECT F.TATXR2/100000 FROM " + esquema + ".F4008@" + dblink + " F WHERE TRIM(F.TATXA1)='" + rs.getString(9) + "' AND F.TAITM=0", conn);
                             TRIBUTO_VALOR = VENTAGRAVADA.doubleValue() * TRIBUTO_VALOR_EIVAC.doubleValue();
                             cadenasql = "INSERT INTO CUERPO_TRIBUTO_CCF_V3 ( "
@@ -460,7 +460,7 @@ public class Ctrl_CuerpoDocumento_CCF_V3 implements Serializable {
                         
                         if (rs.getString(9).trim().equals("EIVAC")) {
                             NUM_TRIBUTO++;
-                            Long ID_CAT_015_TRIBUTO_EIVAC = Long.parseLong("8");
+                            Long ID_CAT_015_TRIBUTO_EIVAC = Long.parseLong("18");
                             Number TRIBUTO_VALOR_EIVAC = ctrl_base_datos.ObtenerDouble("SELECT F.TATXR2/100000 FROM " + esquema + ".F4008@" + dblink + " F WHERE TRIM(F.TATXA1)='" + rs.getString(9) + "' AND F.TAITM=0", conn);
                             TRIBUTO_VALOR = VENTAGRAVADA.doubleValue() * TRIBUTO_VALOR_EIVAC.doubleValue();
                             cadenasql = "INSERT INTO CUERPO_TRIBUTO_CCF_V3 ( "
@@ -560,7 +560,7 @@ public class Ctrl_CuerpoDocumento_CCF_V3 implements Serializable {
                         
                         if (rs.getString(9).trim().equals("EIVAC")) {
                             NUM_TRIBUTO++;
-                            Long ID_CAT_015_TRIBUTO_EIVAC = Long.parseLong("8");
+                            Long ID_CAT_015_TRIBUTO_EIVAC = Long.parseLong("18");
                             Number TRIBUTO_VALOR_EIVAC = ctrl_base_datos.ObtenerDouble("SELECT F.TATXR2/100000 FROM " + esquema + ".F4008@" + dblink + " F WHERE TRIM(F.TATXA1)='" + rs.getString(9) + "' AND F.TAITM=0", conn);
                             TRIBUTO_VALOR = VENTAGRAVADA.doubleValue() * TRIBUTO_VALOR_EIVAC.doubleValue();
                             cadenasql = "INSERT INTO CUERPO_TRIBUTO_CCF_V3 ( "

@@ -112,10 +112,10 @@ public class Ctrl_Resumen_CCF_V3 implements Serializable {
             Number PORCENTAJEDESCUENTO = 0.00;
             Number TOTALDESCU = ctrl_base_datos.ObtenerDouble("SELECT SUM(F.MONTODESCU) FROM CUERPO_DOCU_CCF_V3 F WHERE F.ID_DTE=" + ID_DTE, conn);
             Number SUBTOTAL = SUBTOTALVENTAS.doubleValue();
-            Number IVAPERCI1 = ctrl_base_datos.ObtenerDouble("SELECT NVL(SUM(F.VALOR),0) VALOR FROM CUERPO_TRIBUTO_CCF_V3 F WHERE F.ID_CAT_015=8 AND F.ID_DTE=" + ID_DTE, conn);
+            Number IVAPERCI1 = ctrl_base_datos.ObtenerDouble("SELECT NVL(SUM(F.VALOR),0) VALOR FROM CUERPO_TRIBUTO_CCF_V3 F WHERE F.ID_CAT_015=18 AND F.ID_DTE=" + ID_DTE, conn);
             Number IVARETE1 = 0.00;
             Number RETERENTA = 0.00;
-            Number MONTOTOTALOPERACION = SUBTOTAL.doubleValue() + ctrl_base_datos.ObtenerDouble("SELECT ROUND(SUM(F.VALOR),2) FROM CUERPO_TRIBUTO_CCF_V3 F WHERE F.ID_CAT_015 NOT IN (8) AND F.ID_DTE=" + ID_DTE, conn);
+            Number MONTOTOTALOPERACION = SUBTOTAL.doubleValue() + ctrl_base_datos.ObtenerDouble("SELECT ROUND(SUM(F.VALOR),2) FROM CUERPO_TRIBUTO_CCF_V3 F WHERE F.ID_CAT_015 NOT IN (18) AND F.ID_DTE=" + ID_DTE, conn);
             Number TOTALNOGRAVADO = ctrl_base_datos.ObtenerDouble("SELECT SUM(F.NOGRAVADO) FROM CUERPO_DOCU_CCF_V3 F WHERE F.ID_DTE=" + ID_DTE, conn);
             Number TOTALPAGAR = MONTOTOTALOPERACION.doubleValue() + IVAPERCI1.doubleValue() + IVARETE1.doubleValue() + RETERENTA.doubleValue();
             Long TOTALPAGAR_LONG = TOTALPAGAR.longValue();
@@ -206,7 +206,7 @@ public class Ctrl_Resumen_CCF_V3 implements Serializable {
             stmt.executeUpdate(cadenasql);
             stmt.close();
 
-            cadenasql = "SELECT F.ID_CAT_015, SUM(F.VALOR) VALOR FROM CUERPO_TRIBUTO_CCF_V3 F WHERE F.ID_DTE=" + ID_DTE + " GROUP BY F.ID_CAT_015";
+            cadenasql = "SELECT F.ID_CAT_015, SUM(F.VALOR) VALOR FROM CUERPO_TRIBUTO_CCF_V3 F WHERE F.ID_CAT_015 NOT IN (18) AND F.ID_DTE=" + ID_DTE + " GROUP BY F.ID_CAT_015";
             stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(cadenasql);
             Long NUM_TRIBUTO = Long.parseLong("0");
