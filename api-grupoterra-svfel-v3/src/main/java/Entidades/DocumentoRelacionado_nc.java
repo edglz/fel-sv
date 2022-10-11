@@ -2,7 +2,7 @@ package Entidades;
 
 import java.io.Serializable;
 
-public class DocumentoRelacionado_ccf implements Serializable {
+public class DocumentoRelacionado_nc implements Serializable {
     
     private static final long serialVersionUID = 1L;
     
@@ -11,14 +11,14 @@ public class DocumentoRelacionado_ccf implements Serializable {
     private String numeroDocumento;
     private String fechaEmision;
 
-    public DocumentoRelacionado_ccf(String tipoDocumento, Number tipoGeneracion, String numeroDocumento, String fechaEmision) {
+    public DocumentoRelacionado_nc(String tipoDocumento, Number tipoGeneracion, String numeroDocumento, String fechaEmision) {
         this.tipoDocumento = tipoDocumento;
         this.tipoGeneracion = tipoGeneracion;
         this.numeroDocumento = numeroDocumento;
         this.fechaEmision = fechaEmision;
     }
 
-    public DocumentoRelacionado_ccf() {
+    public DocumentoRelacionado_nc() {
     }
 
     public String getTipoDocumento() {

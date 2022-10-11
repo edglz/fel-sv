@@ -14,7 +14,7 @@ public class Driver implements Serializable {
     public Driver() {
     }
 
-    public String guardar_en_archivo(Long id_dte, String cadena) {
+    public String guardar_en_archivo(Long id_dte, String tipo_documento, String cadena) {
         String resultado = "";
 
         try {
@@ -23,7 +23,7 @@ public class Driver implements Serializable {
             File directorio = new File(path_file);
             directorio.mkdir();
 
-            FileWriter fichero = new FileWriter(path_file + "felsv_" + id_dte + ".dte", true);
+            FileWriter fichero = new FileWriter(path_file + "felsv_" + tipo_documento + "_" + id_dte + ".dte", true);
             PrintWriter pw_request = new PrintWriter(fichero);
             pw_request.println(new Date() + ":: " + cadena);
             fichero.close();

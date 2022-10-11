@@ -75,7 +75,7 @@ public class Ctrl_Resumen_CCF_V3 implements Serializable {
             pagos = null;
             resultado.setPagos(pagos);
 
-            resultado.setTotalNoSuj(ctrl_base_datos.ObtenerDouble("SELECT F.NUMPAGOELECTRONICO FROM RESUMEN_CCF_V3 F WHERE F.ID_DTE=" + id_dte, conn));
+            resultado.setNumPagoElectronico(ctrl_base_datos.ObtenerString("SELECT F.NUMPAGOELECTRONICO FROM RESUMEN_CCF_V3 F WHERE F.ID_DTE=" + id_dte, conn));
         } catch (Exception ex) {
             System.out.println("PROYECTO:api-grupoterra-svfel-v3|CLASE:" + this.getClass().getName() + "|METODO:obtener_resumen_ccf_v3()|ERROR:" + ex.toString());
         }

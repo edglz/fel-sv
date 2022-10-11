@@ -2,19 +2,19 @@ package Entidades;
 
 import java.io.Serializable;
 
-public class VentaTercero_ccf implements Serializable {
+public class VentaTercero_nc implements Serializable {
     
     private static final long serialVersionUID = 1L;
     
     private String nit;
     private String nombre;
 
-    public VentaTercero_ccf(String nit, String nombre) {
+    public VentaTercero_nc(String nit, String nombre) {
         this.nit = nit;
         this.nombre = nombre;
     }
 
-    public VentaTercero_ccf() {
+    public VentaTercero_nc() {
     }
 
     public String getNit() {
