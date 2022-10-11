@@ -112,7 +112,7 @@ public class Ctrl_Resumen_CCF_V3 implements Serializable {
             Number PORCENTAJEDESCUENTO = 0.00;
             Number TOTALDESCU = ctrl_base_datos.ObtenerDouble("SELECT SUM(F.MONTODESCU) FROM CUERPO_DOCU_CCF_V3 F WHERE F.ID_DTE=" + ID_DTE, conn);
             Number SUBTOTAL = SUBTOTALVENTAS.doubleValue();
-            Number IVAPERCI1 = ctrl_base_datos.ObtenerDouble("SELECT NVL(SUM(F.VALOR),0) VALOR FROM CUERPO_TRIBUTO_CCF_V3 F WHERE F.ID_CAT_015=18 AND F.ID_DTE=" + ID_DTE, conn);
+            Number IVAPERCI1 = ctrl_base_datos.ObtenerDouble("SELECT ROUND(NVL(SUM(F.VALOR),0),2) VALOR FROM CUERPO_TRIBUTO_CCF_V3 F WHERE F.ID_CAT_015=18 AND F.ID_DTE=" + ID_DTE, conn);
             Number IVARETE1 = 0.00;
             Number RETERENTA = 0.00;
             Number MONTOTOTALOPERACION = SUBTOTAL.doubleValue() + ctrl_base_datos.ObtenerDouble("SELECT ROUND(SUM(F.VALOR),2) FROM CUERPO_TRIBUTO_CCF_V3 F WHERE F.ID_CAT_015 NOT IN (18) AND F.ID_DTE=" + ID_DTE, conn);
