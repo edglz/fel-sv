@@ -104,7 +104,7 @@ public class Ctrl_DocumentoRelacionando_NC_V3 implements Serializable {
                 }
             }
         } catch (Exception ex) {
-            resultado = "1," + ex.toString();
+            resultado = "";
             System.out.println("PROYECTO:api-grupoterra-svfel-v3|CLASE:" + this.getClass().getName() + "|METODO:extraer_documento_relacionado_jde_nc_v3()|ERROR:" + ex.toString());
         }
 

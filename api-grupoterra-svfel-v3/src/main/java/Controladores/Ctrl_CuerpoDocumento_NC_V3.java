@@ -106,7 +106,12 @@ public class Ctrl_CuerpoDocumento_NC_V3 implements Serializable {
                 Long ID_DTE = id_dte;
                 Long ID_CUERPO_DOCUMENTO = Long.parseLong(contador.toString());
                 Long ID_CAT_011 = ctrl_base_datos.ObtenerLong("SELECT C.ID_CAT FROM CAT_011 C WHERE C.VALOR_JDE LIKE '%[" + rs.getString(1) + "]%'", conn);
-                String NUMERODOCUMENTO = numero_documento;
+                String NUMERODOCUMENTO;
+                if(numero_documento.equals("")) {
+                    NUMERODOCUMENTO = "null";
+                } else {
+                    NUMERODOCUMENTO = "'" + numero_documento + "'";
+                }
                 Long CANTIDAD = rs.getLong(2);
                 if(CANTIDAD < 0.00) {
                     CANTIDAD = CANTIDAD * -1;
