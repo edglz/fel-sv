@@ -129,6 +129,35 @@ SELECT F.* FROM EXTENSION_NC_V3 F WHERE F.ID_DTE IN (11);
 SELECT F.* FROM APENDICE_NC_V3 F WHERE F.ID_DTE IN (11);
 
 -- ***************************************************************************************************************************
+-- *          NOTA DE DÉBITO.                                                                                                *
+-- ***************************************************************************************************************************
+SELECT F.* FROM DTE_ND_V3 F ORDER BY F.ID_DTE DESC;
+SELECT F.* FROM IDENTIFICACION_ND_V3 F ORDER BY F.ID_DTE DESC;
+SELECT F.* FROM DOCU_RELA_ND_V3 F ORDER BY F.ID_DTE DESC;
+SELECT F.* FROM RECEPTOR_ND_V3 F ORDER BY F.ID_DTE DESC;
+SELECT F.* FROM SHIPTO_ND_V3 F ORDER BY F.ID_DTE DESC;
+SELECT F.* FROM VENTA_TERCERO_ND_V3 F ORDER BY F.ID_DTE DESC;
+SELECT F.* FROM CUERPO_DOCU_ND_V3 F ORDER BY F.ID_DTE DESC;
+SELECT F.* FROM CUERPO_TRIBUTO_ND_V3 F ORDER BY F.ID_DTE DESC;
+SELECT F.* FROM RESUMEN_ND_V3 F ORDER BY F.ID_DTE DESC;
+SELECT F.* FROM RESUMEN_TRIBUTO_ND_V3 F ORDER BY F.ID_DTE DESC;
+SELECT F.* FROM EXTENSION_ND_V3 F ORDER BY F.ID_DTE DESC;
+SELECT F.* FROM APENDICE_ND_V3 F ORDER BY F.ID_DTE DESC;
+
+SELECT F.* FROM DTE_ND_V3 F WHERE F.ID_DTE IN (1);
+SELECT F.* FROM IDENTIFICACION_ND_V3 F WHERE F.ID_DTE IN (1);
+SELECT F.* FROM DOCU_RELA_ND_V3 F WHERE F.ID_DTE IN (1);
+SELECT F.* FROM RECEPTOR_ND_V3 F WHERE F.ID_DTE IN (1);
+SELECT F.* FROM SHIPTO_ND_V3 F WHERE F.ID_DTE IN (1);
+SELECT F.* FROM VENTA_TERCERO_ND_V3 F WHERE F.ID_DTE IN (1);
+SELECT F.* FROM CUERPO_DOCU_ND_V3 F WHERE F.ID_DTE IN (1);
+SELECT F.* FROM CUERPO_TRIBUTO_ND_V3 F WHERE F.ID_DTE IN (1);
+SELECT F.* FROM RESUMEN_ND_V3 F WHERE F.ID_DTE IN (1);
+SELECT F.* FROM RESUMEN_TRIBUTO_ND_V3 F WHERE F.ID_DTE IN (1);
+SELECT F.* FROM EXTENSION_ND_V3 F WHERE F.ID_DTE IN (1);
+SELECT F.* FROM APENDICE_ND_V3 F WHERE F.ID_DTE IN (1);
+
+-- ***************************************************************************************************************************
 -- *          TABLAS FEL-GUATEMALA.                                                                                          *
 -- ***************************************************************************************************************************
 SELECT F.* FROM CRPDTA.F59421CA@JDEPY F;
