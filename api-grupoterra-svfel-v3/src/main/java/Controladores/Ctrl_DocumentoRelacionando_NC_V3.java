@@ -78,7 +78,13 @@ public class Ctrl_DocumentoRelacionando_NC_V3 implements Serializable {
                         FECHAEMISION = ctrl_base_datos.ObtenerString("SELECT TO_CHAR(F.FECHA_HORA_EMISION,'YYYY/MM/DD') || ' 00:00:00' FROM IDENTIFICACION_CCF_V3 F WHERE F.CODIGOGENERACION='" + NUMERODOCUMENTO + "'", conn);
                     } else {
                         ID_CAT_007 = Long.parseLong("1");
-                        NUMERODOCUMENTO = ctrl_base_datos.ObtenerString("SELECT F.SDDCT || F.SDDOC FROM " + esquema + ".F42119@" + dblink + " F WHERE F.SDDOCO=" + DOCO_JDE_CCF + " AND F.SDDCTO='" + DCTO_JDE_CCF + "'", conn);
+                        String KCOO_JDE_RELA = ctrl_base_datos.ObtenerString("SELECT DISTINCT F.SDKCOO FROM " + esquema + ".F42119@" + dblink + " F WHERE F.SDDCTO='" + DCTO_JDE_CCF + "' AND F.SDDOCO=" + DOCO_JDE_CCF, conn);
+                        String DCT_JDE_RELA = ctrl_base_datos.ObtenerString("SELECT DISTINCT F.SDDCT FROM " + esquema + ".F42119@" + dblink + " F WHERE F.SDDCTO='" + DCTO_JDE_CCF + "' AND F.SDDOCO=" + DOCO_JDE_CCF, conn);
+                        String IVD_JDE_RELA = ctrl_base_datos.ObtenerString("SELECT DISTINCT F.SDIVD FROM " + esquema + ".F42119@" + dblink + " F WHERE F.SDDCTO='" + DCTO_JDE_CCF + "' AND F.SDDOCO=" + DOCO_JDE_CCF, conn);
+                        String DOC_JDE_RELA = ctrl_base_datos.ObtenerString("SELECT DISTINCT SUBSTR(F.SDDOC,3,LENGTH(F.SDDOC)) FROM " + esquema + ".F42119@" + dblink + " F WHERE F.SDDCTO='" + DCTO_JDE_CCF + "' AND F.SDDOCO=" + DOCO_JDE_CCF, conn);
+                        String DOC_JDE_RELA_TEMP = ctrl_base_datos.ObtenerString("SELECT DISTINCT F.SDDOC FROM " + esquema + ".F42119@" + dblink + " F WHERE F.SDDCTO='" + DCTO_JDE_CCF + "' AND F.SDDOCO=" + DOCO_JDE_CCF, conn);
+                        NUMERODOCUMENTO = ctrl_base_datos.ObtenerString("SELECT TRIM(F.NNDL03) FROM " + esquema + ".F5500021@" + dblink + " F WHERE (F.NNCO='" + KCOO_JDE_RELA + "') AND (F.NNDCTO='" + DCTO_JDE_CCF + "') AND (F.NNDCT='" + DCT_JDE_RELA + "') AND (" + IVD_JDE_RELA + " BETWEEN F.NNEDTF AND F.NNEDTT) AND (" + DOC_JDE_RELA_TEMP +  " BETWEEN F.NNN001 AND F.NNN002)", conn);
+                        NUMERODOCUMENTO = NUMERODOCUMENTO + DOC_JDE_RELA;
                         FECHAEMISION = ctrl_base_datos.ObtenerString("SELECT TO_CHAR(TO_DATE(TO_CHAR(F.SDIVD + 1900000,'9999999'),'YYYYDDD'),'YYYY/MM/DD') || ' 00:00:00' FROM " + esquema + ".F42119@" + dblink + " F WHERE F.SDDOCO=" + DOCO_JDE_CCF + " AND F.SDDCTO='" + DCTO_JDE_CCF + "'", conn);
                     }
 
