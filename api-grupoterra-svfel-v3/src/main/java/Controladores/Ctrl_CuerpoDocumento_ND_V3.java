@@ -97,7 +97,7 @@ public class Ctrl_CuerpoDocumento_ND_V3 implements Serializable {
                     + "TRIM(F.SDTAX1) aplicaImpuesto, "
                     + "TRIM(F.SDTXA1) impuesto "
                     + "FROM " + esquema + "." + tabla_sales_orders + "@" + dblink + " F "
-                    + "WHERE F.SDKCOO='" + KCOO_JDE + "' AND F.SDDOCO=" + DOCO_JDE + " AND F.SDDCTO='" + DCTO_JDE + "' AND F.SDLNTY IN ('CM','C','CX')";
+                    + "WHERE F.SDKCOO='" + KCOO_JDE + "' AND F.SDDOCO=" + DOCO_JDE + " AND F.SDDCTO='" + DCTO_JDE + "' AND F.SDLNTY IN ('M')";
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(cadenasql);
             Integer contador = 0;
