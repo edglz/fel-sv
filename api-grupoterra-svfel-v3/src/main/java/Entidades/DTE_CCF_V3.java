@@ -118,5 +118,5 @@ public class DTE_CCF_V3 implements Serializable {
     public String toString() {
         return "DTE_CCF_V3{" + "identificacion=" + identificacion + ", documentoRelacionado=" + documentoRelacionado + ", emisor=" + emisor + ", receptor=" + receptor + ", otrosDocumentos=" + otrosDocumentos + ", ventaTercero=" + ventaTercero + ", cuerpoDocumento=" + cuerpoDocumento + ", resumen=" + resumen + ", extension=" + extension + ", apendice=" + apendice + '}';
     }
-
+    
 }

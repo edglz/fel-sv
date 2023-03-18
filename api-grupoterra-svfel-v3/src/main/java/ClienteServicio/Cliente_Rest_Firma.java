@@ -14,7 +14,6 @@ public class Cliente_Rest_Firma implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    // private static final String BASE_URI = "http://localhost:8113/firmardocumento/";
     private static final String BASE_URI = "http://FirmaJWT-FELSV:8013/firmardocumento/";
     private ClientConfig clientConfig;
     private Client client;

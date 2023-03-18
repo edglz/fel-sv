@@ -42,7 +42,6 @@ public class Cliente_Rest_Jasper implements Serializable {
                     .queryParam("j_password", j_password);
             Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON_TYPE);
             Response response = invocationBuilder.get();
-            System.out.println("Cliente JasperRest: " + response.getStatus());
             if (response.getStatus() == 200) {
                 resultado = response.readEntity(InputStream.class);
             } else {
@@ -67,7 +66,6 @@ public class Cliente_Rest_Jasper implements Serializable {
                     .queryParam("j_password", j_password);
             Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON_TYPE);
             Response response = invocationBuilder.get();
-            System.out.println("Cliente JasperRest: " + response.getStatus());
             if (response.getStatus() == 200) {
                 resultado = response.readEntity(InputStream.class);
             } else {
@@ -92,7 +90,6 @@ public class Cliente_Rest_Jasper implements Serializable {
                     .queryParam("j_password", j_password);
             Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON_TYPE);
             Response response = invocationBuilder.get();
-            System.out.println("Cliente JasperRest: " + response.getStatus());
             if (response.getStatus() == 200) {
                 resultado = response.readEntity(InputStream.class);
             } else {

@@ -58,7 +58,7 @@ public class Ctrl_Receptor_ND_V3 implements Serializable {
             }
 
             Long ID_DTE = id_dte;
-            Long ID_RECEPTOR = Long.parseLong("1");
+            Long ID_RECEPTOR = Long.valueOf("1");
             String NIT = ctrl_base_datos.ObtenerString("SELECT NVL(REPLACE(TRIM(F.ABTX2),'-',''),'-') FROM " + esquema + ".F0101@" + dblink + " F WHERE F.ABAN8=" + AN8_JDE, conn);
             NIT = NIT.replaceAll(" ", "");
             if(NIT.length() > 14) {
@@ -74,7 +74,7 @@ public class Ctrl_Receptor_ND_V3 implements Serializable {
             
             Long ID_CAT_019 = ctrl_base_datos.ObtenerLong("SELECT C.ID_CAT FROM CAT_019 C WHERE C.VALOR_JDE IN (SELECT TRIM(G.ABAC12) FROM " + esquema + ".F0101@" + dblink + " G WHERE G.ABAN8=" + AN8_JDE + ")", conn);
             if (ID_CAT_019 == null) {
-                ID_CAT_019 = Long.parseLong("772");
+                ID_CAT_019 = Long.valueOf("772");
             }
             String NOMBRECOMERCIAL = ctrl_base_datos.ObtenerString("SELECT NVL(TRIM(F.WWALPH),'-') FROM " + esquema + ".F0111@" + dblink + " F WHERE F.WWIDLN=0 AND F.WWAN8=" + AN8_JDE, conn);
             NOMBRECOMERCIAL = NOMBRECOMERCIAL.replaceAll("'", "");
@@ -83,8 +83,8 @@ public class Ctrl_Receptor_ND_V3 implements Serializable {
             Long ID_CAT_013 = ctrl_base_datos.ObtenerLong("SELECT C.ID_CAT FROM CAT_013 C WHERE C.VALOR_JDE IN (SELECT TRIM(G.ALCTY1) FROM " + esquema + ".F0116@" + dblink + " G WHERE G.ALAN8=" + AN8_JDE + ")", conn);
             String CODIGO_CAT_013 = ctrl_base_datos.ObtenerString("SELECT C.CODIGO FROM CAT_013 C WHERE C.ID_CAT=" + ID_CAT_013 + " AND C.ID_CAT_012=" + ID_CAT_012, conn);
             if(CODIGO_CAT_013 == null) {
-                ID_CAT_012 = Long.parseLong("6");
-                ID_CAT_013 = Long.parseLong("111");
+                ID_CAT_012 = Long.valueOf("6");
+                ID_CAT_013 = Long.valueOf("111");
             }
             String DIRECCION_COMPLEMENTO = ctrl_base_datos.ObtenerString("SELECT NVL(TRIM(F.ALADD2),' ') || ' ' || NVL(TRIM(F.ALADD3),' ') FROM " + esquema + ".F0116@" + dblink + " F WHERE F.ALAN8=" + AN8_JDE, conn);
             if (DIRECCION_COMPLEMENTO == null) {
@@ -125,11 +125,11 @@ public class Ctrl_Receptor_ND_V3 implements Serializable {
                     + TELEFONO + "','"
                     + CORREO + "')";
             Statement stmt = conn.createStatement();
-            System.out.println(cadenasql);
+            // System.out.println(cadenasql);
             stmt.executeUpdate(cadenasql);
             stmt.close();
             
-            Long ID_SHIPTO = Long.parseLong("1");
+            Long ID_SHIPTO = Long.valueOf("1");
             
             String NIT_SHAN = ctrl_base_datos.ObtenerString("SELECT NVL(REPLACE(TRIM(F.ABTX2),'-',''),'-') FROM " + esquema + ".F0101@" + dblink + " F WHERE F.ABAN8=" + SHAN_JDE, conn);
             NIT_SHAN = NIT_SHAN.replaceAll(" ", "");
@@ -146,7 +146,7 @@ public class Ctrl_Receptor_ND_V3 implements Serializable {
             
             Long ID_CAT_019_SHAN = ctrl_base_datos.ObtenerLong("SELECT C.ID_CAT FROM CAT_019 C WHERE C.VALOR_JDE IN (SELECT TRIM(G.ABAC12) FROM " + esquema + ".F0101@" + dblink + " G WHERE G.ABAN8=" + SHAN_JDE + ")", conn);
             if (ID_CAT_019_SHAN == null) {
-                ID_CAT_019_SHAN = Long.parseLong("772");
+                ID_CAT_019_SHAN = Long.valueOf("772");
             }
             String NOMBRECOMERCIAL_SHAN = ctrl_base_datos.ObtenerString("SELECT NVL(TRIM(F.WWALPH),'-') FROM " + esquema + ".F0111@" + dblink + " F WHERE F.WWIDLN=0 AND F.WWAN8=" + SHAN_JDE, conn);
             NOMBRECOMERCIAL_SHAN = NOMBRECOMERCIAL_SHAN.replaceAll("'", "");
@@ -155,8 +155,8 @@ public class Ctrl_Receptor_ND_V3 implements Serializable {
             Long ID_CAT_013_SHAN = ctrl_base_datos.ObtenerLong("SELECT C.ID_CAT FROM CAT_013 C WHERE C.VALOR_JDE IN (SELECT TRIM(G.ALCTY1) FROM " + esquema + ".F0116@" + dblink + " G WHERE G.ALAN8=" + SHAN_JDE + ")", conn);
             String CODIGO_CAT_013_SHAN = ctrl_base_datos.ObtenerString("SELECT C.CODIGO FROM CAT_013 C WHERE C.ID_CAT=" + ID_CAT_013_SHAN + " AND C.ID_CAT_012=" + ID_CAT_012_SHAN, conn);
             if(CODIGO_CAT_013_SHAN == null) {
-                ID_CAT_012_SHAN = Long.parseLong("6");
-                ID_CAT_013_SHAN = Long.parseLong("111");
+                ID_CAT_012_SHAN = Long.valueOf("6");
+                ID_CAT_013_SHAN = Long.valueOf("111");
             }
             String DIRECCION_COMPLEMENTO_SHAN = ctrl_base_datos.ObtenerString("SELECT NVL(TRIM(F.ALADD2),' ') || ' ' || NVL(TRIM(F.ALADD3),' ') FROM " + esquema + ".F0116@" + dblink + " F WHERE F.ALAN8=" + SHAN_JDE, conn);
             if (DIRECCION_COMPLEMENTO_SHAN == null) {
@@ -197,7 +197,7 @@ public class Ctrl_Receptor_ND_V3 implements Serializable {
                     + TELEFONO_SHAN + "','"
                     + CORREO_SHAN + "')";
             stmt = conn.createStatement();
-            System.out.println(cadenasql);
+            // System.out.println(cadenasql);
             stmt.executeUpdate(cadenasql);
             stmt.close();
             

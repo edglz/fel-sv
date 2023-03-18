@@ -47,7 +47,7 @@ public class Ctrl_Extension_ND_V3 implements Serializable {
             }
             
             Long ID_DTE = id_dte;
-            Long ID_EXTENSION = Long.parseLong("1");
+            Long ID_EXTENSION = Long.valueOf("1");
             String NOMBENTREGA = "UNO EL SALVADOR";
             String DOCUENTREGA = "06140404600015";
             
@@ -78,7 +78,7 @@ public class Ctrl_Extension_ND_V3 implements Serializable {
                     + DOCURECIBE + "','"
                     + OBSERVACIONES + "')";
             Statement stmt = conn.createStatement();
-            System.out.println(cadenasql);
+            // System.out.println(cadenasql);
             stmt.executeUpdate(cadenasql);
             stmt.close();
             

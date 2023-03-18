@@ -32,7 +32,7 @@ public class Ctrl_Base_Datos implements Serializable {
             
             DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
             resultado = DriverManager.getConnection("jdbc:oracle:thin:@//10.252.7.204:1521/unopetrol", usuario_db, contrasena_db);
-            System.out.println("Conexión satisfactoria: " + usuario_db);
+            // System.out.println("Conexión satisfactoria: " + usuario_db);
         } catch (Exception ex) {
             resultado = null;
             System.out.println("PROYECTO:api-grupoterra-svfel-v3|CLASE:" + this.getClass().getName() + "|METODO:obtener_conexion()|ERROR:" + ex.toString());
@@ -91,7 +91,7 @@ public class Ctrl_Base_Datos implements Serializable {
             rs.close();
             stmt.close();
         } catch (Exception ex) {
-            resultado = new Long(-1);
+            resultado = Long.valueOf(-1);
             System.out.println("PROYECTO:api-grupoterra-svfel-v3|CLASE:" + this.getClass().getName() + "|METODO:ObtenerLong()|ERROR:" + ex.toString());
         }
 

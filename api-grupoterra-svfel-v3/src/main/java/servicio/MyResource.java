@@ -19,7 +19,6 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import java.io.Serializable;
 import java.lang.reflect.Type;
-import java.text.SimpleDateFormat;
 import java.util.List;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -153,11 +152,6 @@ public class MyResource implements Serializable {
         String resultado = "";
 
         try {
-            SimpleDateFormat dateFormat1 = new SimpleDateFormat("yyyyMMdd");
-            SimpleDateFormat dateFormat2 = new SimpleDateFormat("yyyy-MM-dd");
-            System.out.println("FECHA FELSV: " + dateFormat2.format(dateFormat1.parse(fecha)));
-                    
-            System.out.println();
             Ctrl_DTE_V3 ctrl_dte_v3 = new Ctrl_DTE_V3();
             ctrl_dte_v3.selecionar_documentos_v3(ambiente, fecha, modo);
             
@@ -310,11 +304,6 @@ public class MyResource implements Serializable {
         String resultado = "";
 
         try {
-            SimpleDateFormat dateFormat1 = new SimpleDateFormat("yyyyMMdd");
-            SimpleDateFormat dateFormat2 = new SimpleDateFormat("yyyy-MM-dd");
-            System.out.println("FECHA FELSV: " + dateFormat2.format(dateFormat1.parse(fecha)));
-                    
-            System.out.println();
             Ctrl_DTE_V3 ctrl_dte_v3 = new Ctrl_DTE_V3();
             ctrl_dte_v3.selecionar_documentos_v3(ambiente, fecha, modo);
             
@@ -467,11 +456,6 @@ public class MyResource implements Serializable {
         String resultado = "";
 
         try {
-            SimpleDateFormat dateFormat1 = new SimpleDateFormat("yyyyMMdd");
-            SimpleDateFormat dateFormat2 = new SimpleDateFormat("yyyy-MM-dd");
-            System.out.println("FECHA FELSV: " + dateFormat2.format(dateFormat1.parse(fecha)));
-                    
-            System.out.println();
             Ctrl_DTE_V3 ctrl_dte_v3 = new Ctrl_DTE_V3();
             ctrl_dte_v3.selecionar_documentos_v3(ambiente, fecha, modo);
             

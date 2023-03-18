@@ -23,8 +23,7 @@ import org.glassfish.jersey.client.JerseyClientBuilder;
 public class Cliente_Rest_MH implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
-    // private static final String BASE_URI = "htps://apifacturatest.mh.gob.sv";
+    
     private static final String BASE_URI = "https://apitest.dtes.mh.gob.sv";
     private ClientConfig clientConfig;
     private Client client;
@@ -81,7 +80,7 @@ public class Cliente_Rest_MH implements Serializable {
         try {
             WebTarget webTarget = client.target(BASE_URI).path("seguridad/auth");
             Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON_TYPE);
-            MultivaluedMap<String, String> formData = new MultivaluedHashMap<String, String>();
+            MultivaluedMap<String, String> formData = new MultivaluedHashMap<>();
             formData.add("user", user);
             formData.add("pwd", pwd);
             Response response = invocationBuilder.post(Entity.form(formData));

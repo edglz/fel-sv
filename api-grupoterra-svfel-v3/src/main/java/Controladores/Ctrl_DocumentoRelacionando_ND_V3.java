@@ -57,7 +57,7 @@ public class Ctrl_DocumentoRelacionando_ND_V3 implements Serializable {
             }
             
             Long ID_DTE = id_dte;
-            Long ID_DOCUMENTOS_RELACIONADOS = Long.parseLong("1");
+            Long ID_DOCUMENTOS_RELACIONADOS = Long.valueOf("1");
 
             String documento_relacionado = ctrl_base_datos.ObtenerString("SELECT TRIM(F.SHTXCT) FROM " + esquema + "." + JEVER_JDE_CA + "@" + dblink + " F WHERE F.SHKCOO='" + KCOO_JDE + "' AND F.SHDOCO=" + DOCO_JDE + " AND F.SHDCTO='" + DCTO_JDE + "'", conn);
             if (documento_relacionado != null) {
@@ -65,19 +65,19 @@ public class Ctrl_DocumentoRelacionando_ND_V3 implements Serializable {
                 if (partes_documento_relacionado.length == 2) {
                     String DCTO_JDE_CCF = partes_documento_relacionado[0];
                     String DOCO_JDE_CCF = partes_documento_relacionado[1];
-                    System.out.println("********** DCTO_JDE_CCF: " + DCTO_JDE_CCF);
-                    System.out.println("********** DOCO_JDE_CCF: " + DOCO_JDE_CCF);
+                    // System.out.println("********** DCTO_JDE_CCF: " + DCTO_JDE_CCF);
+                    // System.out.println("********** DOCO_JDE_CCF: " + DOCO_JDE_CCF);
                     String codigo_generacion = ctrl_base_datos.ObtenerString("SELECT TRIM(F.FECRSREF02) FROM " + esquema + ".F5542FEL@" + dblink + " F WHERE F.FESTCD IN ('001','002') AND F.FEDOCO=" + DOCO_JDE_CCF + " AND F.FEDCTO='" + DCTO_JDE_CCF + "'", conn);
                     Long ID_CAT_002 = ctrl_base_datos.ObtenerLong("SELECT C.ID_CAT FROM CAT_002 C WHERE C.VALOR_JDE='" + DCTO_JDE_CCF + "'", conn);
                     Long ID_CAT_007;
                     String NUMERODOCUMENTO;
                     String FECHAEMISION;
                     if (codigo_generacion != null) {
-                        ID_CAT_007 = Long.parseLong("2");
+                        ID_CAT_007 = Long.valueOf("2");
                         NUMERODOCUMENTO = codigo_generacion;
                         FECHAEMISION = ctrl_base_datos.ObtenerString("SELECT TO_CHAR(F.FECHA_HORA_EMISION,'YYYY/MM/DD') || ' 00:00:00' FROM IDENTIFICACION_CCF_V3 F WHERE F.CODIGOGENERACION='" + NUMERODOCUMENTO + "'", conn);
                     } else {
-                        ID_CAT_007 = Long.parseLong("1");
+                        ID_CAT_007 = Long.valueOf("1");
                         String KCOO_JDE_RELA = ctrl_base_datos.ObtenerString("SELECT DISTINCT F.SDKCOO FROM " + esquema + ".F42119@" + dblink + " F WHERE F.SDDCTO='" + DCTO_JDE_CCF + "' AND F.SDDOCO=" + DOCO_JDE_CCF, conn);
                         String DCT_JDE_RELA = ctrl_base_datos.ObtenerString("SELECT DISTINCT F.SDDCT FROM " + esquema + ".F42119@" + dblink + " F WHERE F.SDDCTO='" + DCTO_JDE_CCF + "' AND F.SDDOCO=" + DOCO_JDE_CCF, conn);
                         String IVD_JDE_RELA = ctrl_base_datos.ObtenerString("SELECT DISTINCT F.SDIVD FROM " + esquema + ".F42119@" + dblink + " F WHERE F.SDDCTO='" + DCTO_JDE_CCF + "' AND F.SDDOCO=" + DOCO_JDE_CCF, conn);
@@ -102,7 +102,7 @@ public class Ctrl_DocumentoRelacionando_ND_V3 implements Serializable {
                             + NUMERODOCUMENTO + "',"
                             + "TO_DATE('" + FECHAEMISION + "','YYYY/MM/DD HH24:MI:SS')" + ")";
                     Statement stmt = conn.createStatement();
-                    System.out.println(cadenasql);
+                    // System.out.println(cadenasql);
                     stmt.executeUpdate(cadenasql);
                     stmt.close();
                     

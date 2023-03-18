@@ -101,7 +101,7 @@ public class Ctrl_Resumen_CCF_V3 implements Serializable {
             }
 
             Long ID_DTE = id_dte;
-            Long ID_RESUMEN = Long.parseLong("1");
+            Long ID_RESUMEN = Long.valueOf("1");
             Number TOTALNOSUJ = ctrl_base_datos.ObtenerDouble("SELECT SUM(F.VENTANOSUJ) FROM CUERPO_DOCU_CCF_V3 F WHERE F.ID_DTE=" + ID_DTE, conn);
             Number TOTALEXENTA = ctrl_base_datos.ObtenerDouble("SELECT SUM(F.VENTAEXENTA) FROM CUERPO_DOCU_CCF_V3 F WHERE F.ID_DTE=" + ID_DTE, conn);
             Number TOTALGRAVADA = ctrl_base_datos.ObtenerDouble("SELECT SUM(F.VENTAGRAVADA) FROM CUERPO_DOCU_CCF_V3 F WHERE F.ID_DTE=" + ID_DTE, conn);
@@ -134,15 +134,13 @@ public class Ctrl_Resumen_CCF_V3 implements Serializable {
             } else {
                 NUMERO_PARTES[1] = "00";
             }
-            System.out.println("********** PARTE ENTERA: " + NUMERO_PARTES[0]);
-            System.out.println("********** PARTE DECIMAL: " + NUMERO_PARTES[1]);
             String TOTALLETRAS = driver.cantidadConLetra(TOTALPAGAR_LONG.toString()).toUpperCase() + " DOLARES CON " + NUMERO_PARTES[1] + "/100";
             Number SALDOFAVOR = 0.00;
-            Long ID_CAT_016 = Long.parseLong("2");
+            Long ID_CAT_016 = Long.valueOf("2");
             Long ID_CAT_017 = null;
             Number PAGOS_MONTOPAGO = null;
             String PAGOS_REFERENCIA = null;
-            Long ID_CAT_018 = Long.parseLong("1");
+            Long ID_CAT_018 = Long.valueOf("1");
             Number PAGOS_PERIODO = 1;
             String NUMPAGOELECTRONICO = null;
 
@@ -202,14 +200,14 @@ public class Ctrl_Resumen_CCF_V3 implements Serializable {
                     + PAGOS_PERIODO + ","
                     + NUMPAGOELECTRONICO + ")";
             Statement stmt = conn.createStatement();
-            System.out.println(cadenasql);
+            // System.out.println(cadenasql);
             stmt.executeUpdate(cadenasql);
             stmt.close();
 
             cadenasql = "SELECT F.ID_CAT_015, SUM(F.VALOR) VALOR FROM CUERPO_TRIBUTO_CCF_V3 F WHERE F.ID_CAT_015 NOT IN (18) AND F.ID_DTE=" + ID_DTE + " GROUP BY F.ID_CAT_015";
             stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(cadenasql);
-            Long NUM_TRIBUTO = Long.parseLong("0");
+            Long NUM_TRIBUTO = Long.valueOf("0");
             while (rs.next()) {
                 NUM_TRIBUTO++;
                 Long ID_CAT_015 = rs.getLong(1);
@@ -227,7 +225,7 @@ public class Ctrl_Resumen_CCF_V3 implements Serializable {
                         + ID_CAT_015 + ","
                         + VALOR + ")";
                 Statement stmt1 = conn.createStatement();
-                System.out.println(cadenasql);
+                // System.out.println(cadenasql);
                 stmt1.executeUpdate(cadenasql);
                 stmt1.close();
             }

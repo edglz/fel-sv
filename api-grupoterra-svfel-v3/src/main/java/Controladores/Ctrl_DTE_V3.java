@@ -20,20 +20,20 @@ public class Ctrl_DTE_V3 implements Serializable {
         try {
             Ctrl_Base_Datos ctrl_base_datos = new Ctrl_Base_Datos();
             conn = ctrl_base_datos.obtener_conexion(ambiente);
-            
+
             String esquema;
             String dblink;
-            if(ambiente.equals("PY")) {
+            if (ambiente.equals("PY")) {
                 esquema = "CRPDTA";
                 dblink = "JDEPY";
             } else {
                 esquema = "PRODDTA";
                 dblink = "JDEPD";
             }
-            
+
             conn.setAutoCommit(false);
-            
-            System.out.println("SELECT TO_NUMBER(SUBSTR(TO_CHAR(TO_DATE('" + fecha + "','YYYYMMDD'),'ccYYddd'),2,6)) IVD FROM DUAL");
+
+            // System.out.println("SELECT TO_NUMBER(SUBSTR(TO_CHAR(TO_DATE('" + fecha + "','YYYYMMDD'),'ccYYddd'),2,6)) IVD FROM DUAL");
             Long ivd = ctrl_base_datos.ObtenerLong("SELECT TO_NUMBER(SUBSTR(TO_CHAR(TO_DATE('" + fecha + "','YYYYMMDD'),'ccYYddd'),2,6)) IVD FROM DUAL", conn);
 
             String STCD;
@@ -45,13 +45,21 @@ public class Ctrl_DTE_V3 implements Serializable {
                 STCD = "999";
             }
             
-            String cadenasql = "SELECT DISTINCT F.SDKCOO, F.SDDOCO, F.SDDCTO, F.SDDOC, F.SDDCT, F.SDMCU, F.SDAN8, F.SDSHAN, F.SDCRCD, F.SDIVD, '" + STCD + "' STCD, '-' CRSREF01, '-' CRSREF02, '-' CRSREF03, '-' CRSREF04, '-' CRSREF05, '" + tabla_sales_orders + "' TABLA "
-                        + "FROM " + esquema + "." + tabla_sales_orders + "@" + dblink + " F "
-                        + "WHERE (TRIM(F.SDKCO) IN (SELECT C.KCOO_JDE FROM EMISOR_KCOO_V3 C)) AND (F.SDDOC > 0) AND (TRIM(F.SDLTTR) NOT IN ('904','902','900','980')) AND (TRIM(F.SDDCTO) IN ('S3','C3','SD')) AND (TRIM(F.SDCRMD) IS NULL) AND (F.SDIVD = " + ivd + ")";
-            
+            String cadenasql = "SELECT DISTINCT F.SDKCOO, F.SDDOCO, F.SDDCTO, F.SDDOC, F.SDDCT, F.SDMCU, F.SDAN8, F.SDSHAN, F.SDCRCD, F.SDIVD, '" + STCD + "' STCD, '-' CRSREF01, '-' CRSREF02, '-' CRSREF03, '-' CRSREF04, '-' CRSREF05, '" + tabla_sales_orders + "' TABLA, TRIM(F.SDTXA1) SDTXA1 "
+                    + "FROM " + esquema + "." + tabla_sales_orders + "@" + dblink + " F "
+                    + "WHERE (TRIM(F.SDKCO) IN (SELECT C.KCOO_JDE FROM EMISOR_KCOO_V3 C)) AND (F.SDDOC > 0) AND (TRIM(F.SDLTTR) NOT IN ('904','902','900','980')) AND (TRIM(F.SDDCTO) IN ('S3','C3','SD')) AND (TRIM(F.SDCRMD) IS NULL) AND (F.SDIVD = " + ivd + ")";
+
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(cadenasql);
-            while(rs.next()) {
+            while (rs.next()) {
+                String TXA1 = rs.getString(18);
+                String DCTO;
+                if (TXA1.equals("EIVAF")) {
+                    DCTO = "FE";
+                } else {
+                    DCTO = "S3";
+                }
+
                 cadenasql = "INSERT INTO " + esquema + ".F5542FEL@" + dblink + " ("
                         + "FEKCOO, "
                         + "FEDOCO, "
@@ -72,7 +80,7 @@ public class Ctrl_DTE_V3 implements Serializable {
                         + "FEJEVER) VALUES ('"
                         + rs.getString(1) + "','"
                         + rs.getString(2) + "','"
-                        + rs.getString(3) + "','"
+                        + DCTO + "','"
                         + rs.getString(4) + "','"
                         + rs.getString(5) + "','"
                         + rs.getString(6) + "','"
@@ -88,22 +96,22 @@ public class Ctrl_DTE_V3 implements Serializable {
                         + rs.getString(16) + "','"
                         + rs.getString(17) + "')";
                 Statement stmt1 = conn.createStatement();
-                System.out.println(cadenasql);
+                // System.out.println(cadenasql);
                 stmt1.executeUpdate(cadenasql);
                 stmt1.close();
-                
+
                 cadenasql = "UPDATE " + esquema + "." + rs.getString(17) + "@" + dblink + " "
                         + "SET SDCRMD='4' "
                         + "WHERE SDKCOO='" + rs.getString(1) + "' AND SDDOCO=" + rs.getString(2) + " AND SDDCTO='" + rs.getString(3) + "' AND SDDOC=" + rs.getString(4) + " AND SDDCT='" + rs.getString(5) + "'";
                 stmt1 = conn.createStatement();
-                System.out.println(cadenasql);
+                // System.out.println(cadenasql);
                 stmt1.executeUpdate(cadenasql);
                 stmt1.close();
                 resultado++;
             }
             rs.close();
             stmt.close();
-            
+
             conn.commit();
             conn.setAutoCommit(true);
         } catch (Exception ex) {
@@ -130,5 +138,5 @@ public class Ctrl_DTE_V3 implements Serializable {
 
         return resultado;
     }
-    
+
 }

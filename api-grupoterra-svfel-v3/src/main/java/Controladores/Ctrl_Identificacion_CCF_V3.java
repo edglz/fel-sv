@@ -45,13 +45,13 @@ public class Ctrl_Identificacion_CCF_V3 implements Serializable {
             Ctrl_Base_Datos ctrl_base_datos = new Ctrl_Base_Datos();
             
             Long ID_DTE = id_dte;
-            Long ID_IDENTIFICACION = Long.parseLong("1");
-            Long DTE_VERSION = Long.parseLong("3");            
+            Long ID_IDENTIFICACION = Long.valueOf("1");
+            Long DTE_VERSION = Long.valueOf("3");            
             Long ID_CAT_001;
             if(ambiente.equals("PY")) {
-                ID_CAT_001 = Long.parseLong("1");
+                ID_CAT_001 = Long.valueOf("1");
             } else {
-                ID_CAT_001 = Long.parseLong("2");
+                ID_CAT_001 = Long.valueOf("2");
             }
             Long ID_CAT_002 = ctrl_base_datos.ObtenerLong("SELECT C.ID_CAT FROM CAT_002 C WHERE C.VALOR_JDE='" + DCTO_JDE + "'", conn);
             String NUMEROCONTROL = "DTE-" 
@@ -61,12 +61,12 @@ public class Ctrl_Identificacion_CCF_V3 implements Serializable {
                     + ctrl_base_datos.ObtenerString("SELECT LPAD(F.CORRELATIVO_CCF + 1, 15, '0') FROM EMISOR_ESTABLECIMIENTO_V3 F WHERE F.CODPUNTOVENTA='" + MCU_JDE + "'", conn);
             String cadenasql = "UPDATE EMISOR_ESTABLECIMIENTO_V3 SET CORRELATIVO_CCF=CORRELATIVO_CCF+1 WHERE CODPUNTOVENTA='" + MCU_JDE + "'";
             Statement stmt = conn.createStatement();
-            System.out.println(cadenasql);
+            // System.out.println(cadenasql);
             stmt.executeUpdate(cadenasql);
             stmt.close();
             String CODIGOGENERACION = UUID.randomUUID().toString().toUpperCase();
-            Long ID_CAT_003 = Long.parseLong("1");
-            Long ID_CAT_004 = Long.parseLong("1");
+            Long ID_CAT_003 = Long.valueOf("1");
+            Long ID_CAT_004 = Long.valueOf("1");
             Long ID_CAT_005 = null;
             String MOTIVOCONTIN = null;
             String FECHA_HORA_EMISION = ctrl_base_datos.ObtenerString("SELECT TO_CHAR(CURRENT_DATE,'YYYY/MM/DD') || ' ' || TO_CHAR(CURRENT_TIMESTAMP,'HH24:MI:SS') FECHA_HORA_EMISION FROM DUAL", conn);
@@ -100,7 +100,7 @@ public class Ctrl_Identificacion_CCF_V3 implements Serializable {
                     + "TO_DATE('" + FECHA_HORA_EMISION + "','YYYY/MM/DD HH24:MI:SS')" + ",'"
                     + TIPOMONEDA + "')";
             stmt = conn.createStatement();
-            System.out.println(cadenasql);
+            // System.out.println(cadenasql);
             stmt.executeUpdate(cadenasql);
             stmt.close();
             

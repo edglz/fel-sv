@@ -58,7 +58,7 @@ public class Ctrl_Apendice_ND_V3 implements Serializable {
             }
             
             Long ID_DTE = id_dte;
-            Long ID_APENDICE = Long.parseLong("1");
+            Long ID_APENDICE = Long.valueOf("1");
             String CAMPO = "SELLOS";
             String ETIQUETA = "SELLOS DE SEGURIDAD";
             String TDLDNM = ctrl_base_datos.ObtenerString("SELECT DISTINCT F.TDLDNM FROM " + esquema + ".F49621@" + dblink + " F WHERE F.TDDCTO='" + DCTO_JDE + "' AND F.TDDOCO=" + DOCO_JDE + " AND TRIM(F.TDVMCU)='" + MCU_JDE + "'", conn);
@@ -82,7 +82,7 @@ public class Ctrl_Apendice_ND_V3 implements Serializable {
                     + ETIQUETA + "','"
                     + VALOR + "')";
             Statement stmt = conn.createStatement();
-            System.out.println(cadenasql);
+            // System.out.println(cadenasql);
             stmt.executeUpdate(cadenasql);
             stmt.close();
             

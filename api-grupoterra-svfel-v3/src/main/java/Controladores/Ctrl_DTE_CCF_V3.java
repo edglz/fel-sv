@@ -65,7 +65,7 @@ public class Ctrl_DTE_CCF_V3 implements Serializable {
                     + "F.FESTCD='000' AND "
                     + "F.FEDCTO='S3'";
             Statement stmt = conn.createStatement();
-            System.out.println(cadenasql);
+            // System.out.println(cadenasql);
             ResultSet rs = stmt.executeQuery(cadenasql);
             while (rs.next()) {
                 Long ID_DTE = ctrl_base_datos.ObtenerLong("SELECT NVL(MAX(F.ID_DTE), 0) + 1 MAXIMO FROM DTE_CCF_V3 F", conn);
@@ -122,7 +122,7 @@ public class Ctrl_DTE_CCF_V3 implements Serializable {
                         + ID_EMISOR + ","
                         + "null, null, null, null, null, null, null, null, null, null, null)";
                 Statement stmt1 = conn.createStatement();
-                System.out.println(cadenasql);
+                // System.out.println(cadenasql);
                 stmt1.executeUpdate(cadenasql);
                 stmt1.close();
 
@@ -130,7 +130,7 @@ public class Ctrl_DTE_CCF_V3 implements Serializable {
                         + "SET FESTCD='999' "
                         + "WHERE FEKCOO='" + KCOO_JDE + "' AND FEDOCO=" + DOCO_JDE + " AND FEDCTO='" + DCTO_JDE + "' AND FEDOC=" + DOC_JDE + " AND FEDCT='" + DCT_JDE + "'";
                 stmt1 = conn.createStatement();
-                System.out.println(cadenasql);
+                // System.out.println(cadenasql);
                 stmt1.executeUpdate(cadenasql);
                 stmt1.close();
 
@@ -280,7 +280,7 @@ public class Ctrl_DTE_CCF_V3 implements Serializable {
                     + "WHERE "
                     + "ID_DTE=" + id_dte;
             Statement stmt = conn.createStatement();
-            System.out.println(cadenasql);
+            // System.out.println(cadenasql);
             stmt.executeUpdate(cadenasql);
             stmt.close();
 
@@ -298,7 +298,7 @@ public class Ctrl_DTE_CCF_V3 implements Serializable {
                     + "FECRSREF03='" + respuesta_recepciondte_mh.getSelloRecibido() + "' "
                     + "WHERE FEKCOO='" + KCOO_JDE + "' AND FEDOCO=" + DOCO_JDE + " AND FEDCTO='" + DCTO_JDE + "' AND FEDOC=" + DOC_JDE + " AND FEDCT='" + DCT_JDE + "'";
             stmt = conn.createStatement();
-            System.out.println(cadenasql);
+            // System.out.println(cadenasql);
             stmt.executeUpdate(cadenasql);
             stmt.close();
 
@@ -418,7 +418,7 @@ public class Ctrl_DTE_CCF_V3 implements Serializable {
                 
                 Cliente_Rest_SendMail cliente_rest_sendmail = new Cliente_Rest_SendMail();
                 String resul_envio_correo = cliente_rest_sendmail.sendmail(new Gson().toJson(mensaje_correo));
-                System.out.println("Notificación Correo: " + resul_envio_correo);
+                // System.out.println("Notificación Correo: " + resul_envio_correo);
             } else {
                 Mensaje_Correo mensaje_correo = new Mensaje_Correo();
                 String send_to = ctrl_base_datos.ObtenerString("SELECT LISTAGG(TO_CHAR(TRIM(F.CUENTA_CORREO)),', ') WITHIN GROUP (ORDER BY TO_CHAR(TRIM(F.CUENTA_CORREO))) CUENTAS_CORREO FROM NOTIFIACION_CORREO_V3 F WHERE F.ACTIVO=1", conn);
@@ -433,7 +433,7 @@ public class Ctrl_DTE_CCF_V3 implements Serializable {
                 
                 Cliente_Rest_SendMail cliente_rest_sendmail = new Cliente_Rest_SendMail();
                 String resul_envio_correo = cliente_rest_sendmail.sendmail(new Gson().toJson(mensaje_correo));
-                System.out.println("Notificación Correo: " + resul_envio_correo);
+                // System.out.println("Notificación Correo: " + resul_envio_correo);
             }
         } catch (Exception ex) {
             try {

@@ -27,12 +27,14 @@ SELECT C.* FROM CAT_022 C ORDER BY C.ID_CAT;
 SELECT C.* FROM CAT_023 C ORDER BY C.ID_CAT;
 SELECT C.* FROM CAT_024 C ORDER BY C.ID_CAT;
 SELECT C.* FROM CAT_025 C ORDER BY C.ID_CAT;
+SELECT C.* FROM CAT_026 C ORDER BY C.ID_CAT;
 SELECT C.* FROM CAT_027 C ORDER BY C.ID_CAT;
 SELECT C.* FROM CAT_028 C ORDER BY C.ID_CAT;
 SELECT C.* FROM CAT_029 C ORDER BY C.ID_CAT;
 SELECT C.* FROM CAT_030 C ORDER BY C.ID_CAT;
 SELECT C.* FROM CAT_031 C ORDER BY C.ID_CAT;
 SELECT C.* FROM CAT_032 C ORDER BY C.ID_CAT;
+SELECT C.* FROM CAT_033 C ORDER BY C.ID_CAT;
 
 -- ***************************************************************************************************************************
 -- *          CONSULTA DE TABLAS EMISOR, SHAN, COMPAÑIA Y ESTABLECIMIENTO FEL-SV.                                            *
@@ -58,6 +60,8 @@ COMMIT;
 -- ***************************************************************************************************************************
 -- *          CONSULTA DE TABLA FEL JD EDWARDS FEL-SV.                                                                       *
 -- ***************************************************************************************************************************
+SELECT F.* FROM CRPDTA.F5542FEL@JDEPY F;
+
 SELECT F.FEKCOO, F.FEDOCO, F.FEDCTO, F.FEDOC, F.FEDCT, F.FEMCU, F.FEAN8, F.FESHAN, F.FECRCD, F.FESTCD, F.FEIVD, F.FECRSREF01, F.FECRSREF02, F.FECRSREF03, F.FECRSREF04, F.FECRSREF05, F.FEJEVER
 FROM CRPDTA.F5542FEL@JDEPY F
 WHERE F.FEDCTO='S3' AND F.FESTCD='000';
@@ -149,7 +153,7 @@ SELECT F.* FROM RESUMEN_TRIBUTO_ND_V3 F ORDER BY F.ID_DTE DESC;
 SELECT F.* FROM EXTENSION_ND_V3 F ORDER BY F.ID_DTE DESC;
 SELECT F.* FROM APENDICE_ND_V3 F ORDER BY F.ID_DTE DESC;
 
-SELECT F.* FROM DTE_ND_V3 F WHERE F.ID_DTE IN (1);
+SELECT F.* FROM DTE_ND_V3 F WHERE F.ID_DTE IN (63);
 SELECT F.* FROM IDENTIFICACION_ND_V3 F WHERE F.ID_DTE IN (1);
 SELECT F.* FROM DOCU_RELA_ND_V3 F WHERE F.ID_DTE IN (1);
 SELECT F.* FROM RECEPTOR_ND_V3 F WHERE F.ID_DTE IN (1);
@@ -168,3 +172,24 @@ SELECT F.* FROM APENDICE_ND_V3 F WHERE F.ID_DTE IN (1);
 SELECT F.* FROM CRPDTA.F59421CA@JDEPY F;
 SELECT F.* FROM CRPDTA.F59421DE@JDEPY F; -- ESTA TABLA NO SE PUEDE CONSULTAR A TRAVES DE DBLINK.
 SELECT F.* FROM CRPDTA.F5942PAR@JDEPY F;
+
+-- ***************************************************************************************************************************
+-- *          QUERY PARA FECHAS JULIANAS Y GREGORIANAS.                                                                      *
+-- ***************************************************************************************************************************
+SELECT TO_NUMBER(SUBSTR(TO_CHAR(TO_DATE('19/11/2019','dd/MM/yyyy'),'ccYYddd'),2,6)) FECHA_JULIANA FROM DUAL;
+SELECT TO_CHAR(TO_DATE(TO_CHAR(A.SDIVD + 1900000,'9999999'),'YYYYDDD'),'dd/MM/yyyy') FECHA_GREGORIANA FROM DUAL;
+
+SELECT C.* FROM EMISOR_KCOO_V3 C;
+
+SELECT DISTINCT F.SDKCOO, F.SDDOCO, F.SDDCTO, F.SDDOC, F.SDDCT, F.SDMCU, F.SDAN8, F.SDSHAN, F.SDCRCD, F.SDIVD, '999' STCD, '-' CRSREF01, '-' CRSREF02, '-' CRSREF03, '-' CRSREF04, '-' CRSREF05, 'F42119' TABLA
+FROM PRODDTA.F4211@JDEPD F
+WHERE 
+    (TRIM(F.SDKCO) IN (SELECT C.KCOO_JDE FROM EMISOR_KCOO_V3 C)) AND 
+    (F.SDDOC > 0) AND 
+    (TRIM(F.SDLTTR) NOT IN ('904','902','900','980')) AND 
+    (TRIM(F.SDDCTO) IN ('S3','C3','SD')) AND 
+    (TRIM(F.SDCRMD) IS NULL) AND 
+    (F.SDIVD = 123000);
+
+
+SELECT F.* FROM 
