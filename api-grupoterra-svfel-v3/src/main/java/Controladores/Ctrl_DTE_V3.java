@@ -53,11 +53,9 @@ public class Ctrl_DTE_V3 implements Serializable {
             ResultSet rs = stmt.executeQuery(cadenasql);
             while (rs.next()) {
                 String TXA1 = rs.getString(18);
-                String DCTO;
-                if (TXA1.equals("EIVAF")) {
+                String DCTO = rs.getString(3);
+                if (TXA1.equals("EIVAF") && DCTO.equals("S3")) {
                     DCTO = "FE";
-                } else {
-                    DCTO = "S3";
                 }
 
                 cadenasql = "INSERT INTO " + esquema + ".F5542FEL@" + dblink + " ("

@@ -122,7 +122,7 @@ public class Ctrl_DTE_CCF_V3 implements Serializable {
                         + ID_EMISOR + ","
                         + "null, null, null, null, null, null, null, null, null, null, null)";
                 Statement stmt1 = conn.createStatement();
-                // System.out.println(cadenasql);
+                System.out.println(cadenasql);
                 stmt1.executeUpdate(cadenasql);
                 stmt1.close();
 
@@ -130,7 +130,7 @@ public class Ctrl_DTE_CCF_V3 implements Serializable {
                         + "SET FESTCD='999' "
                         + "WHERE FEKCOO='" + KCOO_JDE + "' AND FEDOCO=" + DOCO_JDE + " AND FEDCTO='" + DCTO_JDE + "' AND FEDOC=" + DOC_JDE + " AND FEDCT='" + DCT_JDE + "'";
                 stmt1 = conn.createStatement();
-                // System.out.println(cadenasql);
+                System.out.println(cadenasql);
                 stmt1.executeUpdate(cadenasql);
                 stmt1.close();
 
@@ -280,7 +280,7 @@ public class Ctrl_DTE_CCF_V3 implements Serializable {
                     + "WHERE "
                     + "ID_DTE=" + id_dte;
             Statement stmt = conn.createStatement();
-            // System.out.println(cadenasql);
+            System.out.println(cadenasql);
             stmt.executeUpdate(cadenasql);
             stmt.close();
 
@@ -298,7 +298,7 @@ public class Ctrl_DTE_CCF_V3 implements Serializable {
                     + "FECRSREF03='" + respuesta_recepciondte_mh.getSelloRecibido() + "' "
                     + "WHERE FEKCOO='" + KCOO_JDE + "' AND FEDOCO=" + DOCO_JDE + " AND FEDCTO='" + DCTO_JDE + "' AND FEDOC=" + DOC_JDE + " AND FEDCT='" + DCT_JDE + "'";
             stmt = conn.createStatement();
-            // System.out.println(cadenasql);
+            System.out.println(cadenasql);
             stmt.executeUpdate(cadenasql);
             stmt.close();
 

@@ -117,14 +117,14 @@ public class Ctrl_Receptor_F_V3 implements Serializable {
                     + NUM_DOCUMENTO + "','"
                     + NRC + "','"
                     + NOMBRE + "',"
-                    + ID_CAT_019 + ",'"
+                    + ID_CAT_019 + ","
                     + ID_CAT_012 + ","
                     + ID_CAT_013 + ",'"
                     + DIRECCION_COMPLEMENTO + "','"
                     + TELEFONO + "','"
                     + CORREO + "')";
             Statement stmt = conn.createStatement();
-            // System.out.println(cadenasql);
+            System.out.println(cadenasql);
             stmt.executeUpdate(cadenasql);
             stmt.close();
             
@@ -189,14 +189,14 @@ public class Ctrl_Receptor_F_V3 implements Serializable {
                     + NUM_DOCUMENTO_SHAN + "','"
                     + NRC_SHAN + "','"
                     + NOMBRE_SHAN + "',"
-                    + ID_CAT_019_SHAN + ",'"
+                    + ID_CAT_019_SHAN + ","
                     + ID_CAT_012_SHAN + ","
                     + ID_CAT_013_SHAN + ",'"
                     + DIRECCION_COMPLEMENTO_SHAN + "','"
                     + TELEFONO_SHAN + "','"
                     + CORREO_SHAN + "')";
             stmt = conn.createStatement();
-            // System.out.println(cadenasql);
+            System.out.println(cadenasql);
             stmt.executeUpdate(cadenasql);
             stmt.close();
             

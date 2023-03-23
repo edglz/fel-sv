@@ -53,15 +53,15 @@ public class Ctrl_Identificacion_F_V3 implements Serializable {
             } else {
                 ID_CAT_001 = Long.valueOf("2");
             }
-            Long ID_CAT_002 = ctrl_base_datos.ObtenerLong("SELECT C.ID_CAT FROM CAT_002 C WHERE C.VALOR_JDE='" + DCTO_JDE + "'", conn);
+            Long ID_CAT_002 = ctrl_base_datos.ObtenerLong("SELECT C.ID_CAT FROM CAT_002 C WHERE C.VALOR_JDE='FE'", conn);
             String NUMEROCONTROL = "DTE-" 
-                    + ctrl_base_datos.ObtenerString("SELECT C.CODIGO FROM CAT_002 C WHERE C.VALOR_JDE='" + DCTO_JDE + "'", conn) + "-"
+                    + ctrl_base_datos.ObtenerString("SELECT C.CODIGO FROM CAT_002 C WHERE C.VALOR_JDE='FE'", conn) + "-"
                     + ctrl_base_datos.ObtenerString("SELECT F.CODESTABLE FROM EMISOR_ESTABLECIMIENTO_V3 F WHERE F.CODPUNTOVENTA='" + MCU_JDE + "'", conn)
                     + MCU_JDE + "-"
                     + ctrl_base_datos.ObtenerString("SELECT LPAD(F.CORRELATIVO_F + 1, 15, '0') FROM EMISOR_ESTABLECIMIENTO_V3 F WHERE F.CODPUNTOVENTA='" + MCU_JDE + "'", conn);
             String cadenasql = "UPDATE EMISOR_ESTABLECIMIENTO_V3 SET CORRELATIVO_F=CORRELATIVO_F+1 WHERE CODPUNTOVENTA='" + MCU_JDE + "'";
             Statement stmt = conn.createStatement();
-            // System.out.println(cadenasql);
+            System.out.println(cadenasql);
             stmt.executeUpdate(cadenasql);
             stmt.close();
             String CODIGOGENERACION = UUID.randomUUID().toString().toUpperCase();
@@ -100,7 +100,7 @@ public class Ctrl_Identificacion_F_V3 implements Serializable {
                     + "TO_DATE('" + FECHA_HORA_EMISION + "','YYYY/MM/DD HH24:MI:SS')" + ",'"
                     + TIPOMONEDA + "')";
             stmt = conn.createStatement();
-            // System.out.println(cadenasql);
+            System.out.println(cadenasql);
             stmt.executeUpdate(cadenasql);
             stmt.close();
             
