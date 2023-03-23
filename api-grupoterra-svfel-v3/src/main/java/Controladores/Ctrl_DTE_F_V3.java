@@ -63,7 +63,7 @@ public class Ctrl_DTE_F_V3 implements Serializable {
                     + esquema + ".F5542FEL@" + dblink + " F "
                     + "WHERE "
                     + "F.FESTCD='000' AND "
-                    + "F.FEDCTO='S3'";
+                    + "F.FEDCTO='FE'";
             Statement stmt = conn.createStatement();
             // System.out.println(cadenasql);
             ResultSet rs = stmt.executeQuery(cadenasql);
