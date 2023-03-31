@@ -19,12 +19,13 @@ public class Resumen_nd implements Serializable {
     private Number subTotal;
     private Number ivaPerci1;
     private Number ivaRete1;
+    private Number reteRenta;
     private Number montoTotalOperacion;
     private String totalLetras;
     private Number condicionOperacion;
     private String numPagoElectronico;
 
-    public Resumen_nd(Number totalNoSuj, Number totalExenta, Number totalGravada, Number subTotalVentas, Number descuNoSuj, Number descuExenta, Number descuGravada, Number totalDescu, List<Tributo> tributos, Number subTotal, Number ivaPerci1, Number ivaRete1, Number montoTotalOperacion, String totalLetras, Number condicionOperacion, String numPagoElectronico) {
+    public Resumen_nd(Number totalNoSuj, Number totalExenta, Number totalGravada, Number subTotalVentas, Number descuNoSuj, Number descuExenta, Number descuGravada, Number totalDescu, List<Tributo> tributos, Number subTotal, Number ivaPerci1, Number ivaRete1, Number reteRenta, Number montoTotalOperacion, String totalLetras, Number condicionOperacion, String numPagoElectronico) {
         this.totalNoSuj = totalNoSuj;
         this.totalExenta = totalExenta;
         this.totalGravada = totalGravada;
@@ -37,6 +38,7 @@ public class Resumen_nd implements Serializable {
         this.subTotal = subTotal;
         this.ivaPerci1 = ivaPerci1;
         this.ivaRete1 = ivaRete1;
+        this.reteRenta = reteRenta;
         this.montoTotalOperacion = montoTotalOperacion;
         this.totalLetras = totalLetras;
         this.condicionOperacion = condicionOperacion;
@@ -142,6 +144,14 @@ public class Resumen_nd implements Serializable {
         this.ivaRete1 = ivaRete1;
     }
 
+    public Number getReteRenta() {
+        return reteRenta;
+    }
+
+    public void setReteRenta(Number reteRenta) {
+        this.reteRenta = reteRenta;
+    }
+
     public Number getMontoTotalOperacion() {
         return montoTotalOperacion;
     }
@@ -176,7 +186,7 @@ public class Resumen_nd implements Serializable {
 
     @Override
     public String toString() {
-        return "Resumen_nd{" + "totalNoSuj=" + totalNoSuj + ", totalExenta=" + totalExenta + ", totalGravada=" + totalGravada + ", subTotalVentas=" + subTotalVentas + ", descuNoSuj=" + descuNoSuj + ", descuExenta=" + descuExenta + ", descuGravada=" + descuGravada + ", totalDescu=" + totalDescu + ", tributos=" + tributos + ", subTotal=" + subTotal + ", ivaPerci1=" + ivaPerci1 + ", ivaRete1=" + ivaRete1 + ", montoTotalOperacion=" + montoTotalOperacion + ", totalLetras=" + totalLetras + ", condicionOperacion=" + condicionOperacion + ", numPagoElectronico=" + numPagoElectronico + '}';
+        return "Resumen_nd{" + "totalNoSuj=" + totalNoSuj + ", totalExenta=" + totalExenta + ", totalGravada=" + totalGravada + ", subTotalVentas=" + subTotalVentas + ", descuNoSuj=" + descuNoSuj + ", descuExenta=" + descuExenta + ", descuGravada=" + descuGravada + ", totalDescu=" + totalDescu + ", tributos=" + tributos + ", subTotal=" + subTotal + ", ivaPerci1=" + ivaPerci1 + ", ivaRete1=" + ivaRete1 + ", reteRenta=" + reteRenta + ", montoTotalOperacion=" + montoTotalOperacion + ", totalLetras=" + totalLetras + ", condicionOperacion=" + condicionOperacion + ", numPagoElectronico=" + numPagoElectronico + '}';
     }
     
 }

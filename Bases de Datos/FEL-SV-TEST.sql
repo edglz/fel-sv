@@ -242,3 +242,5 @@ SELECT F.* FROM CRPDTA.F5942PAR@JDEPY F;
 -- ***************************************************************************************************************************
 SELECT TO_NUMBER(SUBSTR(TO_CHAR(TO_DATE('04/01/2022','dd/MM/yyyy'),'ccYYddd'),2,6)) FECHA_JULIANA FROM DUAL;
 SELECT TO_CHAR(TO_DATE(TO_CHAR(A.SDIVD + 1900000,'9999999'),'YYYYDDD'),'dd/MM/yyyy') FECHA_GREGORIANA FROM DUAL;
+
+SELECT F.ABAC30, COUNT(*) NUMERO FROM CRPDTA.F0101@JDEPY F GROUP BY F.ABAC30;

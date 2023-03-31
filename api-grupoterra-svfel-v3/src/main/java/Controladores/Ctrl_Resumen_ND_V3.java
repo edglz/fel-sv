@@ -56,6 +56,7 @@ public class Ctrl_Resumen_ND_V3 implements Serializable {
             resultado.setSubTotal(ctrl_base_datos.ObtenerDouble("SELECT F.SUBTOTAL FROM RESUMEN_ND_V3 F WHERE F.ID_DTE=" + id_dte, conn));
             resultado.setIvaPerci1(ctrl_base_datos.ObtenerDouble("SELECT F.IVAPERCI1 FROM RESUMEN_ND_V3 F WHERE F.ID_DTE=" + id_dte, conn));
             resultado.setIvaRete1(ctrl_base_datos.ObtenerDouble("SELECT F.IVARETE1 FROM RESUMEN_ND_V3 F WHERE F.ID_DTE=" + id_dte, conn));
+            resultado.setReteRenta(ctrl_base_datos.ObtenerDouble("SELECT F.RETERENTA FROM RESUMEN_ND_V3 F WHERE F.ID_DTE=" + id_dte, conn));
             resultado.setMontoTotalOperacion(ctrl_base_datos.ObtenerDouble("SELECT F.MONTOTOTALOPERACION FROM RESUMEN_ND_V3 F WHERE F.ID_DTE=" + id_dte, conn));
             resultado.setTotalLetras(ctrl_base_datos.ObtenerString("SELECT F.TOTALLETRAS FROM RESUMEN_ND_V3 F WHERE F.ID_DTE=" + id_dte, conn));
             resultado.setCondicionOperacion(ctrl_base_datos.ObtenerLong("SELECT C.CODIGO FROM CAT_016 C WHERE C.ID_CAT IN (SELECT F.ID_CAT_016 FROM RESUMEN_ND_V3 F WHERE F.ID_DTE=" + id_dte + ")", conn));
@@ -97,6 +98,7 @@ public class Ctrl_Resumen_ND_V3 implements Serializable {
             Number SUBTOTAL = SUBTOTALVENTAS.doubleValue();
             Number IVAPERCI1 = ctrl_base_datos.ObtenerDouble("SELECT ROUND(NVL(SUM(F.VALOR),0),2) VALOR FROM CUERPO_TRIBUTO_ND_V3 F WHERE F.ID_CAT_015=18 AND F.ID_DTE=" + ID_DTE, conn);
             Number IVARETE1 = 0.00;
+            Number RETERENTA = 0.00;
             Number MONTOTOTALOPERACION = SUBTOTAL.doubleValue() + ctrl_base_datos.ObtenerDouble("SELECT ROUND(SUM(F.VALOR),2) FROM CUERPO_TRIBUTO_ND_V3 F WHERE F.ID_CAT_015 NOT IN (18) AND F.ID_DTE=" + ID_DTE, conn);
             MONTOTOTALOPERACION = MONTOTOTALOPERACION.doubleValue() + IVAPERCI1.doubleValue() + IVARETE1.doubleValue();
             Long MONTOTOTALOPERACION_LONG = MONTOTOTALOPERACION.longValue();
@@ -133,6 +135,7 @@ public class Ctrl_Resumen_ND_V3 implements Serializable {
                     + "SUBTOTAL, "
                     + "IVAPERCI1, "
                     + "IVARETE1, "
+                    + "RETERENTA, "
                     + "MONTOTOTALOPERACION, "
                     + "TOTALLETRAS, "
                     + "ID_CAT_016, "
@@ -150,6 +153,7 @@ public class Ctrl_Resumen_ND_V3 implements Serializable {
                     + SUBTOTAL + ","
                     + IVAPERCI1 + ","
                     + IVARETE1 + ","
+                    + RETERENTA + ","
                     + MONTOTOTALOPERACION + ",'"
                     + TOTALLETRAS + "',"
                     + ID_CAT_016 +  ","
