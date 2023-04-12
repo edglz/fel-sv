@@ -134,7 +134,7 @@ public class Ctrl_DTE_FEX_V3 implements Serializable {
                 stmt1.executeUpdate(cadenasql);
                 stmt1.close();
 
-                /*Ctrl_Identificacion_FEX_V3 ctrl_identificacion_fex_v3 = new Ctrl_Identificacion_FEX_V3();
+                Ctrl_Identificacion_FEX_V3 ctrl_identificacion_fex_v3 = new Ctrl_Identificacion_FEX_V3();
                 String result_edentificacion = ctrl_identificacion_fex_v3.extraer_identificacion_jde_fex_v3(ID_DTE, ambiente, DCTO_JDE.trim(), MCU_JDE.trim(), CRCD_JDE.trim(), conn);
 
                 Ctrl_Receptor_FEX_V3 ctrl_receptor_fex_v3 = new Ctrl_Receptor_FEX_V3();
@@ -148,9 +148,9 @@ public class Ctrl_DTE_FEX_V3 implements Serializable {
 
                 Ctrl_Extension_FEX_V3 ctrl_extension_fex_v3 = new Ctrl_Extension_FEX_V3();
                 String result_extension = ctrl_extension_fex_v3.extraer_extension_jde_fex_v3(ID_DTE, ambiente, AN8_JDE.trim(), conn);
-
+                
                 Ctrl_Apendice_FEX_V3 ctrl_apendice_fex_v3 = new Ctrl_Apendice_FEX_V3();
-                String result_apendice = ctrl_apendice_fex_v3.extraer_apendice_jde_fex_v3(ID_DTE, ambiente, DOCO_JDE.trim(), DCTO_JDE.trim(), MCU_JDE.trim(), conn);*/
+                String result_apendice = ctrl_apendice_fex_v3.extraer_apendice_jde_fex_v3(ID_DTE, ambiente, DOCO_JDE.trim(), DCTO_JDE.trim(), MCU_JDE.trim(), conn);
 
                 resultado.add(ID_DTE);
             }
@@ -195,7 +195,7 @@ public class Ctrl_DTE_FEX_V3 implements Serializable {
 
             conn.setAutoCommit(false);
 
-            /*Ctrl_Identificacion_FEX_V3 ctrl_identificacion_fex_v3 = new Ctrl_Identificacion_FEX_V3();
+            Ctrl_Identificacion_FEX_V3 ctrl_identificacion_fex_v3 = new Ctrl_Identificacion_FEX_V3();
             resultado.setIdentificacion(ctrl_identificacion_fex_v3.obtener_identificacion_fex_v3(id_dte, conn));
 
             Ctrl_Emisor_FEX_V3 ctrl_emisor_fex_v3 = new Ctrl_Emisor_FEX_V3();
@@ -214,11 +214,8 @@ public class Ctrl_DTE_FEX_V3 implements Serializable {
             Ctrl_Resumen_FEX_V3 ctrl_resumen_fex_v3 = new Ctrl_Resumen_FEX_V3();
             resultado.setResumen(ctrl_resumen_fex_v3.obtener_resumen_fex_v3(id_dte, conn));
 
-            Ctrl_Extension_FEX_V3 ctrl_extension_fex_v3 = new Ctrl_Extension_FEX_V3();
-            resultado.setExtension(ctrl_extension_fex_v3.obtener_extension_fex_v3(id_dte, conn));
-
             Ctrl_Apendice_FEX_V3 ctrl_apendice_fex_v3 = new Ctrl_Apendice_FEX_V3();
-            resultado.setApendice(ctrl_apendice_fex_v3.obtener_apendice_fex_v3(id_dte, conn));*/
+            resultado.setApendice(ctrl_apendice_fex_v3.obtener_apendice_fex_v3(id_dte, conn));
 
             conn.commit();
             conn.setAutoCommit(true);
@@ -388,7 +385,7 @@ public class Ctrl_DTE_FEX_V3 implements Serializable {
 
             if (respuesta_recepciondte_mh.getCodigoMsg().trim().equals("001") || respuesta_recepciondte_mh.getCodigoMsg().trim().equals("002")) {
                 Cliente_Rest_Jasper cliente_rest_jasper = new Cliente_Rest_Jasper();
-                InputStream inputstream = cliente_rest_jasper.reporte_f_pdf(id_dte.toString());
+                InputStream inputstream = cliente_rest_jasper.reporte_fex_pdf(id_dte.toString());
                 File TargetFile = new File("/FELSV3/pdf/felsv_fex_" + id_dte + ".pdf");
                 FileUtils.copyInputStreamToFile(inputstream, TargetFile);
 

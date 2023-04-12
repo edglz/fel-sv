@@ -21,7 +21,7 @@ public class Ctrl_Receptor_F_V3 implements Serializable {
             
             resultado.setTipoDocumento(ctrl_base_datos.ObtenerString("SELECT F.TIPO_DOCUMENTO FROM RECEPTOR_F_V3 F WHERE F.ID_DTE=" + id_dte, conn));
             resultado.setNumDocumento(ctrl_base_datos.ObtenerString("SELECT F.NUM_DOCUMENTO FROM RECEPTOR_F_V3 F WHERE F.ID_DTE=" + id_dte, conn));
-            resultado.setNrc(ctrl_base_datos.ObtenerString("SELECT F.NRC FROM RECEPTOR_F_V3 F WHERE F.ID_DTE=" + id_dte, conn));
+            resultado.setNrc(null);
             resultado.setNombre(ctrl_base_datos.ObtenerString("SELECT F.NOMBRE FROM RECEPTOR_F_V3 F WHERE F.ID_DTE=" + id_dte, conn));
             resultado.setCodActividad(ctrl_base_datos.ObtenerString("SELECT C.CODIGO FROM CAT_019 C WHERE C.ID_CAT IN (SELECT F.ID_CAT_019 FROM RECEPTOR_F_V3 F WHERE F.ID_DTE=" + id_dte + ")", conn));
             resultado.setDescActividad(ctrl_base_datos.ObtenerString("SELECT C.VALOR FROM CAT_019 C WHERE C.ID_CAT IN (SELECT F.ID_CAT_019 FROM RECEPTOR_F_V3 F WHERE F.ID_DTE=" + id_dte + ")", conn));
@@ -59,17 +59,15 @@ public class Ctrl_Receptor_F_V3 implements Serializable {
 
             Long ID_DTE = id_dte;
             Long ID_RECEPTOR = Long.valueOf("1");
-            String TIPO_DOCUMENTO = "36";
-            String NUM_DOCUMENTO = ctrl_base_datos.ObtenerString("SELECT NVL(REPLACE(TRIM(F.ABTX2),'-',''),'-') FROM " + esquema + ".F0101@" + dblink + " F WHERE F.ABAN8=" + AN8_JDE, conn);
+            
+            Long ID_CAT_022 = ctrl_base_datos.ObtenerLong("SELECT C.ID_CAT FROM CAT_022 C WHERE C.VALOR_JDE IN (SELECT TRIM(F.ABTX2) FROM " + esquema + ".F0101@" + dblink + " G WHERE G.ABAN8=" + AN8_JDE + ")", conn);
+            if(ID_CAT_022 == null) {
+                ID_CAT_022 = Long.valueOf("1");
+            }
+            String NUM_DOCUMENTO = ctrl_base_datos.ObtenerString("SELECT NVL(REPLACE(TRIM(F.ABTAX),'-',''),'-') FROM " + esquema + ".F0101@" + dblink + " F WHERE F.ABAN8=" + AN8_JDE, conn);
             NUM_DOCUMENTO = NUM_DOCUMENTO.replaceAll(" ", "");
-            if(NUM_DOCUMENTO.length() > 14) {
-                NUM_DOCUMENTO = NUM_DOCUMENTO.substring(0, 14);
-            }
-            String NRC = ctrl_base_datos.ObtenerString("SELECT NVL(REPLACE(TRIM(F.ABTAX),'-',''),'-') FROM " + esquema + ".F0101@" + dblink + " F WHERE F.ABAN8=" + AN8_JDE, conn);
-            NRC = NRC.replaceAll(" ", "");
-            if(NRC.length() > 8) {
-                NRC = NRC.substring(0, 8);
-            }
+            String NRC = "NULL";
+            
             String NOMBRE = ctrl_base_datos.ObtenerString("SELECT UPPER(NVL(TRIM(F.WWMLNM),'-') || (SELECT NVL(TRIM(F.ALADD1),' ') FROM " + esquema + ".F0116@" + dblink + " F WHERE ROWNUM=1 AND F.ALAN8=" + AN8_JDE + ")) NOMBRE_FISCAL FROM " + esquema + ".F0111@" + dblink + " F WHERE F.WWIDLN=0 AND F.WWAN8=" + AN8_JDE, conn);
             NOMBRE = NOMBRE.replaceAll("'", "");
             
@@ -101,7 +99,7 @@ public class Ctrl_Receptor_F_V3 implements Serializable {
             String cadenasql = "INSERT INTO RECEPTOR_F_V3 ("
                     + "ID_DTE, "
                     + "ID_RECEPTOR, "
-                    + "TIPO_DOCUMENTO, "
+                    + "ID_CAT_022, "
                     + "NUM_DOCUMENTO, "
                     + "NRC, "
                     + "NOMBRE, "
@@ -112,10 +110,10 @@ public class Ctrl_Receptor_F_V3 implements Serializable {
                     + "TELEFONO, "
                     + "CORREO) VALUES ("
                     + ID_DTE + ","
-                    + ID_RECEPTOR + ",'"
-                    + TIPO_DOCUMENTO + "','"
-                    + NUM_DOCUMENTO + "','"
-                    + NRC + "','"
+                    + ID_RECEPTOR + ","
+                    + ID_CAT_022 + ",'"
+                    + NUM_DOCUMENTO + "',"
+                    + NRC + ",'"
                     + NOMBRE + "',"
                     + ID_CAT_019 + ","
                     + ID_CAT_012 + ","
@@ -130,18 +128,14 @@ public class Ctrl_Receptor_F_V3 implements Serializable {
             
             Long ID_SHIPTO = Long.valueOf("1");
             
-            String TIPO_DOCUMENTO_SHAN = "36";
-            String NUM_DOCUMENTO_SHAN = ctrl_base_datos.ObtenerString("SELECT NVL(REPLACE(TRIM(F.ABTX2),'-',''),'-') FROM " + esquema + ".F0101@" + dblink + " F WHERE F.ABAN8=" + SHAN_JDE, conn);
+            Long ID_CAT_022_SHAN = ctrl_base_datos.ObtenerLong("SELECT C.ID_CAT FROM CAT_022 C WHERE C.VALOR_JDE IN (SELECT TRIM(F.ABTX2) FROM " + esquema + ".F0101@" + dblink + " G WHERE G.ABAN8=" + SHAN_JDE + ")", conn);
+            if(ID_CAT_022_SHAN == null) {
+                ID_CAT_022_SHAN = Long.valueOf("1");
+            }
+            String NUM_DOCUMENTO_SHAN = ctrl_base_datos.ObtenerString("SELECT NVL(REPLACE(TRIM(F.ABTAX),'-',''),'-') FROM " + esquema + ".F0101@" + dblink + " F WHERE F.ABAN8=" + SHAN_JDE, conn);
             NUM_DOCUMENTO_SHAN = NUM_DOCUMENTO_SHAN.replaceAll(" ", "");
-            if(NUM_DOCUMENTO_SHAN.length() > 14) {
-                NUM_DOCUMENTO_SHAN = NUM_DOCUMENTO_SHAN.substring(0, 14);
-            }
+            String NRC_SHAN = "NULL";
             
-            String NRC_SHAN = ctrl_base_datos.ObtenerString("SELECT NVL(REPLACE(TRIM(F.ABTAX),'-',''),'-') FROM " + esquema + ".F0101@" + dblink + " F WHERE F.ABAN8=" + SHAN_JDE, conn);
-            NRC_SHAN = NRC_SHAN.replaceAll(" ", "");
-            if(NRC_SHAN.length() > 8) {
-                NRC_SHAN = NRC_SHAN.substring(0, 8);
-            }
             String NOMBRE_SHAN = ctrl_base_datos.ObtenerString("SELECT UPPER(NVL(TRIM(F.WWMLNM),'-') || (SELECT NVL(TRIM(F.ALADD1),' ') FROM " + esquema + ".F0116@" + dblink + " F WHERE ROWNUM=1 AND F.ALAN8=" + SHAN_JDE + ")) NOMBRE_FISCAL FROM " + esquema + ".F0111@" + dblink + " F WHERE F.WWIDLN=0 AND F.WWAN8=" + SHAN_JDE, conn);
             NOMBRE_SHAN = NOMBRE_SHAN.replaceAll("'", "");
             
@@ -173,7 +167,7 @@ public class Ctrl_Receptor_F_V3 implements Serializable {
             cadenasql = "INSERT INTO SHIPTO_F_V3 ("
                     + "ID_DTE, "
                     + "ID_SHIPTO, "
-                    + "TIPO_DOCUMENTO, "
+                    + "ID_CAT_022, "
                     + "NUM_DOCUMENTO, "
                     + "NRC, "
                     + "NOMBRE, "
@@ -184,10 +178,10 @@ public class Ctrl_Receptor_F_V3 implements Serializable {
                     + "TELEFONO, "
                     + "CORREO) VALUES ("
                     + ID_DTE + ","
-                    + ID_SHIPTO + ",'"
-                    + TIPO_DOCUMENTO_SHAN + "','"
-                    + NUM_DOCUMENTO_SHAN + "','"
-                    + NRC_SHAN + "','"
+                    + ID_SHIPTO + ","
+                    + ID_CAT_022_SHAN + ",'"
+                    + NUM_DOCUMENTO_SHAN + "',"
+                    + NRC_SHAN + ",'"
                     + NOMBRE_SHAN + "',"
                     + ID_CAT_019_SHAN + ","
                     + ID_CAT_012_SHAN + ","

@@ -1,6 +1,6 @@
 package Controladores;
 
-import Entidades.CuerpoDocumento_ccf;
+import Entidades.CuerpoDocumento_fex;
 import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -8,71 +8,65 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Ctrl_CuerpoDocumento_CCF_V3 implements Serializable {
+public class Ctrl_CuerpoDocumento_FEX_V3 implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    public Ctrl_CuerpoDocumento_CCF_V3() {
+    public Ctrl_CuerpoDocumento_FEX_V3() {
     }
 
-    public List<CuerpoDocumento_ccf> obtener_cuerpo_documento_ccf_v3(Long id_dte, Connection conn) {
-        List<CuerpoDocumento_ccf> resultado = new ArrayList<>();
+    public List<CuerpoDocumento_fex> obtener_cuerpo_documento_fex_v3(Long id_dte, Connection conn) {
+        List<CuerpoDocumento_fex> resultado = new ArrayList<>();
 
         try {
             Ctrl_Base_Datos ctrl_base_datos = new Ctrl_Base_Datos();
 
-            String cadenasql = "SELECT F.ID_CUERPO_DOCUMENTO FROM CUERPO_DOCU_CCF_V3 F WHERE F.ID_DTE=" + id_dte + " ORDER BY F.ID_CUERPO_DOCUMENTO";
+            String cadenasql = "SELECT F.ID_CUERPO_DOCUMENTO FROM CUERPO_DOCU_FEX_V3 F WHERE F.ID_DTE=" + id_dte + " ORDER BY F.ID_CUERPO_DOCUMENTO";
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(cadenasql);
             while (rs.next()) {
                 Long id_cuerpo_documento = rs.getLong(1);
-                CuerpoDocumento_ccf cuerpo_documento_ccf = new CuerpoDocumento_ccf();
-                cuerpo_documento_ccf.setNumItem(id_cuerpo_documento);
-                cuerpo_documento_ccf.setTipoItem(ctrl_base_datos.ObtenerEntero("SELECT C.CODIGO FROM CAT_011 C WHERE C.ID_CAT IN (SELECT F.ID_CAT_011 FROM CUERPO_DOCU_CCF_V3 F WHERE F.ID_DTE=" + id_dte + " AND F.ID_CUERPO_DOCUMENTO=" + id_cuerpo_documento + ")", conn));
-                cuerpo_documento_ccf.setNumeroDocumento(ctrl_base_datos.ObtenerString("SELECT F.NUMERODOCUMENTO FROM CUERPO_DOCU_CCF_V3 F WHERE F.ID_DTE=" + id_dte + " AND F.ID_CUERPO_DOCUMENTO=" + id_cuerpo_documento, conn));
-                cuerpo_documento_ccf.setCantidad(ctrl_base_datos.ObtenerDouble("SELECT F.CANTIDAD FROM CUERPO_DOCU_CCF_V3 F WHERE F.ID_DTE=" + id_dte + " AND F.ID_CUERPO_DOCUMENTO=" + id_cuerpo_documento, conn));
-                cuerpo_documento_ccf.setCodigo(ctrl_base_datos.ObtenerString("SELECT F.CODIGO FROM CUERPO_DOCU_CCF_V3 F WHERE F.ID_DTE=" + id_dte + " AND F.ID_CUERPO_DOCUMENTO=" + id_cuerpo_documento, conn));
-                cuerpo_documento_ccf.setCodTributo(ctrl_base_datos.ObtenerString("SELECT C.CODIGO FROM CAT_015 C WHERE C.ID_CAT IN (SELECT F.ID_CAT_015 FROM CUERPO_DOCU_CCF_V3 F WHERE F.ID_DTE=" + id_dte + " AND F.ID_CUERPO_DOCUMENTO=" + id_cuerpo_documento + ")", conn));
-                cuerpo_documento_ccf.setUniMedida(ctrl_base_datos.ObtenerEntero("SELECT C.CODIGO FROM CAT_014 C WHERE C.ID_CAT IN (SELECT F.ID_CAT_014 FROM CUERPO_DOCU_CCF_V3 F WHERE F.ID_DTE=" + id_dte + " AND F.ID_CUERPO_DOCUMENTO=" + id_cuerpo_documento + ")", conn));
-                cuerpo_documento_ccf.setDescripcion(ctrl_base_datos.ObtenerString("SELECT F.DESCRIPCION FROM CUERPO_DOCU_CCF_V3 F WHERE F.ID_DTE=" + id_dte + " AND F.ID_CUERPO_DOCUMENTO=" + id_cuerpo_documento, conn));
-                cuerpo_documento_ccf.setPrecioUni(ctrl_base_datos.ObtenerDouble("SELECT F.PRECIOUNI FROM CUERPO_DOCU_CCF_V3 F WHERE F.ID_DTE=" + id_dte + " AND F.ID_CUERPO_DOCUMENTO=" + id_cuerpo_documento, conn));
-                cuerpo_documento_ccf.setMontoDescu(ctrl_base_datos.ObtenerDouble("SELECT F.MONTODESCU FROM CUERPO_DOCU_CCF_V3 F WHERE F.ID_DTE=" + id_dte + " AND F.ID_CUERPO_DOCUMENTO=" + id_cuerpo_documento, conn));
-                cuerpo_documento_ccf.setVentaNoSuj(ctrl_base_datos.ObtenerDouble("SELECT F.VENTANOSUJ FROM CUERPO_DOCU_CCF_V3 F WHERE F.ID_DTE=" + id_dte + " AND F.ID_CUERPO_DOCUMENTO=" + id_cuerpo_documento, conn));
-                cuerpo_documento_ccf.setVentaExenta(ctrl_base_datos.ObtenerDouble("SELECT F.VENTAEXENTA FROM CUERPO_DOCU_CCF_V3 F WHERE F.ID_DTE=" + id_dte + " AND F.ID_CUERPO_DOCUMENTO=" + id_cuerpo_documento, conn));
-                cuerpo_documento_ccf.setVentaGravada(ctrl_base_datos.ObtenerDouble("SELECT F.VENTAGRAVADA FROM CUERPO_DOCU_CCF_V3 F WHERE F.ID_DTE=" + id_dte + " AND F.ID_CUERPO_DOCUMENTO=" + id_cuerpo_documento, conn));
-
+                CuerpoDocumento_fex cuerpo_documento_fex = new CuerpoDocumento_fex();
+                cuerpo_documento_fex.setNumItem(id_cuerpo_documento);
+                cuerpo_documento_fex.setCantidad(ctrl_base_datos.ObtenerDouble("SELECT F.CANTIDAD FROM CUERPO_DOCU_FEX_V3 F WHERE F.ID_DTE=" + id_dte + " AND F.ID_CUERPO_DOCUMENTO=" + id_cuerpo_documento, conn));
+                cuerpo_documento_fex.setCodigo(ctrl_base_datos.ObtenerString("SELECT F.CODIGO FROM CUERPO_DOCU_FEX_V3 F WHERE F.ID_DTE=" + id_dte + " AND F.ID_CUERPO_DOCUMENTO=" + id_cuerpo_documento, conn));
+                cuerpo_documento_fex.setUniMedida(ctrl_base_datos.ObtenerEntero("SELECT C.CODIGO FROM CAT_014 C WHERE C.ID_CAT IN (SELECT F.ID_CAT_014 FROM CUERPO_DOCU_FEX_V3 F WHERE F.ID_DTE=" + id_dte + " AND F.ID_CUERPO_DOCUMENTO=" + id_cuerpo_documento + ")", conn));
+                cuerpo_documento_fex.setDescripcion(ctrl_base_datos.ObtenerString("SELECT F.DESCRIPCION FROM CUERPO_DOCU_FEX_V3 F WHERE F.ID_DTE=" + id_dte + " AND F.ID_CUERPO_DOCUMENTO=" + id_cuerpo_documento, conn));
+                cuerpo_documento_fex.setPrecioUni(ctrl_base_datos.ObtenerDouble("SELECT F.PRECIOUNI FROM CUERPO_DOCU_FEX_V3 F WHERE F.ID_DTE=" + id_dte + " AND F.ID_CUERPO_DOCUMENTO=" + id_cuerpo_documento, conn));
+                cuerpo_documento_fex.setMontoDescu(ctrl_base_datos.ObtenerDouble("SELECT F.MONTODESCU FROM CUERPO_DOCU_FEX_V3 F WHERE F.ID_DTE=" + id_dte + " AND F.ID_CUERPO_DOCUMENTO=" + id_cuerpo_documento, conn));
+                cuerpo_documento_fex.setVentaGravada(ctrl_base_datos.ObtenerDouble("SELECT F.VENTAGRAVADA FROM CUERPO_DOCU_FEX_V3 F WHERE F.ID_DTE=" + id_dte + " AND F.ID_CUERPO_DOCUMENTO=" + id_cuerpo_documento, conn));
+                
                 List<String> tributos = new ArrayList();
-                String cadenasql_1 = "SELECT F.NUM_TRIBUTO FROM CUERPO_TRIBUTO_CCF_V3 F WHERE F.ID_DTE=" + id_dte + " AND F.ID_CAT_015 NOT IN (18) AND F.ID_CUERPO_DOCUMENTO=" + id_cuerpo_documento;
+                String cadenasql_1 = "SELECT F.NUM_TRIBUTO FROM CUERPO_TRIBUTO_FEX_V3 F WHERE F.ID_DTE=" + id_dte + " AND F.ID_CAT_015 NOT IN (18) AND F.ID_CUERPO_DOCUMENTO=" + id_cuerpo_documento;
                 Statement stmt1 = conn.createStatement();
                 ResultSet rs1 = stmt1.executeQuery(cadenasql_1);
                 while (rs1.next()) {
                     Long num_tributo = rs1.getLong(1);
-                    String tributo = ctrl_base_datos.ObtenerString("SELECT C.CODIGO FROM CAT_015 C WHERE C.ID_CAT IN (SELECT F.ID_CAT_015 FROM CUERPO_TRIBUTO_CCF_V3 F WHERE F.ID_DTE=" + id_dte + " AND F.ID_CUERPO_DOCUMENTO=" + id_cuerpo_documento + " AND F.NUM_TRIBUTO=" + num_tributo + ")", conn);
+                    String tributo = ctrl_base_datos.ObtenerString("SELECT C.CODIGO FROM CAT_015 C WHERE C.ID_CAT IN (SELECT F.ID_CAT_015 FROM CUERPO_TRIBUTO_FEX_V3 F WHERE F.ID_DTE=" + id_dte + " AND F.ID_CUERPO_DOCUMENTO=" + id_cuerpo_documento + " AND F.NUM_TRIBUTO=" + num_tributo + ")", conn);
                     tributos.add(tributo);
                 }
                 rs1.close();
                 stmt1.close();
 
                 if (tributos.isEmpty()) {
-                    cuerpo_documento_ccf.setTributos(null);
+                    cuerpo_documento_fex.setTributos(null);
                 } else {
-                    cuerpo_documento_ccf.setTributos(tributos);
+                    cuerpo_documento_fex.setTributos(tributos);
                 }
-
-                cuerpo_documento_ccf.setPsv(ctrl_base_datos.ObtenerDouble("SELECT F.PSV FROM CUERPO_DOCU_CCF_V3 F WHERE F.ID_DTE=" + id_dte + " AND F.ID_CUERPO_DOCUMENTO=" + id_cuerpo_documento, conn));
-                cuerpo_documento_ccf.setNoGravado(ctrl_base_datos.ObtenerDouble("SELECT F.NOGRAVADO FROM CUERPO_DOCU_CCF_V3 F WHERE F.ID_DTE=" + id_dte + " AND F.ID_CUERPO_DOCUMENTO=" + id_cuerpo_documento, conn));
-                resultado.add(cuerpo_documento_ccf);
+                
+                cuerpo_documento_fex.setNoGravado(ctrl_base_datos.ObtenerDouble("SELECT F.NOGRAVADO FROM CUERPO_DOCU_FEX_V3 F WHERE F.ID_DTE=" + id_dte + " AND F.ID_CUERPO_DOCUMENTO=" + id_cuerpo_documento, conn));
+                resultado.add(cuerpo_documento_fex);
             }
             rs.close();
             stmt.close();
         } catch (Exception ex) {
-            System.out.println("PROYECTO:api-grupoterra-svfel-v3|CLASE:" + this.getClass().getName() + "|METODO:obtener_cuerpo_documento_ccf_v3()|ERROR:" + ex.toString());
+            System.out.println("PROYECTO:api-grupoterra-svfel-v3|CLASE:" + this.getClass().getName() + "|METODO:obtener_cuerpo_documento_fex_v3()|ERROR:" + ex.toString());
         }
 
         return resultado;
     }
 
-    public String extraer_cuerpo_documento_jde_ccf_v3(Long id_dte, String ambiente, String KCOO_JDE, String DOCO_JDE, String DCTO_JDE, String tabla_sales_orders, Connection conn) {
+    public String extraer_cuerpo_documento_jde_fex_v3(Long id_dte, String ambiente, String KCOO_JDE, String DOCO_JDE, String DCTO_JDE, String tabla_sales_orders, Connection conn) {
         String resultado;
 
         try {
@@ -108,13 +102,11 @@ public class Ctrl_CuerpoDocumento_CCF_V3 implements Serializable {
                 Long ID_DTE = id_dte;
                 Long ID_CUERPO_DOCUMENTO = Long.valueOf(contador.toString());
                 Long ID_CAT_011 = ctrl_base_datos.ObtenerLong("SELECT C.ID_CAT FROM CAT_011 C WHERE C.VALOR_JDE LIKE '%[" + rs.getString(1) + "]%'", conn);
-                String NUMERODOCUMENTO = "null";
                 Long CANTIDAD = rs.getLong(2);
                 if(CANTIDAD < 0.00) {
                     CANTIDAD = CANTIDAD * -1;
                 }
                 String CODIGO = rs.getString(3);
-                Long ID_CAT_015 = null;
                 Long ID_CAT_014 = ctrl_base_datos.ObtenerLong("SELECT C.ID_CAT FROM CAT_014 C WHERE C.VALOR_JDE LIKE '%[" + rs.getString(4) + "]%'", conn);
                 String DESCRIPCION = rs.getString(5);
                 Number PRECIOUNI = rs.getDouble(6);
@@ -151,11 +143,8 @@ public class Ctrl_CuerpoDocumento_CCF_V3 implements Serializable {
                     PRECIOUNIPROMO = 0.00;
                 }
                 PRECIOUNIPROMO = CANTIDAD * PRECIOUNIPROMO.doubleValue();
-
-                Number VENTANOSUJ = 0.00;
-                Number VENTAEXENTA = 0.00;
+                
                 Number VENTAGRAVADA;
-                Number PSV = 0.00;
                 Number NOGRAVADO;
                 if (rs.getString(8).equals("Y")) {
                     MONTODESCU = MONTODESCU.doubleValue() * -1.00;
@@ -167,38 +156,28 @@ public class Ctrl_CuerpoDocumento_CCF_V3 implements Serializable {
                     NOGRAVADO = (CANTIDAD * PRECIOUNI.doubleValue()) - MONTODESCU.doubleValue();
                 }
 
-                cadenasql = "INSERT INTO CUERPO_DOCU_CCF_V3 ( "
+                cadenasql = "INSERT INTO CUERPO_DOCU_FEX_V3 ( "
                         + "ID_DTE, "
-                        + "ID_CUERPO_DOCUMENTO,"
+                        + "ID_CUERPO_DOCUMENTO, "
                         + "ID_CAT_011, "
-                        + "NUMERODOCUMENTO, "
                         + "CANTIDAD, "
                         + "CODIGO, "
-                        + "ID_CAT_015, "
                         + "ID_CAT_014, "
                         + "DESCRIPCION, "
                         + "PRECIOUNI, "
                         + "MONTODESCU, "
-                        + "VENTANOSUJ, "
-                        + "VENTAEXENTA, "
                         + "VENTAGRAVADA, "
-                        + "PSV, "
                         + "NOGRAVADO) VALUES ("
                         + ID_DTE + ","
                         + ID_CUERPO_DOCUMENTO + ","
                         + ID_CAT_011 + ","
-                        + NUMERODOCUMENTO + ","
                         + CANTIDAD + ",'"
                         + CODIGO + "',"
-                        + ID_CAT_015 + ","
                         + ID_CAT_014 + ",'"
                         + DESCRIPCION + "',"
                         + PRECIOUNI + ","
                         + MONTODESCU + ","
-                        + VENTANOSUJ + ","
-                        + VENTAEXENTA + ","
                         + VENTAGRAVADA + ","
-                        + PSV + ","
                         + NOGRAVADO + ")";
                 Statement stmt1 = conn.createStatement();
                 System.out.println(cadenasql);
@@ -212,7 +191,7 @@ public class Ctrl_CuerpoDocumento_CCF_V3 implements Serializable {
                     Long ID_CAT_015_TRIBUTO = ctrl_base_datos.ObtenerLong("SELECT C.ID_CAT FROM CAT_015 C WHERE C.VALOR_JDE LIKE '%[" + rs.getString(9) + "]%'", conn);
                     Number TRIBUTO_VALOR = ctrl_base_datos.ObtenerDouble("SELECT F.TATXR1/100000 FROM " + esquema + ".F4008@" + dblink + " F WHERE TRIM(F.TATXA1)='" + rs.getString(9) + "' AND F.TAITM=0", conn);
                     TRIBUTO_VALOR = VENTAGRAVADA.doubleValue() * TRIBUTO_VALOR.doubleValue();
-                    cadenasql = "INSERT INTO CUERPO_TRIBUTO_CCF_V3 ( "
+                    cadenasql = "INSERT INTO CUERPO_TRIBUTO_FEX_V3 ( "
                             + "ID_DTE, "
                             + "ID_CUERPO_DOCUMENTO, "
                             + "NUM_TRIBUTO, "
@@ -233,7 +212,7 @@ public class Ctrl_CuerpoDocumento_CCF_V3 implements Serializable {
                         Long ID_CAT_015_TRIBUTO_EIVAC = Long.valueOf("18");
                         Number TRIBUTO_VALOR_EIVAC = ctrl_base_datos.ObtenerDouble("SELECT F.TATXR2/100000 FROM " + esquema + ".F4008@" + dblink + " F WHERE TRIM(F.TATXA1)='" + rs.getString(9) + "' AND F.TAITM=0", conn);
                         TRIBUTO_VALOR = VENTAGRAVADA.doubleValue() * TRIBUTO_VALOR_EIVAC.doubleValue();
-                        cadenasql = "INSERT INTO CUERPO_TRIBUTO_CCF_V3 ( "
+                        cadenasql = "INSERT INTO CUERPO_TRIBUTO_FEX_V3 ( "
                                 + "ID_DTE, "
                                 + "ID_CUERPO_DOCUMENTO, "
                                 + "NUM_TRIBUTO, "
@@ -270,7 +249,7 @@ public class Ctrl_CuerpoDocumento_CCF_V3 implements Serializable {
                     if(TRIBUTO_VALOR.doubleValue() < 0.00) {
                         TRIBUTO_VALOR = TRIBUTO_VALOR.doubleValue() * -1;
                     }
-                    cadenasql = "INSERT INTO CUERPO_TRIBUTO_CCF_V3 ( "
+                    cadenasql = "INSERT INTO CUERPO_TRIBUTO_FEX_V3 ( "
                             + "ID_DTE, "
                             + "ID_CUERPO_DOCUMENTO, "
                             + "NUM_TRIBUTO, "
@@ -304,38 +283,28 @@ public class Ctrl_CuerpoDocumento_CCF_V3 implements Serializable {
                         NOGRAVADO = PRECIOUNIFLETE;
                     }
 
-                    cadenasql = "INSERT INTO CUERPO_DOCU_CCF_V3 ( "
+                    cadenasql = "INSERT INTO CUERPO_DOCU_FEX_V3 ( "
                             + "ID_DTE, "
-                            + "ID_CUERPO_DOCUMENTO,"
+                            + "ID_CUERPO_DOCUMENTO, "
                             + "ID_CAT_011, "
-                            + "NUMERODOCUMENTO, "
                             + "CANTIDAD, "
                             + "CODIGO, "
-                            + "ID_CAT_015, "
                             + "ID_CAT_014, "
                             + "DESCRIPCION, "
                             + "PRECIOUNI, "
                             + "MONTODESCU, "
-                            + "VENTANOSUJ, "
-                            + "VENTAEXENTA, "
                             + "VENTAGRAVADA, "
-                            + "PSV, "
                             + "NOGRAVADO) VALUES ("
                             + ID_DTE + ","
                             + ID_CUERPO_DOCUMENTO + ","
                             + ID_CAT_011 + ","
-                            + NUMERODOCUMENTO + ","
                             + CANTIDAD + ",'"
                             + "FLETE" + "',"
-                            + ID_CAT_015 + ","
                             + ID_CAT_014 + ",'"
                             + "FLETE " + DESCRIPCION + "',"
                             + PRECIOUNIFLETE_TEMP + ","
                             + "0" + ","
-                            + VENTANOSUJ + ","
-                            + VENTAEXENTA + ","
                             + VENTAGRAVADA + ","
-                            + PSV + ","
                             + NOGRAVADO + ")";
                     stmt1 = conn.createStatement();
                     System.out.println(cadenasql);
@@ -349,7 +318,7 @@ public class Ctrl_CuerpoDocumento_CCF_V3 implements Serializable {
                         Long ID_CAT_015_TRIBUTO = ctrl_base_datos.ObtenerLong("SELECT C.ID_CAT FROM CAT_015 C WHERE C.VALOR_JDE LIKE '%[" + rs.getString(9) + "]%'", conn);
                         Number TRIBUTO_VALOR = ctrl_base_datos.ObtenerDouble("SELECT F.TATXR1/100000 FROM " + esquema + ".F4008@" + dblink + " F WHERE TRIM(F.TATXA1)='" + rs.getString(9) + "' AND F.TAITM=0", conn);
                         TRIBUTO_VALOR = VENTAGRAVADA.doubleValue() * TRIBUTO_VALOR.doubleValue();
-                        cadenasql = "INSERT INTO CUERPO_TRIBUTO_CCF_V3 ( "
+                        cadenasql = "INSERT INTO CUERPO_TRIBUTO_FEX_V3 ( "
                                 + "ID_DTE, "
                                 + "ID_CUERPO_DOCUMENTO, "
                                 + "NUM_TRIBUTO, "
@@ -370,7 +339,7 @@ public class Ctrl_CuerpoDocumento_CCF_V3 implements Serializable {
                             Long ID_CAT_015_TRIBUTO_EIVAC = Long.valueOf("18");
                             Number TRIBUTO_VALOR_EIVAC = ctrl_base_datos.ObtenerDouble("SELECT F.TATXR2/100000 FROM " + esquema + ".F4008@" + dblink + " F WHERE TRIM(F.TATXA1)='" + rs.getString(9) + "' AND F.TAITM=0", conn);
                             TRIBUTO_VALOR = VENTAGRAVADA.doubleValue() * TRIBUTO_VALOR_EIVAC.doubleValue();
-                            cadenasql = "INSERT INTO CUERPO_TRIBUTO_CCF_V3 ( "
+                            cadenasql = "INSERT INTO CUERPO_TRIBUTO_FEX_V3 ( "
                                     + "ID_DTE, "
                                     + "ID_CUERPO_DOCUMENTO, "
                                     + "NUM_TRIBUTO, "
@@ -406,27 +375,21 @@ public class Ctrl_CuerpoDocumento_CCF_V3 implements Serializable {
                         NOGRAVADO = PRECIOUNIIEC;
                     }
 
-                    cadenasql = "INSERT INTO CUERPO_DOCU_CCF_V3 ( "
+                    cadenasql = "INSERT INTO CUERPO_DOCU_FEX_V3 ( "
                             + "ID_DTE, "
-                            + "ID_CUERPO_DOCUMENTO,"
+                            + "ID_CUERPO_DOCUMENTO, "
                             + "ID_CAT_011, "
-                            + "NUMERODOCUMENTO, "
                             + "CANTIDAD, "
                             + "CODIGO, "
-                            + "ID_CAT_015, "
                             + "ID_CAT_014, "
                             + "DESCRIPCION, "
                             + "PRECIOUNI, "
                             + "MONTODESCU, "
-                            + "VENTANOSUJ, "
-                            + "VENTAEXENTA, "
                             + "VENTAGRAVADA, "
-                            + "PSV, "
                             + "NOGRAVADO) VALUES ("
                             + ID_DTE + ","
                             + ID_CUERPO_DOCUMENTO + ","
                             + ID_CAT_011 + ","
-                            + NUMERODOCUMENTO + ","
                             + CANTIDAD + ",'"
                             + "IEC" + "',"
                             + ID_CAT_015_IEC + ","
@@ -434,10 +397,7 @@ public class Ctrl_CuerpoDocumento_CCF_V3 implements Serializable {
                             + "IEC " + DESCRIPCION + "',"
                             + PRECIOUNIIEC_TEMP + ","
                             + "0" + ","
-                            + VENTANOSUJ + ","
-                            + VENTAEXENTA + ","
                             + VENTAGRAVADA + ","
-                            + PSV + ","
                             + NOGRAVADO + ")";
                     stmt1 = conn.createStatement();
                     System.out.println(cadenasql);
@@ -451,7 +411,7 @@ public class Ctrl_CuerpoDocumento_CCF_V3 implements Serializable {
                         Long ID_CAT_015_TRIBUTO = ctrl_base_datos.ObtenerLong("SELECT C.ID_CAT FROM CAT_015 C WHERE C.VALOR_JDE LIKE '%[" + rs.getString(9) + "]%'", conn);
                         Number TRIBUTO_VALOR = ctrl_base_datos.ObtenerDouble("SELECT F.TATXR1/100000 FROM " + esquema + ".F4008@" + dblink + " F WHERE TRIM(F.TATXA1)='" + rs.getString(9) + "' AND F.TAITM=0", conn);
                         TRIBUTO_VALOR = VENTAGRAVADA.doubleValue() * TRIBUTO_VALOR.doubleValue();
-                        cadenasql = "INSERT INTO CUERPO_TRIBUTO_CCF_V3 ( "
+                        cadenasql = "INSERT INTO CUERPO_TRIBUTO_FEX_V3 ( "
                                 + "ID_DTE, "
                                 + "ID_CUERPO_DOCUMENTO, "
                                 + "NUM_TRIBUTO, "
@@ -472,7 +432,7 @@ public class Ctrl_CuerpoDocumento_CCF_V3 implements Serializable {
                             Long ID_CAT_015_TRIBUTO_EIVAC = Long.valueOf("18");
                             Number TRIBUTO_VALOR_EIVAC = ctrl_base_datos.ObtenerDouble("SELECT F.TATXR2/100000 FROM " + esquema + ".F4008@" + dblink + " F WHERE TRIM(F.TATXA1)='" + rs.getString(9) + "' AND F.TAITM=0", conn);
                             TRIBUTO_VALOR = VENTAGRAVADA.doubleValue() * TRIBUTO_VALOR_EIVAC.doubleValue();
-                            cadenasql = "INSERT INTO CUERPO_TRIBUTO_CCF_V3 ( "
+                            cadenasql = "INSERT INTO CUERPO_TRIBUTO_FEX_V3 ( "
                                     + "ID_DTE, "
                                     + "ID_CUERPO_DOCUMENTO, "
                                     + "NUM_TRIBUTO, "
@@ -506,38 +466,28 @@ public class Ctrl_CuerpoDocumento_CCF_V3 implements Serializable {
                         NOGRAVADO = PRECIOUNIPROMO;
                     }
 
-                    cadenasql = "INSERT INTO CUERPO_DOCU_CCF_V3 ( "
+                    cadenasql = "INSERT INTO CUERPO_DOCU_FEX_V3 ( "
                             + "ID_DTE, "
-                            + "ID_CUERPO_DOCUMENTO,"
+                            + "ID_CUERPO_DOCUMENTO, "
                             + "ID_CAT_011, "
-                            + "NUMERODOCUMENTO, "
                             + "CANTIDAD, "
                             + "CODIGO, "
-                            + "ID_CAT_015, "
                             + "ID_CAT_014, "
                             + "DESCRIPCION, "
                             + "PRECIOUNI, "
                             + "MONTODESCU, "
-                            + "VENTANOSUJ, "
-                            + "VENTAEXENTA, "
                             + "VENTAGRAVADA, "
-                            + "PSV, "
                             + "NOGRAVADO) VALUES ("
                             + ID_DTE + ","
                             + ID_CUERPO_DOCUMENTO + ","
                             + ID_CAT_011 + ","
-                            + NUMERODOCUMENTO + ","
                             + CANTIDAD + ",'"
                             + "PROMOCIÓN" + "',"
-                            + ID_CAT_015 + ","
                             + ID_CAT_014 + ",'"
                             + "PROMOCIÓN " + DESCRIPCION + "',"
                             + PRECIOUNIPROMO_TEMP + ","
                             + "0" + ","
-                            + VENTANOSUJ + ","
-                            + VENTAEXENTA + ","
                             + VENTAGRAVADA + ","
-                            + PSV + ","
                             + NOGRAVADO + ")";
                     stmt1 = conn.createStatement();
                     System.out.println(cadenasql);
@@ -551,7 +501,7 @@ public class Ctrl_CuerpoDocumento_CCF_V3 implements Serializable {
                         Long ID_CAT_015_TRIBUTO = ctrl_base_datos.ObtenerLong("SELECT C.ID_CAT FROM CAT_015 C WHERE C.VALOR_JDE LIKE '%[" + rs.getString(9) + "]%'", conn);
                         Number TRIBUTO_VALOR = ctrl_base_datos.ObtenerDouble("SELECT F.TATXR1/100000 FROM " + esquema + ".F4008@" + dblink + " F WHERE TRIM(F.TATXA1)='" + rs.getString(9) + "' AND F.TAITM=0", conn);
                         TRIBUTO_VALOR = VENTAGRAVADA.doubleValue() * TRIBUTO_VALOR.doubleValue();
-                        cadenasql = "INSERT INTO CUERPO_TRIBUTO_CCF_V3 ( "
+                        cadenasql = "INSERT INTO CUERPO_TRIBUTO_FEX_V3 ( "
                                 + "ID_DTE, "
                                 + "ID_CUERPO_DOCUMENTO, "
                                 + "NUM_TRIBUTO, "
@@ -572,7 +522,7 @@ public class Ctrl_CuerpoDocumento_CCF_V3 implements Serializable {
                             Long ID_CAT_015_TRIBUTO_EIVAC = Long.valueOf("18");
                             Number TRIBUTO_VALOR_EIVAC = ctrl_base_datos.ObtenerDouble("SELECT F.TATXR2/100000 FROM " + esquema + ".F4008@" + dblink + " F WHERE TRIM(F.TATXA1)='" + rs.getString(9) + "' AND F.TAITM=0", conn);
                             TRIBUTO_VALOR = VENTAGRAVADA.doubleValue() * TRIBUTO_VALOR_EIVAC.doubleValue();
-                            cadenasql = "INSERT INTO CUERPO_TRIBUTO_CCF_V3 ( "
+                            cadenasql = "INSERT INTO CUERPO_TRIBUTO_FEX_V3 ( "
                                     + "ID_DTE, "
                                     + "ID_CUERPO_DOCUMENTO, "
                                     + "NUM_TRIBUTO, "
@@ -597,7 +547,7 @@ public class Ctrl_CuerpoDocumento_CCF_V3 implements Serializable {
             resultado = "0,TRANSACCIONES PROCESADAS.";
         } catch (Exception ex) {
             resultado = "1," + ex.toString();
-            System.out.println("PROYECTO:api-grupoterra-svfel-v3|CLASE:" + this.getClass().getName() + "|METODO:extraer_cuerpo_documento_jde_ccf_v3()|ERROR:" + ex.toString());
+            System.out.println("PROYECTO:api-grupoterra-svfel-v3|CLASE:" + this.getClass().getName() + "|METODO:extraer_cuerpo_documento_jde_fex_v3()|ERROR:" + ex.toString());
         }
 
         return resultado;
