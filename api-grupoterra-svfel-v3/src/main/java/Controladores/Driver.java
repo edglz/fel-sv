@@ -33,6 +33,26 @@ public class Driver implements Serializable {
 
         return resultado;
     }
+    
+    public String guardar_en_archivo_json(Long id_dte, String tipo_documento, String cadena) {
+        String resultado = "";
+
+        try {
+            // String path_file = "C:\\\\FELSV3\\py\\";
+            String path_file = "/FELSV3/json/";
+            File directorio = new File(path_file);
+            directorio.mkdir();
+
+            FileWriter fichero = new FileWriter(path_file + "jsondte_" + tipo_documento + "_" + id_dte + ".json", true);
+            PrintWriter pw_request = new PrintWriter(fichero);
+            pw_request.println(cadena);
+            fichero.close();
+        } catch (Exception ex) {
+
+        }
+
+        return resultado;
+    }
 
     private static StringBuilder triTexto(int n) {
         StringBuilder result = new StringBuilder();

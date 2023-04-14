@@ -56,13 +56,15 @@ public class Ctrl_DTE_V3 implements Serializable {
                 String DCTO = rs.getString(3);
                 String AC30 = rs.getString(19);
                 
-                switch (AC30) {
-                    case "EXP":
-                        DCTO = "EX";
-                        break;
-                    case "FCF":
-                        DCTO = "FE";
-                        break;
+                if (DCTO.equals("S3")) {
+                    switch (AC30) {
+                        case "EXP":
+                            DCTO = "EX";
+                            break;
+                        case "FCF":
+                            DCTO = "FE";
+                            break;
+                    }
                 }
                 
                 cadenasql = "INSERT INTO " + esquema + ".F5542FEL@" + dblink + " ("

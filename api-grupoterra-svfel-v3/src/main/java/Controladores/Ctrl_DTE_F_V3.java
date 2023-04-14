@@ -384,11 +384,17 @@ public class Ctrl_DTE_F_V3 implements Serializable {
                     + "<td>Documento-Interno</td>"
                     + "<td>" + DCT_JDE + "-" + DOC_JDE + "</td>"
                     + "</tr>"
+                    + "<tr>"
+                    + "<td>Tipo Documento</td>"
+                    + "<td>Factura</td>"
+                    + "</tr>"
                     + "</table>"
                     + "</body>"
                     + "</html>";
 
             if (respuesta_recepciondte_mh.getCodigoMsg().trim().equals("001") || respuesta_recepciondte_mh.getCodigoMsg().trim().equals("002")) {
+                List<Adjunto> files = new ArrayList<>();
+                
                 Cliente_Rest_Jasper cliente_rest_jasper = new Cliente_Rest_Jasper();
                 InputStream inputstream = cliente_rest_jasper.reporte_f_pdf(id_dte.toString());
                 File TargetFile = new File("/FELSV3/pdf/felsv_f_" + id_dte + ".pdf");
@@ -402,8 +408,19 @@ public class Ctrl_DTE_F_V3 implements Serializable {
                 adjunto.setData(Base64.getEncoder().encodeToString(bytes));
                 adjunto.setExt("pdf");
                 adjunto.setPath(null);
-                List<Adjunto> files = new ArrayList<>();
                 files.add(adjunto);
+                
+                File TargetFileJson = new File("/FELSV3/json/jsondte_f_" + id_dte + ".json");
+                
+                Adjunto adjunto_json = new Adjunto();
+                adjunto_json.setName(respuesta_recepciondte_mh.getCodigoGeneracion() + ".json");
+                adjunto_json.setType("application/json");
+                InputStream inputstream_mail_json = new FileInputStream(TargetFileJson);
+                byte[] bytes_json = IOUtils.toByteArray(inputstream_mail_json);
+                adjunto_json.setData(Base64.getEncoder().encodeToString(bytes_json));
+                adjunto_json.setExt("json");
+                adjunto_json.setPath(null);
+                files.add(adjunto_json);
 
                 Mensaje_Correo mensaje_correo = new Mensaje_Correo();
                 String send_to = ctrl_base_datos.ObtenerString("SELECT LISTAGG(TO_CHAR(TRIM(F.CUENTA_CORREO)),', ') WITHIN GROUP (ORDER BY TO_CHAR(TRIM(F.CUENTA_CORREO))) CUENTAS_CORREO FROM NOTIFIACION_CORREO_V3 F WHERE F.ACTIVO=1", conn);
@@ -420,6 +437,18 @@ public class Ctrl_DTE_F_V3 implements Serializable {
                 String resul_envio_correo = cliente_rest_sendmail.sendmail(new Gson().toJson(mensaje_correo));
                 // System.out.println("Notificación Correo: " + resul_envio_correo);
             } else {
+                List<Adjunto> files = new ArrayList<>();
+                File TargetFileJson = new File("/FELSV3/json/jsondte_f_" + id_dte + ".json");
+                Adjunto adjunto_json = new Adjunto();
+                adjunto_json.setName("jsondte_f_" + id_dte + ".json");
+                adjunto_json.setType("application/json");
+                InputStream inputstream_mail_json = new FileInputStream(TargetFileJson);
+                byte[] bytes_json = IOUtils.toByteArray(inputstream_mail_json);
+                adjunto_json.setData(Base64.getEncoder().encodeToString(bytes_json));
+                adjunto_json.setExt("json");
+                adjunto_json.setPath(null);
+                files.add(adjunto_json);
+                
                 Mensaje_Correo mensaje_correo = new Mensaje_Correo();
                 String send_to = ctrl_base_datos.ObtenerString("SELECT LISTAGG(TO_CHAR(TRIM(F.CUENTA_CORREO)),', ') WITHIN GROUP (ORDER BY TO_CHAR(TRIM(F.CUENTA_CORREO))) CUENTAS_CORREO FROM NOTIFIACION_CORREO_V3 F WHERE F.ACTIVO=1", conn);
                 mensaje_correo.setRecipients(send_to);
@@ -429,7 +458,7 @@ public class Ctrl_DTE_F_V3 implements Serializable {
                 mensaje_correo.setBody(null);
                 mensaje_correo.setFrom("replegal-unosv@uno-terra.com");
                 mensaje_correo.setBodyHtml(cuerpo_html_correo);
-                mensaje_correo.setFiles(null);
+                mensaje_correo.setFiles(files);
                 
                 Cliente_Rest_SendMail cliente_rest_sendmail = new Cliente_Rest_SendMail();
                 String resul_envio_correo = cliente_rest_sendmail.sendmail(new Gson().toJson(mensaje_correo));
