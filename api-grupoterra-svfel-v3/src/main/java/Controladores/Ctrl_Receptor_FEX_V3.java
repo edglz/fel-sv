@@ -58,7 +58,7 @@ public class Ctrl_Receptor_FEX_V3 implements Serializable {
             String NOMBRE = ctrl_base_datos.ObtenerString("SELECT UPPER(NVL(TRIM(F.WWMLNM),'-') || (SELECT NVL(TRIM(F.ALADD1),' ') FROM " + esquema + ".F0116@" + dblink + " F WHERE ROWNUM=1 AND F.ALAN8=" + AN8_JDE + ")) NOMBRE_FISCAL FROM " + esquema + ".F0111@" + dblink + " F WHERE F.WWIDLN=0 AND F.WWAN8=" + AN8_JDE, conn);
             NOMBRE = NOMBRE.replaceAll("'", "");
 
-            Long ID_CAT_022 = ctrl_base_datos.ObtenerLong("SELECT C.ID_CAT FROM CAT_022 C WHERE C.VALOR_JDE IN (SELECT TRIM(F.ABTX2) FROM " + esquema + ".F0101@" + dblink + " G WHERE G.ABAN8=" + AN8_JDE + ")", conn);
+            Long ID_CAT_022 = ctrl_base_datos.ObtenerLong("SELECT C.ID_CAT FROM CAT_022 C WHERE C.VALOR_JDE IN (SELECT TRIM(G.ABTX2) FROM " + esquema + ".F0101@" + dblink + " G WHERE G.ABAN8=" + AN8_JDE + ")", conn);
             if(ID_CAT_022 == null) {
                 ID_CAT_022 = Long.valueOf("1");
             }
@@ -75,7 +75,7 @@ public class Ctrl_Receptor_FEX_V3 implements Serializable {
                 COMPLEMENTO = "Sin dirección registrada en el código del cliente";
             }
 
-            Long ID_CAT_029 = Long.valueOf("2");
+            Long ID_CAT_029 = ctrl_base_datos.ObtenerLong("SELECT C.ID_CAT FROM CAT_029 C WHERE C.VALOR_JDE IN (SELECT TRIM(G.ABTAXC) FROM " + esquema + ".F0101@" + dblink + " G WHERE G.ABAN8=" + AN8_JDE + ")", conn);
 
             Long ID_CAT_019 = ctrl_base_datos.ObtenerLong("SELECT C.ID_CAT FROM CAT_019 C WHERE C.VALOR_JDE IN (SELECT TRIM(G.ABAC12) FROM " + esquema + ".F0101@" + dblink + " G WHERE G.ABAN8=" + AN8_JDE + ")", conn);
             if (ID_CAT_019 == null) {
@@ -143,7 +143,7 @@ public class Ctrl_Receptor_FEX_V3 implements Serializable {
                 COMPLEMENTO_SHAN = "Sin dirección registrada en el código del cliente";
             }
 
-            Long ID_CAT_029_SHAN = Long.valueOf("2");
+            Long ID_CAT_029_SHAN = ctrl_base_datos.ObtenerLong("SELECT C.ID_CAT FROM CAT_029 C WHERE C.VALOR_JDE IN (SELECT TRIM(G.ABTAXC) FROM " + esquema + ".F0101@" + dblink + " G WHERE G.ABAN8=" + SHAN_JDE + ")", conn);
 
             Long ID_CAT_019_SHAN = ctrl_base_datos.ObtenerLong("SELECT C.ID_CAT FROM CAT_019 C WHERE C.VALOR_JDE IN (SELECT TRIM(G.ABAC12) FROM " + esquema + ".F0101@" + dblink + " G WHERE G.ABAN8=" + SHAN_JDE + ")", conn);
             if (ID_CAT_019_SHAN == null) {

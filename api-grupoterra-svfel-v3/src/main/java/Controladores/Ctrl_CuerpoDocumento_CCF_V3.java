@@ -394,8 +394,8 @@ public class Ctrl_CuerpoDocumento_CCF_V3 implements Serializable {
                     contador++;
                     ID_CUERPO_DOCUMENTO = Long.valueOf(contador.toString());
                     ID_CAT_011 = Long.valueOf("4");
-                    
-                    Long ID_CAT_015_IEC = ctrl_base_datos.ObtenerLong("SELECT C.ID_CAT FROM CAT_015 C WHERE C.VALOR_JDE LIKE '%[" + rs.getString(9) + "]%'", conn);
+                    Long ID_CAT_015_IEC = Long.valueOf("9");
+                    Long ID_CAT_014_IEC = Long.valueOf("56");
 
                     Number PRECIOUNIIEC_TEMP = PRECIOUNIIEC.doubleValue() / CANTIDAD;
                     if (rs.getString(8).equals("Y")) {
@@ -430,7 +430,7 @@ public class Ctrl_CuerpoDocumento_CCF_V3 implements Serializable {
                             + CANTIDAD + ",'"
                             + "IEC" + "',"
                             + ID_CAT_015_IEC + ","
-                            + ID_CAT_014 + ",'"
+                            + ID_CAT_014_IEC + ",'"
                             + "IEC " + DESCRIPCION + "',"
                             + PRECIOUNIIEC_TEMP + ","
                             + "0" + ","

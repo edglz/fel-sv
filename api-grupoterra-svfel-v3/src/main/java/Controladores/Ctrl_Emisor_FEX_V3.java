@@ -12,7 +12,7 @@ public class Ctrl_Emisor_FEX_V3 implements Serializable {
     public Ctrl_Emisor_FEX_V3() {
     }
 
-    public Emisor_fex obtener_emisor_fex_v3(Long id_dte, Connection conn) {
+    public Emisor_fex obtener_emisor_fex_v3(Long id_dte, String ambiente, Connection conn) {
         Emisor_fex resultado = new Emisor_fex();
 
         try {
@@ -50,8 +50,34 @@ public class Ctrl_Emisor_FEX_V3 implements Serializable {
                 tipo_Item_Expor = ctrl_base_datos.ObtenerEntero("SELECT C.CODIGO FROM CAT_011 C WHERE C.ID_CAT IN (SELECT F.ID_CAT_011 FROM CUERPO_DOCU_CCF_V3 F WHERE F.ID_DTE=" + id_dte + ")", conn);
             }
             resultado.setTipoItemExpor(tipo_Item_Expor);
-            resultado.setRecintoFiscal("03");
-            resultado.setRegimen("EX-1.1000.000");
+            
+            /* *****************************************************************
+             *  AGERGADO ESPECIAL PARA EXTRAER EL RECINTO FISCAL Y EL REGIMEN 
+             *  EN LA SECCION EMISOR PARA LA FACTURA DE EXPORACIÓN.
+             ******************************************************************* */
+            String esquema;
+            String dblink;
+            if (ambiente.equals("PY")) {
+                esquema = "CRPDTA";
+                dblink = "JDEPY";
+            } else {
+                esquema = "PRODDTA";
+                dblink = "JDEPD";
+            }
+            
+            String AN8_JDE = ctrl_base_datos.ObtenerString("SELECT F.AN8_JDE FROM DTE_FEX_V3 F WHERE F.ID_DTE=" + id_dte, conn);
+            
+            String RecintoFiscal = ctrl_base_datos.ObtenerString("SELECT C.CODIGO FROM CAT_027 C WHERE C.VALOR_JDE IN (SELECT TRIM(G.ABAC23) FROM " + esquema + ".F0101@" + dblink + " G WHERE G.ABAN8=" + AN8_JDE + ")", conn);
+            if(RecintoFiscal == null) {
+                RecintoFiscal = "03";
+            }
+            resultado.setRecintoFiscal(RecintoFiscal);
+            
+            String Regimen = ctrl_base_datos.ObtenerString("SELECT C.CODIGO FROM CAT_028 C WHERE C.VALOR_JDE IN (SELECT TRIM(G.ABAC27) FROM " + esquema + ".F0101@" + dblink + " G WHERE G.ABAN8=" + AN8_JDE + ")", conn);
+            if(Regimen == null) {
+                Regimen = "EX-1.1000.000";
+            }
+            resultado.setRegimen(Regimen);
         } catch (Exception ex) {
             System.out.println("PROYECTO:api-grupoterra-svfel-v3|CLASE:" + this.getClass().getName() + "|METODO:obtener_emisor_fex_v3()|ERROR:" + ex.toString());
         }

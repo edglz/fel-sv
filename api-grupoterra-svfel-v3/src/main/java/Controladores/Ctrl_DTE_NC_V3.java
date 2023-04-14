@@ -135,7 +135,7 @@ public class Ctrl_DTE_NC_V3 implements Serializable {
                 stmt1.close();
 
                 Ctrl_Identificacion_NC_V3 ctrl_identificacion_nc_v3 = new Ctrl_Identificacion_NC_V3();
-                String result_edentificacion = ctrl_identificacion_nc_v3.extraer_identificacion_jde_nc_v3(ID_DTE, ambiente, DCTO_JDE.trim(), MCU_JDE.trim(), CRCD_JDE.trim(), conn);
+                String result_identificacion = ctrl_identificacion_nc_v3.extraer_identificacion_jde_nc_v3(ID_DTE, ambiente, DCTO_JDE.trim(), MCU_JDE.trim(), CRCD_JDE.trim(), conn);
 
                 Ctrl_DocumentoRelacionando_NC_V3 ctrl_documento_relacionando_nc_v3 = new Ctrl_DocumentoRelacionando_NC_V3();
                 String result_documento_relacionado = ctrl_documento_relacionando_nc_v3.extraer_documento_relacionado_jde_nc_v3(ID_DTE, ambiente, JEVER_JDE, KCOO_JDE, DOCO_JDE, DCTO_JDE, conn);

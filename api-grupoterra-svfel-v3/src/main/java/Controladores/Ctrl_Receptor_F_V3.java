@@ -19,7 +19,7 @@ public class Ctrl_Receptor_F_V3 implements Serializable {
         try {
             Ctrl_Base_Datos ctrl_base_datos = new Ctrl_Base_Datos();
             
-            resultado.setTipoDocumento(ctrl_base_datos.ObtenerString("SELECT F.TIPO_DOCUMENTO FROM RECEPTOR_F_V3 F WHERE F.ID_DTE=" + id_dte, conn));
+            resultado.setTipoDocumento(ctrl_base_datos.ObtenerString("SELECT C.CODIGO FROM CAT_022 C WHERE C.ID_CAT IN (SELECT F.ID_CAT_022 FROM RECEPTOR_F_V3 F WHERE F.ID_DTE=" + id_dte + ")", conn));
             resultado.setNumDocumento(ctrl_base_datos.ObtenerString("SELECT F.NUM_DOCUMENTO FROM RECEPTOR_F_V3 F WHERE F.ID_DTE=" + id_dte, conn));
             resultado.setNrc(null);
             resultado.setNombre(ctrl_base_datos.ObtenerString("SELECT F.NOMBRE FROM RECEPTOR_F_V3 F WHERE F.ID_DTE=" + id_dte, conn));
@@ -60,7 +60,7 @@ public class Ctrl_Receptor_F_V3 implements Serializable {
             Long ID_DTE = id_dte;
             Long ID_RECEPTOR = Long.valueOf("1");
             
-            Long ID_CAT_022 = ctrl_base_datos.ObtenerLong("SELECT C.ID_CAT FROM CAT_022 C WHERE C.VALOR_JDE IN (SELECT TRIM(F.ABTX2) FROM " + esquema + ".F0101@" + dblink + " G WHERE G.ABAN8=" + AN8_JDE + ")", conn);
+            Long ID_CAT_022 = ctrl_base_datos.ObtenerLong("SELECT C.ID_CAT FROM CAT_022 C WHERE C.VALOR_JDE IN (SELECT TRIM(G.ABTX2) FROM " + esquema + ".F0101@" + dblink + " G WHERE G.ABAN8=" + AN8_JDE + ")", conn);
             if(ID_CAT_022 == null) {
                 ID_CAT_022 = Long.valueOf("1");
             }
@@ -77,7 +77,7 @@ public class Ctrl_Receptor_F_V3 implements Serializable {
             }
             
             Long ID_CAT_012 = ctrl_base_datos.ObtenerLong("SELECT C.ID_CAT FROM CAT_012 C WHERE C.VALOR_JDE IN (SELECT TRIM(G.ALADDS) FROM " + esquema + ".F0116@" + dblink + " G WHERE ROWNUM=1 AND G.ALAN8=" + AN8_JDE + ")", conn);
-            Long ID_CAT_013 = ctrl_base_datos.ObtenerLong("SELECT C.ID_CAT FROM CAT_013 C WHERE C.VALOR_JDE IN (SELECT TRIM(G.ALCTY1) FROM " + esquema + ".F0116@" + dblink + " G WHERE ROWNUM=1 AND G.ALAN8=" + AN8_JDE + ")", conn);
+            Long ID_CAT_013 = ctrl_base_datos.ObtenerLong("SELECT C.ID_CAT FROM CAT_013 C WHERE C.VALOR_JDE IN (SELECT TRIM(G.ALCOUN) FROM " + esquema + ".F0116@" + dblink + " G WHERE ROWNUM=1 AND G.ALAN8=" + AN8_JDE + ")", conn);
             String CODIGO_CAT_013 = ctrl_base_datos.ObtenerString("SELECT C.CODIGO FROM CAT_013 C WHERE C.ID_CAT=" + ID_CAT_013 + " AND C.ID_CAT_012=" + ID_CAT_012, conn);
             if(CODIGO_CAT_013 == null) {
                 ID_CAT_012 = Long.valueOf("6");

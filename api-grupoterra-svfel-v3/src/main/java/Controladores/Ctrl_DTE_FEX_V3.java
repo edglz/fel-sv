@@ -135,7 +135,7 @@ public class Ctrl_DTE_FEX_V3 implements Serializable {
                 stmt1.close();
 
                 Ctrl_Identificacion_FEX_V3 ctrl_identificacion_fex_v3 = new Ctrl_Identificacion_FEX_V3();
-                String result_edentificacion = ctrl_identificacion_fex_v3.extraer_identificacion_jde_fex_v3(ID_DTE, ambiente, DCTO_JDE.trim(), MCU_JDE.trim(), CRCD_JDE.trim(), conn);
+                String result_identificacion = ctrl_identificacion_fex_v3.extraer_identificacion_jde_fex_v3(ID_DTE, ambiente, DCTO_JDE.trim(), MCU_JDE.trim(), CRCD_JDE.trim(), conn);
 
                 Ctrl_Receptor_FEX_V3 ctrl_receptor_fex_v3 = new Ctrl_Receptor_FEX_V3();
                 String result_recepor = ctrl_receptor_fex_v3.extraer_receptor_jde_fex_v3(ID_DTE, ambiente, AN8_JDE.trim(), SHAN_JDE.trim(), conn);
@@ -199,8 +199,8 @@ public class Ctrl_DTE_FEX_V3 implements Serializable {
             resultado.setIdentificacion(ctrl_identificacion_fex_v3.obtener_identificacion_fex_v3(id_dte, conn));
 
             Ctrl_Emisor_FEX_V3 ctrl_emisor_fex_v3 = new Ctrl_Emisor_FEX_V3();
-            resultado.setEmisor(ctrl_emisor_fex_v3.obtener_emisor_fex_v3(id_dte, conn));
-
+            resultado.setEmisor(ctrl_emisor_fex_v3.obtener_emisor_fex_v3(id_dte, ambiente, conn));
+            
             Ctrl_Receptor_FEX_V3 ctrl_receptor_fex_v3 = new Ctrl_Receptor_FEX_V3();
             resultado.setReceptor(ctrl_receptor_fex_v3.obtener_receptor_fex_v3(id_dte, conn));
 
