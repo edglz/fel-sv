@@ -128,7 +128,7 @@ public class Ctrl_Receptor_F_V3 implements Serializable {
             
             Long ID_SHIPTO = Long.valueOf("1");
             
-            Long ID_CAT_022_SHAN = ctrl_base_datos.ObtenerLong("SELECT C.ID_CAT FROM CAT_022 C WHERE C.VALOR_JDE IN (SELECT TRIM(F.ABTX2) FROM " + esquema + ".F0101@" + dblink + " G WHERE G.ABAN8=" + SHAN_JDE + ")", conn);
+            Long ID_CAT_022_SHAN = ctrl_base_datos.ObtenerLong("SELECT C.ID_CAT FROM CAT_022 C WHERE C.VALOR_JDE IN (SELECT TRIM(G.ABTX2) FROM " + esquema + ".F0101@" + dblink + " G WHERE G.ABAN8=" + SHAN_JDE + ")", conn);
             if(ID_CAT_022_SHAN == null) {
                 ID_CAT_022_SHAN = Long.valueOf("1");
             }
