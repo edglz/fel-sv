@@ -72,22 +72,15 @@ public class Ctrl_Resumen_FEX_V3 implements Serializable {
 
             Long ID_DTE = id_dte;
             Long ID_RESUMEN = Long.valueOf("1");
-            Number TOTALNOSUJ = ctrl_base_datos.ObtenerDouble("SELECT SUM(F.VENTANOSUJ) FROM CUERPO_DOCU_FEX_V3 F WHERE F.ID_DTE=" + ID_DTE, conn);
-            Number TOTALEXENTA = ctrl_base_datos.ObtenerDouble("SELECT SUM(F.VENTAEXENTA) FROM CUERPO_DOCU_FEX_V3 F WHERE F.ID_DTE=" + ID_DTE, conn);
             Number TOTALGRAVADA = ctrl_base_datos.ObtenerDouble("SELECT SUM(F.VENTAGRAVADA) FROM CUERPO_DOCU_FEX_V3 F WHERE F.ID_DTE=" + ID_DTE, conn);
-            Number SUBTOTALVENTAS = TOTALNOSUJ.doubleValue() + TOTALEXENTA.doubleValue() + TOTALGRAVADA.doubleValue();
-            Number DESCUNOSUJ = 0.00;
-            Number DESCUEXENTA = 0.00;
-            Number DESCUGRAVADA = 0.00;
+            Number DESCUENTO = 0.00;
             Number PORCENTAJEDESCUENTO = 0.00;
             Number TOTALDESCU = ctrl_base_datos.ObtenerDouble("SELECT SUM(F.MONTODESCU) FROM CUERPO_DOCU_FEX_V3 F WHERE F.ID_DTE=" + ID_DTE, conn);
-            Number SUBTOTAL = SUBTOTALVENTAS.doubleValue();
-            Number IVAPERCI1 = ctrl_base_datos.ObtenerDouble("SELECT ROUND(NVL(SUM(F.VALOR),0),2) VALOR FROM CUERPO_TRIBUTO_FEX_V3 F WHERE F.ID_CAT_015=18 AND F.ID_DTE=" + ID_DTE, conn);
-            Number IVARETE1 = 0.00;
-            Number RETERENTA = 0.00;
-            Number MONTOTOTALOPERACION = SUBTOTAL.doubleValue() + ctrl_base_datos.ObtenerDouble("SELECT ROUND(SUM(F.VALOR),2) FROM CUERPO_TRIBUTO_FEX_V3 F WHERE F.ID_CAT_015 NOT IN (18) AND F.ID_DTE=" + ID_DTE, conn);
+            Number SEGURO = 0.00;
+            Number FLETE = 0.00;
+            Number MONTOTOTALOPERACION = TOTALGRAVADA.doubleValue() - TOTALDESCU.doubleValue() + SEGURO.doubleValue() + FLETE.doubleValue();
             Number TOTALNOGRAVADO = ctrl_base_datos.ObtenerDouble("SELECT SUM(F.NOGRAVADO) FROM CUERPO_DOCU_FEX_V3 F WHERE F.ID_DTE=" + ID_DTE, conn);
-            Number TOTALPAGAR = MONTOTOTALOPERACION.doubleValue() + IVAPERCI1.doubleValue() + IVARETE1.doubleValue() + RETERENTA.doubleValue();
+            Number TOTALPAGAR = MONTOTOTALOPERACION.doubleValue() + TOTALNOGRAVADO.doubleValue();
             Long TOTALPAGAR_LONG = TOTALPAGAR.longValue();
             Double TOTALPAGAR_DOUBLE = TOTALPAGAR.doubleValue();
             String[] NUMERO_PARTES = TOTALPAGAR_DOUBLE.toString().split("\\.");
@@ -105,18 +98,19 @@ public class Ctrl_Resumen_FEX_V3 implements Serializable {
                 NUMERO_PARTES[1] = "00";
             }
             String TOTALLETRAS = driver.cantidadConLetra(TOTALPAGAR_LONG.toString()).toUpperCase() + " DOLARES CON " + NUMERO_PARTES[1] + "/100";
-            Number SALDOFAVOR = 0.00;
             Long ID_CAT_016 = Long.valueOf("2");
             Long ID_CAT_017 = null;
             Number PAGOS_MONTOPAGO = null;
             String PAGOS_REFERENCIA = null;
             Long ID_CAT_018 = Long.valueOf("1");
             Number PAGOS_PERIODO = 1;
+            Long ID_CAT_031 = Long.valueOf("1");
             String NUMPAGOELECTRONICO = null;
-
+            String OBSERVACIONES = "Factura de Exportación";
             String cadenasql = "INSERT INTO RESUMEN_FEX_V3 ("
                     + "ID_DTE, "
                     + "ID_RESUMEN, "
+                    + "TOTALGRAVADA, "
                     + "DESCUENTO, "
                     + "PORCENTAJEDESCUENTO, "
                     + "TOTALDESCU, "
@@ -137,31 +131,25 @@ public class Ctrl_Resumen_FEX_V3 implements Serializable {
                     + "OBSERVACIONES) VALUES ("
                     + ID_DTE + ","
                     + ID_RESUMEN + ","
-                    + TOTALNOSUJ + ","
-                    + TOTALEXENTA + ","
                     + TOTALGRAVADA + ","
-                    + SUBTOTALVENTAS + ","
-                    + DESCUNOSUJ + ","
-                    + DESCUEXENTA + ","
-                    + DESCUGRAVADA + ","
+                    + DESCUENTO + ","
                     + PORCENTAJEDESCUENTO + ","
                     + TOTALDESCU + ","
-                    + SUBTOTAL + ","
-                    + IVAPERCI1 + ","
-                    + IVARETE1 + ","
-                    + RETERENTA + ","
+                    + SEGURO + ","
+                    + FLETE + ","
                     + MONTOTOTALOPERACION + ","
                     + TOTALNOGRAVADO + ","
                     + TOTALPAGAR + ",'"
                     + TOTALLETRAS + "',"
-                    + SALDOFAVOR + ","
                     + ID_CAT_016 + ","
                     + ID_CAT_017 + ","
-                    + PAGOS_MONTOPAGO + ","
-                    + PAGOS_REFERENCIA + ","
+                    + PAGOS_MONTOPAGO + ",'"
+                    + PAGOS_REFERENCIA + "',"
                     + ID_CAT_018 + ","
                     + PAGOS_PERIODO + ","
-                    + NUMPAGOELECTRONICO + ")";
+                    + ID_CAT_031 + ","
+                    + NUMPAGOELECTRONICO + ",'" 
+                    + OBSERVACIONES + "')";
             Statement stmt = conn.createStatement();
             System.out.println(cadenasql);
             stmt.executeUpdate(cadenasql);

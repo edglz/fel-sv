@@ -22,7 +22,7 @@ DTE.RESPONSE_NUMVALIDACION Sello_Recepcion,
 C03.VALOR Modelo_Facturacion,
 C04.VALOR Tipo_Transmision,
 TO_CHAR(IDE.FECHA_HORA_EMISION, 'YYYY-MM-DD HH24:MI:SS') Fecha_Hora_Emision,
-'-' Emisor_Razon_Social,
+EMI.NOMBRECOMERCIAL Emisor_Razon_Social,
 EMI.NIT Emisor_Nit,
 EMI.NRC Emisor_Nrc,
 C19.VALOR Emisor_Actividad_Economica,
@@ -31,8 +31,8 @@ EMI_E.TELEFONO Emisor_Telefono,
 EMI_E.CORREO Emisor_Correo,
 C09.VALOR Emisor_Tipo_Establecimiento,
 REP.NOMBRE Receptor_Razon_Social,
-REP.NUM_DOCUMENTO Receptor_Nit,
-REP.NRC Receptor_Nrc,
+C22.VALOR Receptor_TipoDocumento,
+REP.NUM_DOCUMENTO Receptor_NumDocumento,
 C19R.VALOR Receptor_Actividad_Economica,
 REP.DIRECCION_COMPLEMENTO Receptor_Direccion,
 REP.TELEFONO Receptor_Telefono,
@@ -41,12 +41,12 @@ CUE.ID_CUERPO_DOCUMENTO No,
 CUE.CANTIDAD Cantidad,
 C14.VALOR Unidad_Medida,
 TRIM(CUE.CODIGO) || ' - ' || TRIM(CUE.DESCRIPCION) Descripcion,
-(SELECT A.PRECIOUNI + (A.PRECIOUNI * (B.VALOR/A.VENTAGRAVADA)) VALOR FROM CUERPO_DOCU_F_V3 A LEFT JOIN CUERPO_TRIBUTO_F_V3 B ON (A.ID_DTE=B.ID_DTE AND A.ID_CUERPO_DOCUMENTO=B.ID_CUERPO_DOCUMENTO AND B.ID_CAT_015=1) WHERE A.ID_DTE=CUE.ID_DTE AND A.ID_CUERPO_DOCUMENTO=CUE.ID_CUERPO_DOCUMENTO) Precio_Unitario,
-(SELECT A.MONTODESCU + (A.MONTODESCU * (B.VALOR/A.VENTAGRAVADA)) VALOR FROM CUERPO_DOCU_F_V3 A LEFT JOIN CUERPO_TRIBUTO_F_V3 B ON (A.ID_DTE=B.ID_DTE AND A.ID_CUERPO_DOCUMENTO=B.ID_CUERPO_DOCUMENTO AND B.ID_CAT_015=1) WHERE A.ID_DTE=CUE.ID_DTE AND A.ID_CUERPO_DOCUMENTO=CUE.ID_CUERPO_DOCUMENTO) Descuento_Item, 
+(SELECT A.PRECIOUNI + (A.PRECIOUNI * (NVL(B.VALOR,0.00)/A.VENTAGRAVADA)) VALOR FROM CUERPO_DOCU_F_V3 A LEFT JOIN CUERPO_TRIBUTO_F_V3 B ON (A.ID_DTE=B.ID_DTE AND A.ID_CUERPO_DOCUMENTO=B.ID_CUERPO_DOCUMENTO AND B.ID_CAT_015=1) WHERE A.ID_DTE=CUE.ID_DTE AND A.ID_CUERPO_DOCUMENTO=CUE.ID_CUERPO_DOCUMENTO) Precio_Unitario,
+(SELECT A.MONTODESCU + (A.MONTODESCU * (NVL(B.VALOR,0.00)/A.VENTAGRAVADA)) VALOR FROM CUERPO_DOCU_F_V3 A LEFT JOIN CUERPO_TRIBUTO_F_V3 B ON (A.ID_DTE=B.ID_DTE AND A.ID_CUERPO_DOCUMENTO=B.ID_CUERPO_DOCUMENTO AND B.ID_CAT_015=1) WHERE A.ID_DTE=CUE.ID_DTE AND A.ID_CUERPO_DOCUMENTO=CUE.ID_CUERPO_DOCUMENTO) Descuento_Item, 
 CUE.NOGRAVADO Venta_No_Afecta,
 CUE.VENTANOSUJ Venta_No_Sujeta,
 CUE.VENTAEXENTA Venta_Exenta,
-(SELECT A.VENTAGRAVADA + (A.VENTAGRAVADA * (B.VALOR/A.VENTAGRAVADA)) VALOR FROM CUERPO_DOCU_F_V3 A LEFT JOIN CUERPO_TRIBUTO_F_V3 B ON (A.ID_DTE=B.ID_DTE AND A.ID_CUERPO_DOCUMENTO=B.ID_CUERPO_DOCUMENTO AND B.ID_CAT_015=1) WHERE A.ID_DTE=CUE.ID_DTE AND A.ID_CUERPO_DOCUMENTO=CUE.ID_CUERPO_DOCUMENTO) Venta_Gravada,
+(SELECT A.VENTAGRAVADA + (A.VENTAGRAVADA * (NVL(B.VALOR,0.00)/A.VENTAGRAVADA)) VALOR FROM CUERPO_DOCU_F_V3 A LEFT JOIN CUERPO_TRIBUTO_F_V3 B ON (A.ID_DTE=B.ID_DTE AND A.ID_CUERPO_DOCUMENTO=B.ID_CUERPO_DOCUMENTO AND B.ID_CAT_015=1) WHERE A.ID_DTE=CUE.ID_DTE AND A.ID_CUERPO_DOCUMENTO=CUE.ID_CUERPO_DOCUMENTO) Venta_Gravada,
 RES.TOTALNOSUJ Total_Venta_No_Sujeta,
 RES.TOTALEXENTA Total_Venta_Exenta,
 RES.TOTALGRAVADA Total_Venta_Gravada,
@@ -54,13 +54,11 @@ RES.SUBTOTALVENTAS Suma_Total_Operaciones,
 RES.DESCUNOSUJ Total_Desc_No_Sujeta,
 RES.DESCUEXENTA Total_Desc_Venta_Exenta,
 RES.DESCUGRAVADA Total_Desc_Venta_Gravada,
-(SELECT SUM(IMP.VALOR) FROM RESUMEN_TRIBUTO_F_V3 IMP WHERE IMP.ID_CAT_015=1 AND IMP.ID_DTE=IDE.ID_DTE) Total_Iva,
-(SELECT SUM(IMP.VALOR) FROM RESUMEN_TRIBUTO_F_V3 IMP WHERE IMP.ID_CAT_015=6 AND IMP.ID_DTE=IDE.ID_DTE) Total_Cotrans,
-(SELECT SUM(IMP.VALOR) FROM RESUMEN_TRIBUTO_F_V3 IMP WHERE IMP.ID_CAT_015=5 AND IMP.ID_DTE=IDE.ID_DTE) Total_Fovial,
+RES.TOTALIVA Total_Iva,
 RES.SUBTOTAL Total_SubTotal,
-RES.TOTALIVA Total_Iva_Percibido,
 RES.IVARETE1 Total_Iva_Retenido,
 RES.RETERENTA Total_Retencion_Renta,
+RES.TOTALNOGRAVADO Total_No_Afectos,
 RES.TOTALPAGAR Total_A_Pagar,
 DTE.DCTO_JDE || '-' || DTE.DOCO_JDE Orden_JDE,
 DTE.DCT_JDE || '-' || DTE.DOC_JDE Documento_JDE,
@@ -88,7 +86,6 @@ LEFT JOIN CAT_009 C09 ON (EMI_E.ID_CAT_009=C09.ID_CAT)
 LEFT JOIN RECEPTOR_F_V3 REP ON (DTE.ID_DTE=REP.ID_DTE)
 LEFT JOIN CAT_019 C19R ON (REP.ID_CAT_019=C19R.ID_CAT)
 LEFT JOIN CUERPO_DOCU_F_V3 CUE ON (IDE.ID_DTE=CUE.ID_DTE)
-LEFT JOIN CAT_011 C11 ON (CUE.ID_CAT_011=C11.ID_CAT)
 LEFT JOIN CAT_014 C14 ON (CUE.ID_CAT_014=C14.ID_CAT)
 LEFT JOIN RESUMEN_F_V3 RES ON (DTE.ID_DTE=RES.ID_DTE)
 LEFT JOIN CAT_016 C16 ON (RES.ID_CAT_016=C16.ID_CAT)
@@ -96,6 +93,7 @@ LEFT JOIN EXTENSION_F_V3 EXT ON (DTE.ID_DTE=EXT.ID_DTE)
 LEFT JOIN APENDICE_F_V3 APE ON (DTE.ID_DTE=APE.ID_DTE)
 LEFT JOIN SHIPTO_F_V3 SHI ON (DTE.ID_DTE=SHI.ID_DTE)
 LEFT JOIN CAT_001 C01 ON (IDE.ID_CAT_001=C01.ID_CAT)
+LEFT JOIN CAT_022 C22 ON (REP.ID_CAT_022=C22.ID_CAT)
 WHERE 
 IDE.ID_DTE = $P{id_dte} 
 ORDER BY 
@@ -165,13 +163,13 @@ CUE.ID_CUERPO_DOCUMENTO]]>
 		<property name="com.jaspersoft.studio.field.name" value="RECEPTOR_RAZON_SOCIAL"/>
 		<property name="com.jaspersoft.studio.field.label" value="RECEPTOR_RAZON_SOCIAL"/>
 	</field>
-	<field name="RECEPTOR_NIT" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.name" value="RECEPTOR_NIT"/>
-		<property name="com.jaspersoft.studio.field.label" value="RECEPTOR_NIT"/>
+	<field name="RECEPTOR_TIPODOCUMENTO" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="RECEPTOR_TIPODOCUMENTO"/>
+		<property name="com.jaspersoft.studio.field.label" value="RECEPTOR_TIPODOCUMENTO"/>
 	</field>
-	<field name="RECEPTOR_NRC" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.name" value="RECEPTOR_NRC"/>
-		<property name="com.jaspersoft.studio.field.label" value="RECEPTOR_NRC"/>
+	<field name="RECEPTOR_NUMDOCUMENTO" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="RECEPTOR_NUMDOCUMENTO"/>
+		<property name="com.jaspersoft.studio.field.label" value="RECEPTOR_NUMDOCUMENTO"/>
 	</field>
 	<field name="RECEPTOR_ACTIVIDAD_ECONOMICA" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.name" value="RECEPTOR_ACTIVIDAD_ECONOMICA"/>
@@ -261,21 +259,9 @@ CUE.ID_CUERPO_DOCUMENTO]]>
 		<property name="com.jaspersoft.studio.field.name" value="TOTAL_IVA"/>
 		<property name="com.jaspersoft.studio.field.label" value="TOTAL_IVA"/>
 	</field>
-	<field name="TOTAL_COTRANS" class="java.math.BigDecimal">
-		<property name="com.jaspersoft.studio.field.name" value="TOTAL_COTRANS"/>
-		<property name="com.jaspersoft.studio.field.label" value="TOTAL_COTRANS"/>
-	</field>
-	<field name="TOTAL_FOVIAL" class="java.math.BigDecimal">
-		<property name="com.jaspersoft.studio.field.name" value="TOTAL_FOVIAL"/>
-		<property name="com.jaspersoft.studio.field.label" value="TOTAL_FOVIAL"/>
-	</field>
 	<field name="TOTAL_SUBTOTAL" class="java.math.BigDecimal">
 		<property name="com.jaspersoft.studio.field.name" value="TOTAL_SUBTOTAL"/>
 		<property name="com.jaspersoft.studio.field.label" value="TOTAL_SUBTOTAL"/>
-	</field>
-	<field name="TOTAL_IVA_PERCIBIDO" class="java.math.BigDecimal">
-		<property name="com.jaspersoft.studio.field.name" value="TOTAL_IVA_PERCIBIDO"/>
-		<property name="com.jaspersoft.studio.field.label" value="TOTAL_IVA_PERCIBIDO"/>
 	</field>
 	<field name="TOTAL_IVA_RETENIDO" class="java.math.BigDecimal">
 		<property name="com.jaspersoft.studio.field.name" value="TOTAL_IVA_RETENIDO"/>
@@ -284,6 +270,10 @@ CUE.ID_CUERPO_DOCUMENTO]]>
 	<field name="TOTAL_RETENCION_RENTA" class="java.math.BigDecimal">
 		<property name="com.jaspersoft.studio.field.name" value="TOTAL_RETENCION_RENTA"/>
 		<property name="com.jaspersoft.studio.field.label" value="TOTAL_RETENCION_RENTA"/>
+	</field>
+	<field name="TOTAL_NO_AFECTOS" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="TOTAL_NO_AFECTOS"/>
+		<property name="com.jaspersoft.studio.field.label" value="TOTAL_NO_AFECTOS"/>
 	</field>
 	<field name="TOTAL_A_PAGAR" class="java.math.BigDecimal">
 		<property name="com.jaspersoft.studio.field.name" value="TOTAL_A_PAGAR"/>
@@ -765,7 +755,7 @@ CUE.ID_CUERPO_DOCUMENTO]]>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="Arial" size="8" isBold="true"/>
 				</textElement>
-				<text><![CDATA[NIT:]]></text>
+				<text><![CDATA[Tipo Documento:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement mode="Opaque" x="0" y="241" width="100" height="10" backcolor="#FFFFFF" uuid="28ca102d-bc5c-4fe7-b801-5b0fa6d8e30f">
@@ -775,7 +765,7 @@ CUE.ID_CUERPO_DOCUMENTO]]>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="Arial" size="8" isBold="true"/>
 				</textElement>
-				<text><![CDATA[NRC:]]></text>
+				<text><![CDATA[Num Documento:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement mode="Opaque" x="0" y="251" width="100" height="10" backcolor="#FFFFFF" uuid="5ff6db16-e522-41ab-a38f-07117b727b0b">
@@ -837,7 +827,7 @@ CUE.ID_CUERPO_DOCUMENTO]]>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="Arial" size="8" isItalic="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{RECEPTOR_NIT}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{RECEPTOR_TIPODOCUMENTO}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="100" y="241" width="230" height="10" uuid="36b6947d-d3fd-4a4a-ad7b-b19e3cec1f9a">
@@ -848,7 +838,7 @@ CUE.ID_CUERPO_DOCUMENTO]]>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="Arial" size="8" isItalic="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{RECEPTOR_NRC}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{RECEPTOR_NUMDOCUMENTO}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="442" y="231" width="150" height="10" uuid="07efe3ee-2e73-4484-ab84-3ba9ac907a68">
@@ -1380,7 +1370,7 @@ CUE.ID_CUERPO_DOCUMENTO]]>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Arial" size="8" isBold="true"/>
 				</textElement>
-				<text><![CDATA[COTRANS ($0.10 Ctvs. por galón).:]]></text>
+				<text><![CDATA[-]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="292" y="70" width="250" height="10" uuid="e284a410-ec2d-405d-8b07-e49cdae51e24">
@@ -1398,7 +1388,7 @@ CUE.ID_CUERPO_DOCUMENTO]]>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Arial" size="8" isBold="true"/>
 				</textElement>
-				<text><![CDATA[FOVIAL ($0.20 Ctvs. por galón).:]]></text>
+				<text><![CDATA[-]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="292" y="80" width="250" height="10" uuid="684e29a4-9bba-4dfd-b82e-77ee6674cbf9">
@@ -1416,7 +1406,7 @@ CUE.ID_CUERPO_DOCUMENTO]]>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Arial" size="8" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Sub-Total:]]></text>
+				<text><![CDATA[-]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="292" y="90" width="250" height="10" uuid="4a2b02eb-37c6-4c8f-b8e4-e1c620c7821e">
@@ -1434,7 +1424,7 @@ CUE.ID_CUERPO_DOCUMENTO]]>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Arial" size="8" isBold="true"/>
 				</textElement>
-				<text><![CDATA[IVA Percibido:]]></text>
+				<text><![CDATA[Sub-Total:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="292" y="100" width="250" height="10" uuid="78119263-4554-478d-8b14-03c8fbf6f55f">
@@ -1632,7 +1622,7 @@ CUE.ID_CUERPO_DOCUMENTO]]>
 				<textElement textAlignment="Right" verticalAlignment="Top">
 					<font fontName="Arial" size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{TOTAL_COTRANS} == null ? 0.00 : $F{TOTAL_COTRANS}]]></textFieldExpression>
+				<textFieldExpression><![CDATA["-"]]></textFieldExpression>
 			</textField>
 			<textField textAdjust="StretchHeight" pattern="#,##0.00;(#,##0.00-)">
 				<reportElement stretchType="RelativeToTallestObject" x="542" y="70" width="50" height="10" uuid="414920ef-22fa-4e7f-8cfa-49d40459e93b">
@@ -1648,7 +1638,7 @@ CUE.ID_CUERPO_DOCUMENTO]]>
 				<textElement textAlignment="Right" verticalAlignment="Top">
 					<font fontName="Arial" size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{TOTAL_FOVIAL} == null ? 0.00 : $F{TOTAL_FOVIAL}]]></textFieldExpression>
+				<textFieldExpression><![CDATA["-"]]></textFieldExpression>
 			</textField>
 			<textField textAdjust="StretchHeight" pattern="#,##0.00;(#,##0.00-)">
 				<reportElement stretchType="RelativeToTallestObject" x="542" y="80" width="50" height="10" uuid="d02763cb-8302-40e3-9283-8680ed0920e9">
@@ -1664,7 +1654,7 @@ CUE.ID_CUERPO_DOCUMENTO]]>
 				<textElement textAlignment="Right" verticalAlignment="Top">
 					<font fontName="Arial" size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{TOTAL_SUBTOTAL}]]></textFieldExpression>
+				<textFieldExpression><![CDATA["-"]]></textFieldExpression>
 			</textField>
 			<textField textAdjust="StretchHeight" pattern="#,##0.00;(#,##0.00-)">
 				<reportElement stretchType="RelativeToTallestObject" x="542" y="90" width="50" height="10" uuid="3ebd74d6-ed66-4bfb-8d13-04c603bbafe7">
@@ -1680,7 +1670,7 @@ CUE.ID_CUERPO_DOCUMENTO]]>
 				<textElement textAlignment="Right" verticalAlignment="Top">
 					<font fontName="Arial" size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{TOTAL_IVA_PERCIBIDO}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{TOTAL_SUBTOTAL}]]></textFieldExpression>
 			</textField>
 			<textField textAdjust="StretchHeight" pattern="#,##0.00;(#,##0.00-)">
 				<reportElement stretchType="RelativeToTallestObject" x="542" y="100" width="50" height="10" uuid="521fbcc4-dc0a-43fc-8299-2fc565685cc0">

@@ -27,7 +27,7 @@ public class Ctrl_Identificacion_FEX_V3 implements Serializable {
             resultado.setTipoModelo(ctrl_base_datos.ObtenerEntero("SELECT C.CODIGO FROM CAT_003 C WHERE C.ID_CAT IN (SELECT F.ID_CAT_003 FROM IDENTIFICACION_FEX_V3 F WHERE F.ID_DTE=" + id_dte + ")", conn));
             resultado.setTipoOperacion(ctrl_base_datos.ObtenerEntero("SELECT C.CODIGO FROM CAT_004 C WHERE C.ID_CAT IN (SELECT F.ID_CAT_004 FROM IDENTIFICACION_FEX_V3 F WHERE F.ID_DTE=" + id_dte + ")", conn));
             resultado.setTipoContingencia(ctrl_base_datos.ObtenerEntero("SELECT C.CODIGO FROM CAT_005 C WHERE C.ID_CAT IN (SELECT F.ID_CAT_005 FROM IDENTIFICACION_FEX_V3 F WHERE F.ID_DTE=" + id_dte + ")", conn));
-            resultado.setMotivoContin(ctrl_base_datos.ObtenerString("SELECT F.MOTIVOCONTIN FROM IDENTIFICACION_FEX_V3 F WHERE F.ID_DTE=" + id_dte, conn));
+            resultado.setMotivoContigencia(ctrl_base_datos.ObtenerString("SELECT F.MOTIVOCONTIN FROM IDENTIFICACION_FEX_V3 F WHERE F.ID_DTE=" + id_dte, conn));
             resultado.setFecEmi(ctrl_base_datos.ObtenerString("SELECT TO_CHAR(F.FECHA_HORA_EMISION,'YYYY-MM-DD') FROM IDENTIFICACION_FEX_V3 F WHERE F.ID_DTE=" + id_dte, conn));
             resultado.setHorEmi(ctrl_base_datos.ObtenerString("SELECT TO_CHAR(F.FECHA_HORA_EMISION,'HH24:MI:SS') FROM IDENTIFICACION_FEX_V3 F WHERE F.ID_DTE=" + id_dte, conn));
             resultado.setTipoMoneda(ctrl_base_datos.ObtenerString("SELECT F.TIPOMONEDA FROM IDENTIFICACION_FEX_V3 F WHERE F.ID_DTE=" + id_dte, conn));
@@ -46,16 +46,16 @@ public class Ctrl_Identificacion_FEX_V3 implements Serializable {
             
             Long ID_DTE = id_dte;
             Long ID_IDENTIFICACION = Long.valueOf("1");
-            Long DTE_VERSION = Long.valueOf("3");            
+            Long DTE_VERSION = Long.valueOf("1");            
             Long ID_CAT_001;
             if(ambiente.equals("PY")) {
                 ID_CAT_001 = Long.valueOf("1");
             } else {
                 ID_CAT_001 = Long.valueOf("2");
             }
-            Long ID_CAT_002 = ctrl_base_datos.ObtenerLong("SELECT C.ID_CAT FROM CAT_002 C WHERE C.VALOR_JDE='" + DCTO_JDE + "'", conn);
+            Long ID_CAT_002 = ctrl_base_datos.ObtenerLong("SELECT C.ID_CAT FROM CAT_002 C WHERE C.VALOR_JDE='EX'", conn);
             String NUMEROCONTROL = "DTE-" 
-                    + ctrl_base_datos.ObtenerString("SELECT C.CODIGO FROM CAT_002 C WHERE C.VALOR_JDE='" + DCTO_JDE + "'", conn) + "-"
+                    + ctrl_base_datos.ObtenerString("SELECT C.CODIGO FROM CAT_002 C WHERE C.VALOR_JDE='EX'", conn) + "-"
                     + ctrl_base_datos.ObtenerString("SELECT F.CODESTABLE FROM EMISOR_ESTABLECIMIENTO_V3 F WHERE F.CODPUNTOVENTA='" + MCU_JDE + "'", conn)
                     + MCU_JDE + "-"
                     + ctrl_base_datos.ObtenerString("SELECT LPAD(F.CORRELATIVO_FEX + 1, 15, '0') FROM EMISOR_ESTABLECIMIENTO_V3 F WHERE F.CODPUNTOVENTA='" + MCU_JDE + "'", conn);

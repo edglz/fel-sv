@@ -2,7 +2,7 @@ package Entidades;
 
 import java.io.Serializable;
 
-public class Identificacion_fex implements Serializable {
+public class Identificacion_nr implements Serializable {
     
     private static final long serialVersionUID = 1L;
     
@@ -14,12 +14,12 @@ public class Identificacion_fex implements Serializable {
     private Number tipoModelo;
     private Number tipoOperacion;
     private Number tipoContingencia;
-    private String motivoContigencia;
+    private String motivoContin;
     private String fecEmi;
     private String horEmi;
     private String tipoMoneda;
 
-    public Identificacion_fex(Number version, String ambiente, String tipoDte, String numeroControl, String codigoGeneracion, Number tipoModelo, Number tipoOperacion, Number tipoContingencia, String motivoContigencia, String fecEmi, String horEmi, String tipoMoneda) {
+    public Identificacion_nr(Number version, String ambiente, String tipoDte, String numeroControl, String codigoGeneracion, Number tipoModelo, Number tipoOperacion, Number tipoContingencia, String motivoContin, String fecEmi, String horEmi, String tipoMoneda) {
         this.version = version;
         this.ambiente = ambiente;
         this.tipoDte = tipoDte;
@@ -28,13 +28,13 @@ public class Identificacion_fex implements Serializable {
         this.tipoModelo = tipoModelo;
         this.tipoOperacion = tipoOperacion;
         this.tipoContingencia = tipoContingencia;
-        this.motivoContigencia = motivoContigencia;
+        this.motivoContin = motivoContin;
         this.fecEmi = fecEmi;
         this.horEmi = horEmi;
         this.tipoMoneda = tipoMoneda;
     }
 
-    public Identificacion_fex() {
+    public Identificacion_nr() {
     }
 
     public Number getVersion() {
@@ -101,12 +101,12 @@ public class Identificacion_fex implements Serializable {
         this.tipoContingencia = tipoContingencia;
     }
 
-    public String getMotivoContigencia() {
-        return motivoContigencia;
+    public String getMotivoContin() {
+        return motivoContin;
     }
 
-    public void setMotivoContigencia(String motivoContigencia) {
-        this.motivoContigencia = motivoContigencia;
+    public void setMotivoContin(String motivoContin) {
+        this.motivoContin = motivoContin;
     }
 
     public String getFecEmi() {
@@ -135,7 +135,7 @@ public class Identificacion_fex implements Serializable {
 
     @Override
     public String toString() {
-        return "Identificacion_fex{" + "version=" + version + ", ambiente=" + ambiente + ", tipoDte=" + tipoDte + ", numeroControl=" + numeroControl + ", codigoGeneracion=" + codigoGeneracion + ", tipoModelo=" + tipoModelo + ", tipoOperacion=" + tipoOperacion + ", tipoContingencia=" + tipoContingencia + ", motivoContigencia=" + motivoContigencia + ", fecEmi=" + fecEmi + ", horEmi=" + horEmi + ", tipoMoneda=" + tipoMoneda + '}';
+        return "Identificacion_ccf{" + "version=" + version + ", ambiente=" + ambiente + ", tipoDte=" + tipoDte + ", numeroControl=" + numeroControl + ", codigoGeneracion=" + codigoGeneracion + ", tipoModelo=" + tipoModelo + ", tipoOperacion=" + tipoOperacion + ", tipoContingencia=" + tipoContingencia + ", motivoContin=" + motivoContin + ", fecEmi=" + fecEmi + ", horEmi=" + horEmi + ", tipoMoneda=" + tipoMoneda + '}';
     }
     
 }
