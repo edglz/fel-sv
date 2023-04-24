@@ -145,7 +145,31 @@ public class Cliente_Rest_Jasper implements Serializable {
             }
         } catch (Exception ex) {
             resultado = null;
-            System.out.println("1,ERROR (" + this.getClass().getName() + " - reporte_f_pdf):" + ex.toString());
+            System.out.println("1,ERROR (" + this.getClass().getName() + " - reporte_fex_pdf):" + ex.toString());
+        }
+
+        return resultado;
+    }
+    
+    public InputStream reporte_nr_pdf(String id_dte) {
+        InputStream resultado;
+
+        try {
+            WebTarget webTarget = this.client.target(BASE_URI)
+                    .path("reports/FELSV/DTEs/Formato_NR.pdf")
+                    .queryParam("id_dte", id_dte)
+                    .queryParam("j_username", j_username)
+                    .queryParam("j_password", j_password);
+            Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON_TYPE);
+            Response response = invocationBuilder.get();
+            if (response.getStatus() == 200) {
+                resultado = response.readEntity(InputStream.class);
+            } else {
+                resultado = null;
+            }
+        } catch (Exception ex) {
+            resultado = null;
+            System.out.println("1,ERROR (" + this.getClass().getName() + " - reporte_nr_pdf):" + ex.toString());
         }
 
         return resultado;
