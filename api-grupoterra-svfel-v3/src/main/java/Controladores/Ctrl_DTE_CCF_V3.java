@@ -290,12 +290,14 @@ public class Ctrl_DTE_CCF_V3 implements Serializable {
             String DCTO_JDE = ctrl_base_datos.ObtenerString("SELECT F.DCTO_JDE FROM DTE_CCF_V3 F WHERE F.ID_DTE=" + id_dte, conn);
             String DOC_JDE = ctrl_base_datos.ObtenerString("SELECT F.DOC_JDE FROM DTE_CCF_V3 F WHERE F.ID_DTE=" + id_dte, conn);
             String DCT_JDE = ctrl_base_datos.ObtenerString("SELECT F.DCT_JDE FROM DTE_CCF_V3 F WHERE F.ID_DTE=" + id_dte, conn);
+            String AEXP_JDE = ctrl_base_datos.ObtenerString("SELECT REPLACE(TO_CHAR(F.TOTALPAGAR,'9999999999D99MI'),'.','') AEXP_JDE FROM RESUMEN_CCF_V3 F WHERE F.ID_DTE=" + id_dte, conn);
 
             cadenasql = "UPDATE " + esquema + ".F5542FEL@" + dblink + " SET "
                     + "FESTCD='" + respuesta_recepciondte_mh.getCodigoMsg().trim() + "', "
                     + "FECRSREF01='" + NUMEROCONTROL.trim() + "', "
                     + "FECRSREF02='" + respuesta_recepciondte_mh.getCodigoGeneracion() + "', "
-                    + "FECRSREF03='" + respuesta_recepciondte_mh.getSelloRecibido() + "' "
+                    + "FECRSREF03='" + respuesta_recepciondte_mh.getSelloRecibido() + "', "
+                    + "FEAEXP=" + AEXP_JDE + " "
                     + "WHERE FEKCOO='" + KCOO_JDE + "' AND FEDOCO=" + DOCO_JDE + " AND FEDCTO='" + DCTO_JDE + "' AND FEDOC=" + DOC_JDE + " AND FEDCT='" + DCT_JDE + "'";
             stmt = conn.createStatement();
             System.out.println(cadenasql);

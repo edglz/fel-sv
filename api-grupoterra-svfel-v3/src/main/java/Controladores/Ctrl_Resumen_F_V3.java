@@ -104,13 +104,13 @@ public class Ctrl_Resumen_F_V3 implements Serializable {
             Long ID_RESUMEN = Long.valueOf("1");
             Number TOTALNOSUJ = ctrl_base_datos.ObtenerDouble("SELECT SUM(F.VENTANOSUJ) FROM CUERPO_DOCU_F_V3 F WHERE F.ID_DTE=" + ID_DTE, conn);
             Number TOTALEXENTA = ctrl_base_datos.ObtenerDouble("SELECT SUM(F.VENTAEXENTA) FROM CUERPO_DOCU_F_V3 F WHERE F.ID_DTE=" + ID_DTE, conn);
-            Number TOTALGRAVADA = ctrl_base_datos.ObtenerDouble("SELECT SUM(A.VENTAGRAVADA + (A.VENTAGRAVADA * (NVL(B.VALOR,0.00)/A.VENTAGRAVADA))) VALOR FROM CUERPO_DOCU_F_V3 A LEFT JOIN CUERPO_TRIBUTO_F_V3 B ON (A.ID_DTE=B.ID_DTE AND A.ID_CUERPO_DOCUMENTO=B.ID_CUERPO_DOCUMENTO AND B.ID_CAT_015=1) WHERE A.ID_DTE=" + ID_DTE, conn);
+            Number TOTALGRAVADA = ctrl_base_datos.ObtenerDouble("SELECT SUM(A.VENTAGRAVADA) VALOR FROM CUERPO_DOCU_F_V3 A WHERE A.ID_DTE=" + ID_DTE, conn);
             Number SUBTOTALVENTAS = TOTALNOSUJ.doubleValue() + TOTALEXENTA.doubleValue() + TOTALGRAVADA.doubleValue();
             Number DESCUNOSUJ = 0.00;
             Number DESCUEXENTA = 0.00;
             Number DESCUGRAVADA = 0.00;
             Number PORCENTAJEDESCUENTO = 0.00;
-            Number TOTALDESCU = ctrl_base_datos.ObtenerDouble("SELECT SUM(A.MONTODESCU + (A.MONTODESCU * (NVL(B.VALOR,0.00)/A.VENTAGRAVADA))) VALOR FROM CUERPO_DOCU_F_V3 A LEFT JOIN CUERPO_TRIBUTO_F_V3 B ON (A.ID_DTE=B.ID_DTE AND A.ID_CUERPO_DOCUMENTO=B.ID_CUERPO_DOCUMENTO AND B.ID_CAT_015=1) WHERE A.ID_DTE=" + ID_DTE, conn);
+            Number TOTALDESCU = ctrl_base_datos.ObtenerDouble("SELECT SUM(A.MONTODESCU) VALOR FROM CUERPO_DOCU_F_V3 A WHERE A.ID_DTE=" + ID_DTE, conn);
             Number SUBTOTAL = SUBTOTALVENTAS.doubleValue();
             Number IVARETE1 = 0.00;
             Number RETERENTA = 0.00;

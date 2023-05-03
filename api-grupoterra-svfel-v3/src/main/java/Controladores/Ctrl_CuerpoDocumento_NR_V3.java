@@ -115,13 +115,21 @@ public class Ctrl_CuerpoDocumento_NR_V3 implements Serializable {
                 Long ID_CAT_015 = null;
                 Long ID_CAT_014 = ctrl_base_datos.ObtenerLong("SELECT C.ID_CAT FROM CAT_014 C WHERE C.VALOR_JDE LIKE '%[" + rs.getString(4) + "]%'", conn);
                 String DESCRIPCION = rs.getString(5);
+
+                // EXTRAE EL PRECIO UNITARIO.
                 Number PRECIOUNI = rs.getDouble(6);
                 if (PRECIOUNI.doubleValue() < 0.00) {
                     PRECIOUNI = PRECIOUNI.doubleValue() * -1;
                 }
 
                 // EXTRAE EL AJUSTE COMPETITIVO (DESCUENTO)
-                Number MONTODESCU = rs.getDouble(10);
+                Number MONTODESCU = ctrl_base_datos.ObtenerDouble("SELECT F.ALUPRC/10000 FROM " + esquema + ".F4074@" + dblink + " F WHERE F.ALKCOO='" + KCOO_JDE + "' AND F.ALDOCO=" + DOCO_JDE + " AND F.ALDCTO='" + DCTO_JDE + "' AND F.ALLNID=" + rs.getString(7) + " AND TRIM(F.ALAST) IN ('SVPSCG')", conn);
+                if (MONTODESCU == null) {
+                    MONTODESCU = 0.00;
+                }
+                if (MONTODESCU.doubleValue() < 0.00) {
+                    MONTODESCU = MONTODESCU.doubleValue() * -1;
+                }
                 PRECIOUNI = PRECIOUNI.doubleValue() - MONTODESCU.doubleValue();
                 MONTODESCU = CANTIDAD * MONTODESCU.doubleValue();
 
@@ -129,6 +137,9 @@ public class Ctrl_CuerpoDocumento_NR_V3 implements Serializable {
                 Number PRECIOUNIFLETE = ctrl_base_datos.ObtenerDouble("SELECT F.ALUPRC/10000 FROM " + esquema + ".F4074@" + dblink + " F WHERE F.ALKCOO='" + KCOO_JDE + "' AND F.ALDOCO=" + DOCO_JDE + " AND F.ALDCTO='" + DCTO_JDE + "' AND F.ALLNID=" + rs.getString(7) + " AND TRIM(F.ALAST) IN ('SVBITFRG', 'SVBITFR', 'SVECSAFR', 'SVCOMBFR', 'SVFCG2', 'SVMARBFG')", conn);
                 if (PRECIOUNIFLETE == null) {
                     PRECIOUNIFLETE = 0.00;
+                }
+                if (PRECIOUNIFLETE.doubleValue() < 0.00) {
+                    PRECIOUNIFLETE = PRECIOUNIFLETE.doubleValue() * -1;
                 }
                 PRECIOUNI = PRECIOUNI.doubleValue() - PRECIOUNIFLETE.doubleValue();
                 PRECIOUNIFLETE = CANTIDAD * PRECIOUNIFLETE.doubleValue();
@@ -138,6 +149,9 @@ public class Ctrl_CuerpoDocumento_NR_V3 implements Serializable {
                 if (PRECIOUNIIEC == null) {
                     PRECIOUNIIEC = 0.00;
                 }
+                if (PRECIOUNIIEC.doubleValue() < 0.00) {
+                    PRECIOUNIIEC = PRECIOUNIIEC.doubleValue() * -1;
+                }
                 PRECIOUNIIEC = CANTIDAD * PRECIOUNIIEC.doubleValue();
 
                 // EXTRAE LA PROMOCION SI APLICA MAYOR A 0.00, ESTE MONTO NO SE RESTA DEL PRECIO UNITARIO BASE
@@ -145,16 +159,24 @@ public class Ctrl_CuerpoDocumento_NR_V3 implements Serializable {
                 if (PRECIOUNIPROMO == null) {
                     PRECIOUNIPROMO = 0.00;
                 }
+                if (PRECIOUNIPROMO.doubleValue() < 0.00) {
+                    PRECIOUNIPROMO = PRECIOUNIPROMO.doubleValue() * -1;
+                }
                 PRECIOUNIPROMO = CANTIDAD * PRECIOUNIPROMO.doubleValue();
 
                 Number VENTANOSUJ = 0.00;
                 Number VENTAEXENTA = 0.00;
                 Number VENTAGRAVADA;
                 if (rs.getString(8).equals("Y")) {
-                    MONTODESCU = MONTODESCU.doubleValue() * -1.00;
-                    VENTAGRAVADA = (CANTIDAD * PRECIOUNI.doubleValue()) - MONTODESCU.doubleValue();
+                    if (rs.getString(9).trim().equals("EX") || rs.getString(9).trim().equals("EZ") || rs.getString(9).trim().equals("ET1")) {
+                        VENTAEXENTA = (CANTIDAD * PRECIOUNI.doubleValue()) - MONTODESCU.doubleValue();
+                        VENTAGRAVADA = 0.00;
+                    } else {
+                        VENTAEXENTA = 0.00;
+                        VENTAGRAVADA = (CANTIDAD * PRECIOUNI.doubleValue()) - MONTODESCU.doubleValue();
+                    }
                 } else {
-                    MONTODESCU = MONTODESCU.doubleValue() * -1.00;
+                    VENTAEXENTA = 0.00;
                     VENTAGRAVADA = (CANTIDAD * PRECIOUNI.doubleValue()) - MONTODESCU.doubleValue();
                 }
 
@@ -246,7 +268,7 @@ public class Ctrl_CuerpoDocumento_NR_V3 implements Serializable {
                 cadenasql = "SELECT "
                         + "F.NRUORG cantidad, "
                         + "TRIM(F.NRLITM) codigo, "
-                        + "F.NRUPRC/10000 precioUni, "
+                        + "F.NRUPRC/10000 precioUni "
                         + "FROM " + esquema + ".F554211N@" + dblink + " F "
                         + "WHERE "
                         + "F.NRKCOO='" + KCOO_JDE + "' AND F.NRDOCO=" + DOCO_JDE + " AND F.NRDCTO='" + DCTO_JDE + "' AND "
@@ -290,8 +312,15 @@ public class Ctrl_CuerpoDocumento_NR_V3 implements Serializable {
 
                     Number PRECIOUNIFLETE_TEMP = PRECIOUNIFLETE.doubleValue() / CANTIDAD;
                     if (rs.getString(8).equals("Y")) {
-                        VENTAGRAVADA = PRECIOUNIFLETE;
+                        if (rs.getString(9).trim().equals("EX") || rs.getString(9).trim().equals("EZ") || rs.getString(9).trim().equals("ET1")) {
+                            VENTAEXENTA = PRECIOUNIFLETE;
+                            VENTAGRAVADA = 0.00;
+                        } else {
+                            VENTAEXENTA = 0.00;
+                            VENTAGRAVADA = PRECIOUNIFLETE;
+                        }
                     } else {
+                        VENTAEXENTA = 0.00;
                         VENTAGRAVADA = PRECIOUNIFLETE;
                     }
 
@@ -390,8 +419,15 @@ public class Ctrl_CuerpoDocumento_NR_V3 implements Serializable {
 
                     Number PRECIOUNIIEC_TEMP = PRECIOUNIIEC.doubleValue() / CANTIDAD;
                     if (rs.getString(8).equals("Y")) {
-                        VENTAGRAVADA = PRECIOUNIIEC;
+                        if (rs.getString(9).trim().equals("EX") || rs.getString(9).trim().equals("EZ") || rs.getString(9).trim().equals("ET1")) {
+                            VENTAEXENTA = PRECIOUNIIEC;
+                            VENTAGRAVADA = 0.00;
+                        } else {
+                            VENTAEXENTA = 0.00;
+                            VENTAGRAVADA = PRECIOUNIIEC;
+                        }
                     } else {
+                        VENTAEXENTA = 0.00;
                         VENTAGRAVADA = PRECIOUNIIEC;
                     }
 
@@ -488,8 +524,15 @@ public class Ctrl_CuerpoDocumento_NR_V3 implements Serializable {
 
                     Number PRECIOUNIPROMO_TEMP = PRECIOUNIPROMO.doubleValue() / CANTIDAD;
                     if (rs.getString(8).equals("Y")) {
-                        VENTAGRAVADA = PRECIOUNIPROMO;
+                        if (rs.getString(9).trim().equals("EX") || rs.getString(9).trim().equals("EZ") || rs.getString(9).trim().equals("ET1")) {
+                            VENTAEXENTA = PRECIOUNIPROMO;
+                            VENTAGRAVADA = 0.00;
+                        } else {
+                            VENTAEXENTA = 0.00;
+                            VENTAGRAVADA = PRECIOUNIPROMO;
+                        }
                     } else {
+                        VENTAEXENTA = 0.00;
                         VENTAGRAVADA = PRECIOUNIPROMO;
                     }
 

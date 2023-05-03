@@ -23,7 +23,7 @@ import org.glassfish.jersey.client.JerseyClientBuilder;
 public class Cliente_Rest_MH implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
+
     private static final String BASE_URI = "https://apitest.dtes.mh.gob.sv";
     private ClientConfig clientConfig;
     private Client client;
@@ -95,7 +95,7 @@ public class Cliente_Rest_MH implements Serializable {
 
         return resultado;
     }
-    
+
     public String recepciondte(String token, String documento) {
         String resultado = "";
 
@@ -104,7 +104,28 @@ public class Cliente_Rest_MH implements Serializable {
             Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON_TYPE);
             invocationBuilder.header("Authorization", token);
             Response response = invocationBuilder.post(Entity.json(documento));
-            
+
+            if (response.getStatus() == 200 || response.getStatus() == 400) {
+                resultado = response.readEntity(String.class);
+            } else {
+                resultado = response.getStatus() + ": " + response.getStatusInfo();
+            }
+        } catch (Exception ex) {
+            resultado = "ERROR: " + ex.toString();
+        }
+
+        return resultado;
+    }
+
+    public String anulardte(String token, String documento) {
+        String resultado = "";
+
+        try {
+            WebTarget webTarget = client.target(BASE_URI).path("fesv/anulardte");
+            Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON_TYPE);
+            invocationBuilder.header("Authorization", token);
+            Response response = invocationBuilder.post(Entity.json(documento));
+
             if (response.getStatus() == 200 || response.getStatus() == 400) {
                 resultado = response.readEntity(String.class);
             } else {

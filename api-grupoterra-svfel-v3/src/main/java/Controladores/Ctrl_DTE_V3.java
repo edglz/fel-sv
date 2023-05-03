@@ -33,7 +33,6 @@ public class Ctrl_DTE_V3 implements Serializable {
 
             conn.setAutoCommit(false);
 
-            // System.out.println("SELECT TO_NUMBER(SUBSTR(TO_CHAR(TO_DATE('" + fecha + "','YYYYMMDD'),'ccYYddd'),2,6)) IVD FROM DUAL");
             Long ivd = ctrl_base_datos.ObtenerLong("SELECT TO_NUMBER(SUBSTR(TO_CHAR(TO_DATE('" + fecha + "','YYYYMMDD'),'ccYYddd'),2,6)) IVD FROM DUAL", conn);
 
             String STCD;
@@ -44,7 +43,7 @@ public class Ctrl_DTE_V3 implements Serializable {
                 tabla_sales_orders = "F42119";
                 STCD = "999";
             }
-            
+
             // EXTRAE COMPROBANTES DE CRÉDITO FISCAL, FACTURAS CONSUMIDOR FINAL, FACTURAS DE EXPORACIÓN, NOTAS DE CRÉDITO Y NOTAS DE DÉBITO DESDE JDE.
             String cadenasql = "SELECT DISTINCT F.SDKCOO, F.SDDOCO, F.SDDCTO, F.SDDOC, F.SDDCT, F.SDMCU, F.SDAN8, F.SDSHAN, F.SDCRCD, F.SDIVD, '" + STCD + "' STCD, '-' CRSREF01, '-' CRSREF02, '-' CRSREF03, '-' CRSREF04, '-' CRSREF05, '" + tabla_sales_orders + "' TABLA, TRIM(F.SDTXA1) SDTXA1, NVL(TRIM(G.ABAC30),'-') ABAC30 "
                     + "FROM " + esquema + "." + tabla_sales_orders + "@" + dblink + " F LEFT JOIN " + esquema + ".F0101@" + dblink + " G ON (F.SDSHAN=G.ABAN8) "
@@ -53,10 +52,9 @@ public class Ctrl_DTE_V3 implements Serializable {
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(cadenasql);
             while (rs.next()) {
-                String TXA1 = rs.getString(18);
                 String DCTO = rs.getString(3);
                 String AC30 = rs.getString(19);
-                
+
                 if (DCTO.equals("S3")) {
                     switch (AC30) {
                         case "EXP":
@@ -67,7 +65,7 @@ public class Ctrl_DTE_V3 implements Serializable {
                             break;
                     }
                 }
-                
+
                 cadenasql = "INSERT INTO " + esquema + ".F5542FEL@" + dblink + " ("
                         + "FEKCOO, "
                         + "FEDOCO, "
@@ -84,8 +82,11 @@ public class Ctrl_DTE_V3 implements Serializable {
                         + "FECRSREF02, "
                         + "FECRSREF03, "
                         + "FECRSREF04, "
-                        + "FECRSREF05,"
-                        + "FEJEVER) VALUES ('"
+                        + "FECRSREF05, "
+                        + "FEJEVER, "
+                        + "FERCD, "
+                        + "FEAEXP, "
+                        + "FETXA1) VALUES ('"
                         + rs.getString(1) + "','"
                         + rs.getString(2) + "','"
                         + DCTO + "','"
@@ -102,9 +103,12 @@ public class Ctrl_DTE_V3 implements Serializable {
                         + rs.getString(14) + "','"
                         + rs.getString(15) + "','"
                         + rs.getString(16) + "','"
-                        + rs.getString(17) + "')";
+                        + rs.getString(17) + "',"
+                        + "null" + ","
+                        + "0" + ",'"
+                        + rs.getString(18) + "')";
                 Statement stmt1 = conn.createStatement();
-                // System.out.println(cadenasql);
+                System.out.println(cadenasql);
                 stmt1.executeUpdate(cadenasql);
                 stmt1.close();
 
@@ -119,16 +123,16 @@ public class Ctrl_DTE_V3 implements Serializable {
             }
             rs.close();
             stmt.close();
-            
+
             // EXTRAE NOTAS DE REMISIÓN DESDE JDE.
-            cadenasql = "SELECT DISTINCT F.NRKCOO, F.NRDOCO, F.NRDCTO, F.NRN001, F.NRURCD, F.NRMCU, F.NRAN8, F.NRSHAN, F.NRCRCD, F.NRURDT, '" + STCD + "' STCD, '-' CRSREF01, '-' CRSREF02, '-' CRSREF03, '-' CRSREF04, '-' CRSREF05, 'F554211N' TABLA, TRIM(F.NRTAX1) NRTXA1, NVL(TRIM(G.ABAC30),'-') ABAC30 " 
+            cadenasql = "SELECT DISTINCT F.NRKCOO, F.NRDOCO, F.NRDCTO, F.NRN001, F.NRURCD, F.NRMCU, F.NRAN8, F.NRSHAN, F.NRCRCD, F.NRURDT, '" + STCD + "' STCD, '-' CRSREF01, '-' CRSREF02, '-' CRSREF03, '-' CRSREF04, '-' CRSREF05, 'F554211N' TABLA, TRIM(F.NRTXA1) NRTXA1, NVL(TRIM(G.ABAC30),'-') ABAC30 "
                     + "FROM " + esquema + ".F554211N@" + dblink + " F LEFT JOIN " + esquema + ".F0101@" + dblink + " G ON (F.NRAN8=G.ABAN8) "
                     + "WHERE (TRIM(F.NRKCOO) IN (SELECT C.KCOO_JDE FROM EMISOR_KCOO_V3 C)) AND (F.NRN001 > 0) AND (TRIM(F.NRLTTR) NOT IN ('904','902','900','980')) AND (TRIM(F.NRDCTO) IN ('S3','C3','SD')) AND (TRIM(F.NREV01) IN ('N')) AND (F.NRURDT = " + ivd + ")";
             stmt = conn.createStatement();
             rs = stmt.executeQuery(cadenasql);
             while (rs.next()) {
                 String DCTO = "NR";
-                
+
                 cadenasql = "INSERT INTO " + esquema + ".F5542FEL@" + dblink + " ("
                         + "FEKCOO, "
                         + "FEDOCO, "
@@ -145,8 +149,11 @@ public class Ctrl_DTE_V3 implements Serializable {
                         + "FECRSREF02, "
                         + "FECRSREF03, "
                         + "FECRSREF04, "
-                        + "FECRSREF05,"
-                        + "FEJEVER) VALUES ('"
+                        + "FECRSREF05, "
+                        + "FEJEVER, "
+                        + "FERCD, "
+                        + "FEAEXP, "
+                        + "FETXA1) VALUES ('"
                         + rs.getString(1) + "','"
                         + rs.getString(2) + "','"
                         + DCTO + "','"
@@ -163,12 +170,15 @@ public class Ctrl_DTE_V3 implements Serializable {
                         + rs.getString(14) + "','"
                         + rs.getString(15) + "','"
                         + rs.getString(16) + "','"
-                        + rs.getString(17) + "')";
+                        + rs.getString(17) + "',"
+                        + "null" + ","
+                        + "0" + ",'"
+                        + rs.getString(18) + "')";
                 Statement stmt1 = conn.createStatement();
-                // System.out.println(cadenasql);
+                System.out.println(cadenasql);
                 stmt1.executeUpdate(cadenasql);
                 stmt1.close();
-                
+
                 cadenasql = "UPDATE " + esquema + ".F554211N@" + dblink + " "
                         + "SET NREV01='P' "
                         + "WHERE NRKCOO='" + rs.getString(1) + "' AND NRDOCO=" + rs.getString(2) + " AND NRDCTO='" + rs.getString(3) + "' AND NRN001=" + rs.getString(4) + " AND NRURCD='" + rs.getString(5) + "'";

@@ -1,9 +1,8 @@
 package Controladores;
 
-import ClienteServicio.Cliente_Rest_Jasper;
 import ClienteServicio.Cliente_Rest_SendMail;
 import Entidades.Adjunto;
-import Entidades.DTE_F_V3;
+import Entidades.DTE_INVALIDACION_V3;
 import Entidades.Mensaje_Correo;
 import Entidades.RESPUESTA_RECEPCIONDTE_MH;
 import com.google.gson.Gson;
@@ -17,17 +16,16 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 
-public class Ctrl_DTE_F_V3 implements Serializable {
+public class Ctrl_DTE_INVALIDACION_V3 implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    public Ctrl_DTE_F_V3() {
+    public Ctrl_DTE_INVALIDACION_V3() {
     }
 
-    public List<Long> extraer_documento_jde_f_v3(String ambiente) {
+    public List<Long> extraer_documento_jde_invalidacion_v3(String ambiente) {
         List<Long> resultado = new ArrayList<>();
         Connection conn = null;
 
@@ -51,7 +49,7 @@ public class Ctrl_DTE_F_V3 implements Serializable {
                     + "F.FEKCOO, "
                     + "F.FEMCU, "
                     + "F.FEDOCO, "
-                    + "'S3' FEDCTO, "
+                    + "F.FEDCTO, "
                     + "F.FEDOC, "
                     + "F.FEDCT, "
                     + "F.FEAN8, "
@@ -62,13 +60,12 @@ public class Ctrl_DTE_F_V3 implements Serializable {
                     + "FROM "
                     + esquema + ".F5542FEL@" + dblink + " F "
                     + "WHERE "
-                    + "F.FESTCD='000' AND "
-                    + "F.FEDCTO='FE'";
+                    + "F.FERCD='000'";
             Statement stmt = conn.createStatement();
             // System.out.println(cadenasql);
             ResultSet rs = stmt.executeQuery(cadenasql);
             while (rs.next()) {
-                Long ID_DTE = ctrl_base_datos.ObtenerLong("SELECT NVL(MAX(F.ID_DTE), 0) + 1 MAXIMO FROM DTE_F_V3 F", conn);
+                Long ID_DTE = ctrl_base_datos.ObtenerLong("SELECT NVL(MAX(F.ID_DTE), 0) + 1 MAXIMO FROM DTE_INVALIDACION_V3 F", conn);
                 String KCOO_JDE = rs.getString(1);
                 String MCU_JDE = rs.getString(2);
                 String DOCO_JDE = rs.getString(3);
@@ -82,7 +79,7 @@ public class Ctrl_DTE_F_V3 implements Serializable {
                 String JEVER_JDE = rs.getString(11);
                 Long ID_EMISOR = ctrl_base_datos.ObtenerLong("SELECT F.ID_EMISOR FROM EMISOR_ESTABLECIMIENTO_V3 F WHERE F.CODPUNTOVENTA='" + MCU_JDE.trim() + "'", conn);
 
-                cadenasql = "INSERT INTO DTE_F_V3 ("
+                cadenasql = "INSERT INTO DTE_INVALIDACION_V3 ("
                         + "ID_DTE, "
                         + "KCOO_JDE, "
                         + "MCU_JDE, "
@@ -127,30 +124,18 @@ public class Ctrl_DTE_F_V3 implements Serializable {
                 stmt1.close();
 
                 cadenasql = "UPDATE " + esquema + ".F5542FEL@" + dblink + " "
-                        + "SET FESTCD='999' "
-                        + "WHERE FEKCOO='" + KCOO_JDE + "' AND FEDOCO=" + DOCO_JDE + " AND FEDCTO='FE' AND FEDOC=" + DOC_JDE + " AND FEDCT='" + DCT_JDE + "'";
+                        + "SET FERCD='999' "
+                        + "WHERE FEKCOO='" + KCOO_JDE + "' AND FEDOCO=" + DOCO_JDE + " AND FEDCTO='" + DCTO_JDE + "' AND FEDOC=" + DOC_JDE + " AND FEDCT='" + DCT_JDE + "'";
                 stmt1 = conn.createStatement();
                 System.out.println(cadenasql);
                 stmt1.executeUpdate(cadenasql);
                 stmt1.close();
 
-                Ctrl_Identificacion_F_V3 ctrl_identificacion_f_v3 = new Ctrl_Identificacion_F_V3();
-                String result_identificacion = ctrl_identificacion_f_v3.extraer_identificacion_jde_f_v3(ID_DTE, ambiente, DCTO_JDE.trim(), MCU_JDE.trim(), CRCD_JDE.trim(), conn);
-
-                Ctrl_Receptor_F_V3 ctrl_receptor_f_v3 = new Ctrl_Receptor_F_V3();
-                String result_recepor = ctrl_receptor_f_v3.extraer_receptor_jde_f_v3(ID_DTE, ambiente, AN8_JDE.trim(), SHAN_JDE.trim(), conn);
-
-                Ctrl_CuerpoDocumento_F_V3 ctrl_cuerpo_documento_f_v3 = new Ctrl_CuerpoDocumento_F_V3();
-                String result_cuerpo_documento = ctrl_cuerpo_documento_f_v3.extraer_cuerpo_documento_jde_f_v3(ID_DTE, ambiente, KCOO_JDE.trim(), DOCO_JDE.trim(), DCTO_JDE.trim(), JEVER_JDE.trim(), conn);
-
-                Ctrl_Resumen_F_V3 ctrl_resumen_f_v3 = new Ctrl_Resumen_F_V3();
-                String result_resumen = ctrl_resumen_f_v3.extraer_resumen_jde_f_v3(ID_DTE, ambiente, conn);
-
-                Ctrl_Extension_F_V3 ctrl_extension_f_v3 = new Ctrl_Extension_F_V3();
-                String result_extension = ctrl_extension_f_v3.extraer_extension_jde_f_v3(ID_DTE, ambiente, AN8_JDE.trim(), conn);
-
-                Ctrl_Apendice_F_V3 ctrl_apendice_f_v3 = new Ctrl_Apendice_F_V3();
-                String result_apendice = ctrl_apendice_f_v3.extraer_apendice_jde_f_v3(ID_DTE, ambiente, DOCO_JDE.trim(), DCTO_JDE.trim(), MCU_JDE.trim(), conn);
+                Ctrl_Identificacion_INVALIDACION_V3 ctrl_identificacion_invalidacion_v3 = new Ctrl_Identificacion_INVALIDACION_V3();
+                String result_identificacion = ctrl_identificacion_invalidacion_v3.extraer_identificacion_jde_invalidacion_v3(ID_DTE, ambiente, conn);
+                
+                Ctrl_Documento_INVALIDACION_V3 ctrl_documento_invalidacion_v3 = new Ctrl_Documento_INVALIDACION_V3();
+                String result_documento = ctrl_documento_invalidacion_v3.extraer_documento_jde_invalidacion_v3(ID_DTE, ambiente, KCOO_JDE, DOCO_JDE, DCTO_JDE, DOC_JDE, DCT_JDE, conn);
 
                 resultado.add(ID_DTE);
             }
@@ -164,10 +149,10 @@ public class Ctrl_DTE_F_V3 implements Serializable {
                 conn.rollback();
                 conn.setAutoCommit(true);
 
-                System.out.println("PROYECTO:api-grupoterra-svfel-v3|CLASE:" + this.getClass().getName() + "|METODO:extraer_documento_jde_f_v3()|ERROR:" + ex.toString());
+                System.out.println("PROYECTO:api-grupoterra-svfel-v3|CLASE:" + this.getClass().getName() + "|METODO:extraer_documento_jde_invalidacion_v3()|ERROR:" + ex.toString());
                 resultado.clear();
             } catch (Exception ex1) {
-                System.out.println("PROYECTO:api-grupoterra-svfel-v3|CLASE:" + this.getClass().getName() + "|METODO:extraer_documento_jde_f_v3()-rollback|ERROR:" + ex1.toString());
+                System.out.println("PROYECTO:api-grupoterra-svfel-v3|CLASE:" + this.getClass().getName() + "|METODO:extraer_documento_jde_invalidacion_v3()-rollback|ERROR:" + ex1.toString());
                 resultado.clear();
             }
 
@@ -177,7 +162,7 @@ public class Ctrl_DTE_F_V3 implements Serializable {
                     conn.close();
                 }
             } catch (Exception ex) {
-                System.out.println("PROYECTO:api-grupoterra-svfel-v3|CLASE:" + this.getClass().getName() + "|METODO:extraer_documento_jde_f_v3()-finally|ERROR:" + ex.toString());
+                System.out.println("PROYECTO:api-grupoterra-svfel-v3|CLASE:" + this.getClass().getName() + "|METODO:extraer_documento_jde_invalidacion_v3()-finally|ERROR:" + ex.toString());
                 resultado.clear();
             }
         }
@@ -185,8 +170,8 @@ public class Ctrl_DTE_F_V3 implements Serializable {
         return resultado;
     }
 
-    public DTE_F_V3 generar_json_dte_f_v3(String ambiente, Long id_dte) {
-        DTE_F_V3 resultado = new DTE_F_V3();
+    public DTE_INVALIDACION_V3 generar_json_dte_invalidacion_v3(String ambiente, Long id_dte) {
+        DTE_INVALIDACION_V3 resultado = new DTE_INVALIDACION_V3();
         Connection conn = null;
 
         try {
@@ -195,33 +180,9 @@ public class Ctrl_DTE_F_V3 implements Serializable {
 
             conn.setAutoCommit(false);
 
-            Ctrl_Identificacion_F_V3 ctrl_identificacion_f_v3 = new Ctrl_Identificacion_F_V3();
-            resultado.setIdentificacion(ctrl_identificacion_f_v3.obtener_identificacion_f_v3(id_dte, conn));
-
-            resultado.setDocumentoRelacionado(null);
-
-            Ctrl_Emisor_F_V3 ctrl_emisor_f_v3 = new Ctrl_Emisor_F_V3();
-            resultado.setEmisor(ctrl_emisor_f_v3.obtener_emisor_f_v3(id_dte, conn));
-
-            Ctrl_Receptor_F_V3 ctrl_receptor_f_v3 = new Ctrl_Receptor_F_V3();
-            resultado.setReceptor(ctrl_receptor_f_v3.obtener_receptor_f_v3(id_dte, conn));
-
-            resultado.setOtrosDocumentos(null);
-
-            resultado.setVentaTercero(null);
-
-            Ctrl_CuerpoDocumento_F_V3 ctrl_cuerpo_documento_f_v3 = new Ctrl_CuerpoDocumento_F_V3();
-            resultado.setCuerpoDocumento(ctrl_cuerpo_documento_f_v3.obtener_cuerpo_documento_f_v3(id_dte, conn));
-
-            Ctrl_Resumen_F_V3 ctrl_resumen_f_v3 = new Ctrl_Resumen_F_V3();
-            resultado.setResumen(ctrl_resumen_f_v3.obtener_resumen_f_v3(id_dte, conn));
-
-            Ctrl_Extension_F_V3 ctrl_extension_f_v3 = new Ctrl_Extension_F_V3();
-            resultado.setExtension(ctrl_extension_f_v3.obtener_extension_f_v3(id_dte, conn));
-
-            Ctrl_Apendice_F_V3 ctrl_apendice_f_v3 = new Ctrl_Apendice_F_V3();
-            resultado.setApendice(ctrl_apendice_f_v3.obtener_apendice_f_v3(id_dte, conn));
-
+            Ctrl_Identificacion_INVALIDACION_V3 ctrl_identificacion_invalidacion_v3 = new Ctrl_Identificacion_INVALIDACION_V3();
+            resultado.setIdentificacion(ctrl_identificacion_invalidacion_v3.obtener_identificacion_invalidacion_v3(id_dte, conn));
+            
             conn.commit();
             conn.setAutoCommit(true);
         } catch (Exception ex) {
@@ -229,9 +190,9 @@ public class Ctrl_DTE_F_V3 implements Serializable {
                 conn.rollback();
                 conn.setAutoCommit(true);
 
-                System.out.println("PROYECTO:api-grupoterra-svfel-v3|CLASE:" + this.getClass().getName() + "|METODO:generar_dte_f_v3()|ERROR:" + ex.toString());;
+                System.out.println("PROYECTO:api-grupoterra-svfel-v3|CLASE:" + this.getClass().getName() + "|METODO:generar_dte_invalidacion_v3()|ERROR:" + ex.toString());;
             } catch (Exception ex1) {
-                System.out.println("PROYECTO:api-grupoterra-svfel-v3|CLASE:" + this.getClass().getName() + "|METODO:generar_dte_f_v3()-rollback|ERROR:" + ex.toString());
+                System.out.println("PROYECTO:api-grupoterra-svfel-v3|CLASE:" + this.getClass().getName() + "|METODO:generar_dte_invalidacion_v3()-rollback|ERROR:" + ex.toString());
             }
         } finally {
             try {
@@ -239,7 +200,7 @@ public class Ctrl_DTE_F_V3 implements Serializable {
                     conn.close();
                 }
             } catch (Exception ex) {
-                System.out.println("PROYECTO:api-grupoterra-svfel-v3|CLASE:" + this.getClass().getName() + "|METODO:generar_dte_f_v3()-finally|ERROR:" + ex.toString());
+                System.out.println("PROYECTO:api-grupoterra-svfel-v3|CLASE:" + this.getClass().getName() + "|METODO:generar_dte_invalidacion_v3()-finally|ERROR:" + ex.toString());
             }
         }
 
@@ -265,7 +226,7 @@ public class Ctrl_DTE_F_V3 implements Serializable {
 
             conn.setAutoCommit(false);
 
-            String cadenasql = "UPDATE DTE_F_V3 SET "
+            String cadenasql = "UPDATE DTE_INVALIDACION_V3 SET "
                     + "RESPONSE_VERSION=" + respuesta_recepciondte_mh.getVersion() + ", "
                     + "RESPONSE_AMBIENTE='" + respuesta_recepciondte_mh.getAmbiente() + "', "
                     + "RESPONSE_VERSIONAPP=" + respuesta_recepciondte_mh.getVersionApp() + ", "
@@ -284,21 +245,15 @@ public class Ctrl_DTE_F_V3 implements Serializable {
             stmt.executeUpdate(cadenasql);
             stmt.close();
 
-            String NUMEROCONTROL = ctrl_base_datos.ObtenerString("SELECT F.NUMEROCONTROL FROM IDENTIFICACION_F_V3 F WHERE F.ID_DTE=" + id_dte, conn);
-            String KCOO_JDE = ctrl_base_datos.ObtenerString("SELECT F.KCOO_JDE FROM DTE_F_V3 F WHERE F.ID_DTE=" + id_dte, conn);
-            String DOCO_JDE = ctrl_base_datos.ObtenerString("SELECT F.DOCO_JDE FROM DTE_F_V3 F WHERE F.ID_DTE=" + id_dte, conn);
-            String DCTO_JDE = ctrl_base_datos.ObtenerString("SELECT F.DCTO_JDE FROM DTE_F_V3 F WHERE F.ID_DTE=" + id_dte, conn);
-            String DOC_JDE = ctrl_base_datos.ObtenerString("SELECT F.DOC_JDE FROM DTE_F_V3 F WHERE F.ID_DTE=" + id_dte, conn);
-            String DCT_JDE = ctrl_base_datos.ObtenerString("SELECT F.DCT_JDE FROM DTE_F_V3 F WHERE F.ID_DTE=" + id_dte, conn);
-            String AEXP_JDE = ctrl_base_datos.ObtenerString("SELECT REPLACE(TO_CHAR(F.TOTALPAGAR,'9999999999D99MI'),'.','') AEXP_JDE FROM RESUMEN_F_V3 F WHERE F.ID_DTE=" + id_dte, conn);
+            String KCOO_JDE = ctrl_base_datos.ObtenerString("SELECT F.KCOO_JDE FROM DTE_INVALIDACION_V3 F WHERE F.ID_DTE=" + id_dte, conn);
+            String DOCO_JDE = ctrl_base_datos.ObtenerString("SELECT F.DOCO_JDE FROM DTE_INVALIDACION_V3 F WHERE F.ID_DTE=" + id_dte, conn);
+            String DCTO_JDE = ctrl_base_datos.ObtenerString("SELECT F.DCTO_JDE FROM DTE_INVALIDACION_V3 F WHERE F.ID_DTE=" + id_dte, conn);
+            String DOC_JDE = ctrl_base_datos.ObtenerString("SELECT F.DOC_JDE FROM DTE_INVALIDACION_V3 F WHERE F.ID_DTE=" + id_dte, conn);
+            String DCT_JDE = ctrl_base_datos.ObtenerString("SELECT F.DCT_JDE FROM DTE_INVALIDACION_V3 F WHERE F.ID_DTE=" + id_dte, conn);
 
             cadenasql = "UPDATE " + esquema + ".F5542FEL@" + dblink + " SET "
-                    + "FESTCD='" + respuesta_recepciondte_mh.getCodigoMsg().trim() + "', "
-                    + "FECRSREF01='" + NUMEROCONTROL.trim() + "', "
-                    + "FECRSREF02='" + respuesta_recepciondte_mh.getCodigoGeneracion() + "', "
-                    + "FECRSREF03='" + respuesta_recepciondte_mh.getSelloRecibido() + "', "
-                    + "FEAEXP=" + AEXP_JDE + " "
-                    + "WHERE FEKCOO='" + KCOO_JDE + "' AND FEDOCO=" + DOCO_JDE + " AND FEDCTO='FE' AND FEDOC=" + DOC_JDE + " AND FEDCT='" + DCT_JDE + "'";
+                    + "FERCD='" + respuesta_recepciondte_mh.getCodigoMsg().trim() + "' "
+                    + "WHERE FEKCOO='" + KCOO_JDE + "' AND FEDOCO=" + DOCO_JDE + " AND FEDCTO='" + DCTO_JDE + "' AND FEDOC=" + DOC_JDE + " AND FEDCT='" + DCT_JDE + "'";
             stmt = conn.createStatement();
             System.out.println(cadenasql);
             stmt.executeUpdate(cadenasql);
@@ -328,7 +283,7 @@ public class Ctrl_DTE_F_V3 implements Serializable {
                     + "</style>"
                     + "</head>"
                     + "<body>"
-                    + "<h2>Documento DTE: " + respuesta_recepciondte_mh.getCodigoGeneracion() + "</h2>"
+                    + "<h2>Anulación DTE: " + respuesta_recepciondte_mh.getCodigoGeneracion() + "</h2>"
                     + "<table>"
                     + "<tr>"
                     + "<th>Respuesta</th>"
@@ -387,8 +342,8 @@ public class Ctrl_DTE_F_V3 implements Serializable {
                     + "<td>" + DCT_JDE + "-" + DOC_JDE + "</td>"
                     + "</tr>"
                     + "<tr>"
-                    + "<td>Tipo Documento</td>"
-                    + "<td>Factura</td>"
+                    + "<td>Evento</td>"
+                    + "<td>Invalidación DTE</td>"
                     + "</tr>"
                     + "</table>"
                     + "</body>"
@@ -396,24 +351,9 @@ public class Ctrl_DTE_F_V3 implements Serializable {
 
             if (respuesta_recepciondte_mh.getCodigoMsg().trim().equals("001") || respuesta_recepciondte_mh.getCodigoMsg().trim().equals("002")) {
                 List<Adjunto> files = new ArrayList<>();
-                
-                Cliente_Rest_Jasper cliente_rest_jasper = new Cliente_Rest_Jasper();
-                InputStream inputstream = cliente_rest_jasper.reporte_f_pdf(id_dte.toString());
-                File TargetFile = new File("/FELSV3/pdf/felsv_f_" + id_dte + ".pdf");
-                FileUtils.copyInputStreamToFile(inputstream, TargetFile);
 
-                Adjunto adjunto = new Adjunto();
-                adjunto.setName(respuesta_recepciondte_mh.getCodigoGeneracion() + ".pdf");
-                adjunto.setType("application/pdf");
-                InputStream inputstream_mail = new FileInputStream(TargetFile);
-                byte[] bytes = IOUtils.toByteArray(inputstream_mail);
-                adjunto.setData(Base64.getEncoder().encodeToString(bytes));
-                adjunto.setExt("pdf");
-                adjunto.setPath(null);
-                files.add(adjunto);
-                
-                File TargetFileJson = new File("/FELSV3/json/jsondte_f_" + id_dte + ".json");
-                
+                File TargetFileJson = new File("/FELSV3/json/jsondte_invalidacion_" + id_dte + ".json");
+
                 Adjunto adjunto_json = new Adjunto();
                 adjunto_json.setName(respuesta_recepciondte_mh.getCodigoGeneracion() + ".json");
                 adjunto_json.setType("application/json");
@@ -429,20 +369,20 @@ public class Ctrl_DTE_F_V3 implements Serializable {
                 mensaje_correo.setRecipients(send_to);
                 String send_to_cc = ctrl_base_datos.ObtenerString("SELECT LISTAGG(TO_CHAR(TRIM(F.CUENTA_CORREO)),', ') WITHIN GROUP (ORDER BY TO_CHAR(TRIM(F.CUENTA_CORREO))) CUENTAS_CORREO FROM NOTIFIACION_CORREO_V3 F WHERE F.ACTIVO=2", conn);
                 mensaje_correo.setCc(send_to_cc);
-                mensaje_correo.setSubject("Emisión DTE.");
+                mensaje_correo.setSubject("Anulación DTE.");
                 mensaje_correo.setBody(null);
                 mensaje_correo.setFrom("replegal-unosv@uno-terra.com");
                 mensaje_correo.setBodyHtml(cuerpo_html_correo);
                 mensaje_correo.setFiles(files);
-                
+
                 Cliente_Rest_SendMail cliente_rest_sendmail = new Cliente_Rest_SendMail();
                 String resul_envio_correo = cliente_rest_sendmail.sendmail(new Gson().toJson(mensaje_correo));
                 // System.out.println("Notificación Correo: " + resul_envio_correo);
             } else {
                 List<Adjunto> files = new ArrayList<>();
-                File TargetFileJson = new File("/FELSV3/json/jsondte_f_" + id_dte + ".json");
+                File TargetFileJson = new File("/FELSV3/json/jsondte_invalidacion_" + id_dte + ".json");
                 Adjunto adjunto_json = new Adjunto();
-                adjunto_json.setName("jsondte_f_" + id_dte + ".json");
+                adjunto_json.setName("jsondte_invalidacion_" + id_dte + ".json");
                 adjunto_json.setType("application/json");
                 InputStream inputstream_mail_json = new FileInputStream(TargetFileJson);
                 byte[] bytes_json = IOUtils.toByteArray(inputstream_mail_json);
@@ -450,18 +390,18 @@ public class Ctrl_DTE_F_V3 implements Serializable {
                 adjunto_json.setExt("json");
                 adjunto_json.setPath(null);
                 files.add(adjunto_json);
-                
+
                 Mensaje_Correo mensaje_correo = new Mensaje_Correo();
                 String send_to = ctrl_base_datos.ObtenerString("SELECT LISTAGG(TO_CHAR(TRIM(F.CUENTA_CORREO)),', ') WITHIN GROUP (ORDER BY TO_CHAR(TRIM(F.CUENTA_CORREO))) CUENTAS_CORREO FROM NOTIFIACION_CORREO_V3 F WHERE F.ACTIVO=1", conn);
                 mensaje_correo.setRecipients(send_to);
                 String send_to_cc = ctrl_base_datos.ObtenerString("SELECT LISTAGG(TO_CHAR(TRIM(F.CUENTA_CORREO)),', ') WITHIN GROUP (ORDER BY TO_CHAR(TRIM(F.CUENTA_CORREO))) CUENTAS_CORREO FROM NOTIFIACION_CORREO_V3 F WHERE F.ACTIVO=2", conn);
                 mensaje_correo.setCc(send_to_cc);
-                mensaje_correo.setSubject("Error Emisión DTE.");
+                mensaje_correo.setSubject("Error Anulación DTE.");
                 mensaje_correo.setBody(null);
                 mensaje_correo.setFrom("replegal-unosv@uno-terra.com");
                 mensaje_correo.setBodyHtml(cuerpo_html_correo);
                 mensaje_correo.setFiles(files);
-                
+
                 Cliente_Rest_SendMail cliente_rest_sendmail = new Cliente_Rest_SendMail();
                 String resul_envio_correo = cliente_rest_sendmail.sendmail(new Gson().toJson(mensaje_correo));
                 // System.out.println("Notificación Correo: " + resul_envio_correo);
