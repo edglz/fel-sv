@@ -35,29 +35,20 @@ SELECT C.* FROM CAT_030 C ORDER BY C.ID_CAT;
 SELECT C.* FROM CAT_031 C ORDER BY C.ID_CAT;
 SELECT C.* FROM CAT_032 C ORDER BY C.ID_CAT;
 SELECT C.* FROM CAT_033 C ORDER BY C.ID_CAT;
-
 -- ***************************************************************************************************************************
 -- *          CONSULTA DE TABLAS EMISOR, SHAN, COMPAÑIA Y ESTABLECIMIENTO FEL-SV.                                            *
 -- ***************************************************************************************************************************
 SELECT F.* FROM EMISOR_V3 F;
 SELECT F.* FROM EMISOR_KCOO_V3 F;
 SELECT F.* FROM EMISOR_ESTABLECIMIENTO_V3 F;
-
-INSERT INTO EMISOR_ESTABLECIMIENTO_V3 (ID_EMISOR_ESTABLECIMIENTO,ID_EMISOR,ID_CAT_009,ID_CAT_012,ID_CAT_013,DIRECCION_COMPLEMENTO,TELEFONO,CODESTABLEMH,CODESTABLE,CODPUNTOVENTAMH,CODPUNTOVENTA,CORREO,NOMBENTREGA,DOCUENTREGA,NOMBRECIBE,DOCURECIBE,CORRELATIVO_CCF,CORRELATIVO_NC,CORRELATIVO_ND,CORRELATIVO_NR) 
-VALUES (7,1,1,5,76,'Av. Albert Einstein y blvd Los Próceres, Urb. Lomas de San Francisco, # 1, Torre Cuscatlán, nivel 15, Antgo Cuscatlán, La Libertad.','25288000',null,'07',null,'733501','replegal-unosv@uno-terra.com','UNO EL SALVADOR','06140404600015','UNO EL SALVADOR','06140404600015',0,0,0,0);
-COMMIT;
-
-UPDATE EMISOR_ESTABLECIMIENTO_V3 
-SET DIRECCION_COMPLEMENTO='Av. Albert Einstein y blvd Los Próceres, Urb. Lomas de San Francisco, # 1, Torre Cuscatlán, nivel 15, Antiguo Cuscatlán, La Libertad.' 
-WHERE ID_EMISOR_ESTABLECIMIENTO > 0;
-
+-- INSERT INTO EMISOR_ESTABLECIMIENTO_V3 (ID_EMISOR_ESTABLECIMIENTO,ID_EMISOR,ID_CAT_009,ID_CAT_012,ID_CAT_013,DIRECCION_COMPLEMENTO,TELEFONO,CODESTABLEMH,CODESTABLE,CODPUNTOVENTAMH,CODPUNTOVENTA,CORREO,NOMBENTREGA,DOCUENTREGA,NOMBRECIBE,DOCURECIBE,CORRELATIVO_CCF,CORRELATIVO_NC,CORRELATIVO_ND,CORRELATIVO_NR) 
+-- VALUES (7,1,1,5,76,'Av. Albert Einstein y bulevar Los Próceres, Urb. Lomas de San Francisco, # 1, Torre Cuscatlán, nivel 15, Antiguo Cuscatlán, La Libertad.','25288000',null,'07',null,'733501','replegal-unosv@uno-terra.com','UNO EL SALVADOR','06140404600015','UNO EL SALVADOR','06140404600015',0,0,0,0);
+-- COMMIT;
 SELECT F.* FROM NOTIFIACION_CORREO_V3 F WHERE F.ACTIVO=1 ORDER BY ID_NOTIFICACION;
 UPDATE NOTIFIACION_CORREO_V3 SET ACTIVO=1 WHERE ID_NOTIFICACION IN (1,3,4,9,10,11,12,13); -- NOTIFIACIÓN EN FASE DE PRUEBAS INTEGRALES.
 UPDATE NOTIFIACION_CORREO_V3 SET ACTIVO=0 WHERE ID_NOTIFICACION>0;
 UPDATE NOTIFIACION_CORREO_V3 SET ACTIVO=1 WHERE ID_NOTIFICACION IN (1,3,4,13);
 UPDATE NOTIFIACION_CORREO_V3 SET ACTIVO=1 WHERE ID_NOTIFICACION IN (3);
-COMMIT;
-
 -- ***************************************************************************************************************************
 -- *          CONSULTA DE TABLA FEL JD EDWARDS FEL-SV.                                                                       *
 -- ***************************************************************************************************************************
@@ -82,7 +73,6 @@ WHERE F.FEDCTO='FE' AND F.FESTCD IN ('000');
 
 UPDATE CRPDTA.F5542FEL@JDEPY SET FESTCD='000', FECRSREF01='-', FECRSREF02='-', FECRSREF03='-', FECRSREF04='-', FECRSREF05='-' WHERE FEDOCO IN (73305755);
 COMMIT;
-
 -- ***************************************************************************************************************************
 -- *          COMPROBANTE DE CRÉDITO FISCAL.                                                                                 *
 -- ***************************************************************************************************************************
@@ -100,20 +90,19 @@ SELECT F.* FROM RESUMEN_TRIBUTO_CCF_V3 F ORDER BY F.ID_DTE DESC;
 SELECT F.* FROM EXTENSION_CCF_V3 F ORDER BY F.ID_DTE DESC;
 SELECT F.* FROM APENDICE_CCF_V3 F ORDER BY F.ID_DTE DESC;
 
-SELECT F.* FROM DTE_CCF_V3 F WHERE F.ID_DTE IN (348);
-SELECT F.* FROM IDENTIFICACION_CCF_V3 F WHERE F.ID_DTE IN (348);
-SELECT F.* FROM DOCU_RELA_CCF_V3 F WHERE F.ID_DTE IN (348);
-SELECT F.* FROM RECEPTOR_CCF_V3 F WHERE F.ID_DTE IN (348);
-SELECT F.* FROM SHIPTO_CCF_V3 F WHERE F.ID_DTE IN (348);
-SELECT F.* FROM OTROS_DOCU_CCF_V3 F WHERE F.ID_DTE IN (348);
-SELECT F.* FROM VENTA_TERCERO_CCF_V3 F WHERE F.ID_DTE IN (348);
-SELECT F.* FROM CUERPO_DOCU_CCF_V3 F WHERE F.ID_DTE IN (348);
-SELECT F.* FROM CUERPO_TRIBUTO_CCF_V3 F WHERE F.ID_DTE IN (348);
-SELECT F.* FROM RESUMEN_CCF_V3 F WHERE F.ID_DTE IN (348);
-SELECT F.* FROM RESUMEN_TRIBUTO_CCF_V3 F WHERE F.ID_DTE IN (348);
-SELECT F.* FROM EXTENSION_CCF_V3 F WHERE F.ID_DTE IN (348);
-SELECT F.* FROM APENDICE_CCF_V3 F WHERE F.ID_DTE IN (348);
-
+SELECT F.* FROM DTE_CCF_V3 F WHERE F.ID_DTE IN (351);
+SELECT F.* FROM IDENTIFICACION_CCF_V3 F WHERE F.ID_DTE IN (351);
+SELECT F.* FROM DOCU_RELA_CCF_V3 F WHERE F.ID_DTE IN (351);
+SELECT F.* FROM RECEPTOR_CCF_V3 F WHERE F.ID_DTE IN (351);
+SELECT F.* FROM SHIPTO_CCF_V3 F WHERE F.ID_DTE IN (351);
+SELECT F.* FROM OTROS_DOCU_CCF_V3 F WHERE F.ID_DTE IN (351);
+SELECT F.* FROM VENTA_TERCERO_CCF_V3 F WHERE F.ID_DTE IN (351);
+SELECT F.* FROM CUERPO_DOCU_CCF_V3 F WHERE F.ID_DTE IN (351);
+SELECT F.* FROM CUERPO_TRIBUTO_CCF_V3 F WHERE F.ID_DTE IN (351);
+SELECT F.* FROM RESUMEN_CCF_V3 F WHERE F.ID_DTE IN (351);
+SELECT F.* FROM RESUMEN_TRIBUTO_CCF_V3 F WHERE F.ID_DTE IN (351);
+SELECT F.* FROM EXTENSION_CCF_V3 F WHERE F.ID_DTE IN (351);
+SELECT F.* FROM APENDICE_CCF_V3 F WHERE F.ID_DTE IN (351);
 -- ***************************************************************************************************************************
 -- *          NOTA DE CRÉDITO.                                                                                               *
 -- ***************************************************************************************************************************
@@ -142,7 +131,6 @@ SELECT F.* FROM RESUMEN_NC_V3 F WHERE F.ID_DTE IN (25);
 SELECT F.* FROM RESUMEN_TRIBUTO_NC_V3 F WHERE F.ID_DTE IN (25);
 SELECT F.* FROM EXTENSION_NC_V3 F WHERE F.ID_DTE IN (25);
 SELECT F.* FROM APENDICE_NC_V3 F WHERE F.ID_DTE IN (25);
-
 -- ***************************************************************************************************************************
 -- *          NOTA DE DÉBITO.                                                                                                *
 -- ***************************************************************************************************************************
@@ -171,7 +159,6 @@ SELECT F.* FROM RESUMEN_ND_V3 F WHERE F.ID_DTE IN (1);
 SELECT F.* FROM RESUMEN_TRIBUTO_ND_V3 F WHERE F.ID_DTE IN (1);
 SELECT F.* FROM EXTENSION_ND_V3 F WHERE F.ID_DTE IN (1);
 SELECT F.* FROM APENDICE_ND_V3 F WHERE F.ID_DTE IN (1);
-
 -- ***************************************************************************************************************************
 -- *          COMPROBANTE DE FACTURA.                                                                                 *
 -- ***************************************************************************************************************************
@@ -202,7 +189,6 @@ SELECT F.* FROM RESUMEN_F_V3 F WHERE F.ID_DTE IN (156);
 SELECT F.* FROM RESUMEN_TRIBUTO_F_V3 F WHERE F.ID_DTE IN (156);
 SELECT F.* FROM EXTENSION_F_V3 F WHERE F.ID_DTE IN (156);
 SELECT F.* FROM APENDICE_F_V3 F WHERE F.ID_DTE IN (156);
-
 -- ***************************************************************************************************************************
 -- *          FACTURA DE EXPORTACIÓN.                                                                                        *
 -- ***************************************************************************************************************************
@@ -231,7 +217,6 @@ SELECT F.* FROM RESUMEN_FEX_V3 F WHERE F.ID_DTE IN (68);
 SELECT F.* FROM RESUMEN_TRIBUTO_FEX_V3 F WHERE F.ID_DTE IN (68);
 SELECT F.* FROM EXTENSION_FEX_V3 F WHERE F.ID_DTE IN (68);
 SELECT F.* FROM APENDICE_FEX_V3 F WHERE F.ID_DTE IN (68);
-
 -- ***************************************************************************************************************************
 -- *          NOTA DE REMISION.                                                                                              *
 -- ***************************************************************************************************************************
@@ -262,7 +247,6 @@ SELECT F.* FROM RESUMEN_NR_V3 F WHERE F.ID_DTE IN (26);
 SELECT F.* FROM RESUMEN_TRIBUTO_NR_V3 F WHERE F.ID_DTE IN (26);
 SELECT F.* FROM EXTENSION_NR_V3 F WHERE F.ID_DTE IN (26);
 SELECT F.* FROM APENDICE_NR_V3 F WHERE F.ID_DTE IN (26);
-
 -- ***************************************************************************************************************************
 -- *          EVENTO DE INVALIDACIÓN.                                                                                        *
 -- ***************************************************************************************************************************
@@ -275,14 +259,12 @@ SELECT F.* FROM DTE_INVALIDACION_V3 F WHERE F.ID_DTE IN (1);
 SELECT F.* FROM IDENTIFICACION_INVALIDACION_V3 F WHERE F.ID_DTE IN (1);
 SELECT F.* FROM DOCUMENTO_INVALIDACION_V3 F WHERE F.ID_DTE IN (1);
 SELECT F.* FROM MOTIVO_INVALIDACION_V3 F WHERE F.ID_DTE IN (1);
-
 -- ***************************************************************************************************************************
 -- *          TABLAS FEL-GUATEMALA.                                                                                          *
 -- ***************************************************************************************************************************
 SELECT F.* FROM CRPDTA.F59421CA@JDEPY F;
 SELECT F.* FROM CRPDTA.F59421DE@JDEPY F; -- ESTA TABLA NO SE PUEDE CONSULTAR A TRAVES DE DBLINK.
 SELECT F.* FROM CRPDTA.F5942PAR@JDEPY F;
-
 -- ***************************************************************************************************************************
 -- *          QUERY PARA FECHAS JULIANAS Y GREGORIANAS.                                                                      *
 -- ***************************************************************************************************************************
@@ -298,10 +280,8 @@ FROM CRPDTA.F554211N@JDEPY F LEFT JOIN CRPDTA.F0101@JDEPY G ON (F.NRAN8=G.ABAN8)
 WHERE (TRIM(F.NRKCOO) IN (SELECT C.KCOO_JDE FROM EMISOR_KCOO_V3 C)) AND (F.NRN001 > 0) AND (TRIM(F.NRLTTR) NOT IN ('904','902','900','980')) AND (TRIM(F.NRDCTO) IN ('S3')) AND (TRIM(F.NREV01) IN ('N')) AND (F.NRURDT = 123116)
 ORDER BY F.NRKCOO, F.NRDOCO, F.NRDCTO, F.NRN001;
 
-SELECT F.* FROM CRPDTA.F554211N@JDEPY F WHERE F.NRDOCO=72959726;
-
-SELECT F.SDTXA1, F.* FROM CRPDTA.F4211@JDEPY F WHERE F.SDDOCO IN (72959770);
-SELECT F.* FROM CRPDTA.F5542FEL@JDEPY F WHERE F.FEDOCO IN (72959770);
--- UPDATE CRPDTA.F5542FEL@JDEPY SET FESTCD='000', FEJEVER='F42119    ' WHERE FEDOCO IN (72959470,72959471,72959472,72959473,72959474,72959586,72959587,72959588,72959589,72959590,72959596,72959597,72959598,72959599);
-UPDATE CRPDTA.F5542FEL@JDEPY SET FESTCD='000' WHERE FEDOCO IN (72959731,72959725,72959726,72959724,72959727,72959729,72959728);
+SELECT F.SDTXA1, F.* FROM CRPDTA.F42119@JDEPY F WHERE F.SDDOCO IN (72940449);
+SELECT F.* FROM CRPDTA.F5542FEL@JDEPY F WHERE F.FEDCTO='S3' AND F.FEDOCO IN (72940449);
+-- UPDATE CRPDTA.F5542FEL@JDEPY SET FESTCD='000', FEJEVER='F42119    ' WHERE FEDOCO IN (72940449);
+UPDATE CRPDTA.F5542FEL@JDEPY SET FESTCD='000' WHERE FEDOCO IN (72940449);
 COMMIT;

@@ -372,6 +372,7 @@ CUE.ID_CUERPO_DOCUMENTO]]>
 				<reportElement x="0" y="79" width="157" height="12" uuid="657f8d15-42b9-4c67-a557-cf5bcc766f3d">
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
+				<box rightPadding="3"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Arial" isBold="true"/>
 				</textElement>
