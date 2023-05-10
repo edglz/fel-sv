@@ -1164,7 +1164,7 @@ CUE.ID_CUERPO_DOCUMENTO]]>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="8" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Venta Gravada]]></text>
+				<text><![CDATA[Ventas Afectas]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="292" y="10" width="50" height="20" uuid="06aa8f89-858a-45d4-a40b-edc89ca7b007">
@@ -2120,7 +2120,7 @@ CUE.ID_CUERPO_DOCUMENTO]]>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Arial" size="8" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Total Venta Gravada:]]></text>
+				<text><![CDATA[Total Ventas Afectas:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="292" y="60" width="250" height="10" uuid="b0784a46-70a8-4551-9667-71eecfebebb1">

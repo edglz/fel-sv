@@ -135,7 +135,7 @@ public class Ctrl_DTE_FEX_V3 implements Serializable {
                 stmt1.close();
 
                 Ctrl_Identificacion_FEX_V3 ctrl_identificacion_fex_v3 = new Ctrl_Identificacion_FEX_V3();
-                String result_identificacion = ctrl_identificacion_fex_v3.extraer_identificacion_jde_fex_v3(ID_DTE, ambiente, DCTO_JDE.trim(), MCU_JDE.trim(), CRCD_JDE.trim(), conn);
+                String result_identificacion = ctrl_identificacion_fex_v3.extraer_identificacion_jde_fex_v3(ID_DTE, ambiente, DCTO_JDE.trim(), MCU_JDE.trim(), CRCD_JDE.trim(), IVD_JDE.trim(), conn);
 
                 Ctrl_Receptor_FEX_V3 ctrl_receptor_fex_v3 = new Ctrl_Receptor_FEX_V3();
                 String result_recepor = ctrl_receptor_fex_v3.extraer_receptor_jde_fex_v3(ID_DTE, ambiente, AN8_JDE.trim(), SHAN_JDE.trim(), conn);

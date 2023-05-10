@@ -42,12 +42,12 @@ public class Ctrl_Emisor_FEX_V3 implements Serializable {
             resultado.setCodPuntoVenta(ctrl_base_datos.ObtenerString("SELECT F.CODPUNTOVENTA FROM EMISOR_ESTABLECIMIENTO_V3 F WHERE F.ID_EMISOR=" + id_emisor + " AND TRIM(F.CODPUNTOVENTA)='" + mcu_jde + "'", conn));
             resultado.setCorreo(ctrl_base_datos.ObtenerString("SELECT F.CORREO FROM EMISOR_ESTABLECIMIENTO_V3 F WHERE F.ID_EMISOR=" + id_emisor + " AND TRIM(F.CODPUNTOVENTA)='" + mcu_jde + "'", conn));
             
-            Integer num_tipo_Item_Expor = ctrl_base_datos.ObtenerEntero("SELECT COUNT(*) NUM FROM CAT_011 C WHERE C.ID_CAT IN (SELECT F.ID_CAT_011 FROM CUERPO_DOCU_CCF_V3 F WHERE F.ID_DTE=" + id_dte + ")", conn);
+            Integer num_tipo_Item_Expor = ctrl_base_datos.ObtenerEntero("SELECT COUNT(*) NUM FROM CAT_011 C WHERE C.ID_CAT IN (SELECT F.ID_CAT_011 FROM CUERPO_DOCU_FEX_V3 F WHERE F.ID_DTE=" + id_dte + ")", conn);
             Integer tipo_Item_Expor = 0;
             if(num_tipo_Item_Expor > 1) {
                 tipo_Item_Expor = 3;
             } else {
-                tipo_Item_Expor = ctrl_base_datos.ObtenerEntero("SELECT C.CODIGO FROM CAT_011 C WHERE C.ID_CAT IN (SELECT F.ID_CAT_011 FROM CUERPO_DOCU_CCF_V3 F WHERE F.ID_DTE=" + id_dte + ")", conn);
+                tipo_Item_Expor = ctrl_base_datos.ObtenerEntero("SELECT C.CODIGO FROM CAT_011 C WHERE C.ID_CAT IN (SELECT F.ID_CAT_011 FROM CUERPO_DOCU_FEX_V3 F WHERE F.ID_DTE=" + id_dte + ")", conn);
             }
             resultado.setTipoItemExpor(tipo_Item_Expor);
             

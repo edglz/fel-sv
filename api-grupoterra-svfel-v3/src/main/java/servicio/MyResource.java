@@ -108,7 +108,7 @@ public class MyResource implements Serializable {
                         + "\"dteJson\":" + gson.toJson(dte_ccf_v3)
                         + "}";
                 driver.guardar_en_archivo(no_dtes.get(d), "ccf", "JSON-NO-FIRMADO:: " + dte_sin_firmar);
-                driver.guardar_en_archivo_json(no_dtes.get(d), "ccf", dte_sin_firmar);
+                driver.guardar_en_archivo_json(no_dtes.get(d), "ccf", gson.toJson(dte_ccf_v3));
 
                 // FIRMAR JSON CON JWT.
                 Ctrl_Firmar_Documento_JWT ctrl_firmar_documento_jwt = new Ctrl_Firmar_Documento_JWT();
@@ -179,7 +179,7 @@ public class MyResource implements Serializable {
                         + "\"dteJson\":" + gson.toJson(dte_ccf_v3)
                         + "}";
                 driver.guardar_en_archivo(no_dtes.get(d), "ccf", "JSON-NO-FIRMADO:: " + dte_sin_firmar);
-                driver.guardar_en_archivo_json(no_dtes.get(d), "ccf", dte_sin_firmar);
+                driver.guardar_en_archivo_json(no_dtes.get(d), "ccf", gson.toJson(dte_ccf_v3));
 
                 // FIRMAR JSON CON JWT.
                 Ctrl_Firmar_Documento_JWT ctrl_firmar_documento_jwt = new Ctrl_Firmar_Documento_JWT();
@@ -262,7 +262,7 @@ public class MyResource implements Serializable {
                         + "\"dteJson\":" + gson.toJson(dte_nc_v3)
                         + "}";
                 driver.guardar_en_archivo(no_dtes.get(d), "nc", "JSON-NO-FIRMADO:: " + dte_sin_firmar);
-                driver.guardar_en_archivo_json(no_dtes.get(d), "nc", dte_sin_firmar);
+                driver.guardar_en_archivo_json(no_dtes.get(d), "nc", gson.toJson(dte_nc_v3));
 
                 // FIRMAR JSON CON JWT.
                 Ctrl_Firmar_Documento_JWT ctrl_firmar_documento_jwt = new Ctrl_Firmar_Documento_JWT();
@@ -333,7 +333,7 @@ public class MyResource implements Serializable {
                         + "\"dteJson\":" + gson.toJson(dte_nc_v3)
                         + "}";
                 driver.guardar_en_archivo(no_dtes.get(d), "nc", "JSON-NO-FIRMADO:: " + dte_sin_firmar);
-                driver.guardar_en_archivo_json(no_dtes.get(d), "nc", dte_sin_firmar);
+                driver.guardar_en_archivo_json(no_dtes.get(d), "nc", gson.toJson(dte_nc_v3));
 
                 // FIRMAR JSON CON JWT.
                 Ctrl_Firmar_Documento_JWT ctrl_firmar_documento_jwt = new Ctrl_Firmar_Documento_JWT();
@@ -416,7 +416,7 @@ public class MyResource implements Serializable {
                         + "\"dteJson\":" + gson.toJson(dte_nd_v3)
                         + "}";
                 driver.guardar_en_archivo(no_dtes.get(d), "nd", "JSON-NO-FIRMADO:: " + dte_sin_firmar);
-                driver.guardar_en_archivo_json(no_dtes.get(d), "nd", dte_sin_firmar);
+                driver.guardar_en_archivo_json(no_dtes.get(d), "nd", gson.toJson(dte_nd_v3));
 
                 // FIRMAR JSON CON JWT.
                 Ctrl_Firmar_Documento_JWT ctrl_firmar_documento_jwt = new Ctrl_Firmar_Documento_JWT();
@@ -487,7 +487,7 @@ public class MyResource implements Serializable {
                         + "\"dteJson\":" + gson.toJson(dte_nd_v3)
                         + "}";
                 driver.guardar_en_archivo(no_dtes.get(d), "nd", "JSON-NO-FIRMADO:: " + dte_sin_firmar);
-                driver.guardar_en_archivo_json(no_dtes.get(d), "nd", dte_sin_firmar);
+                driver.guardar_en_archivo_json(no_dtes.get(d), "nd", gson.toJson(dte_nd_v3));
 
                 // FIRMAR JSON CON JWT.
                 Ctrl_Firmar_Documento_JWT ctrl_firmar_documento_jwt = new Ctrl_Firmar_Documento_JWT();
@@ -570,7 +570,7 @@ public class MyResource implements Serializable {
                         + "\"dteJson\":" + gson.toJson(dte_f_v3)
                         + "}";
                 driver.guardar_en_archivo(no_dtes.get(d), "f", "JSON-NO-FIRMADO:: " + dte_sin_firmar);
-                driver.guardar_en_archivo_json(no_dtes.get(d), "f", dte_sin_firmar);
+                driver.guardar_en_archivo_json(no_dtes.get(d), "f", gson.toJson(dte_f_v3));
 
                 // FIRMAR JSON CON JWT.
                 Ctrl_Firmar_Documento_JWT ctrl_firmar_documento_jwt = new Ctrl_Firmar_Documento_JWT();
@@ -641,7 +641,7 @@ public class MyResource implements Serializable {
                         + "\"dteJson\":" + gson.toJson(dte_f_v3)
                         + "}";
                 driver.guardar_en_archivo(no_dtes.get(d), "f", "JSON-NO-FIRMADO:: " + dte_sin_firmar);
-                driver.guardar_en_archivo_json(no_dtes.get(d), "f", dte_sin_firmar);
+                driver.guardar_en_archivo_json(no_dtes.get(d), "f", gson.toJson(dte_f_v3));
 
                 // FIRMAR JSON CON JWT.
                 Ctrl_Firmar_Documento_JWT ctrl_firmar_documento_jwt = new Ctrl_Firmar_Documento_JWT();
@@ -724,7 +724,7 @@ public class MyResource implements Serializable {
                         + "\"dteJson\":" + gson.toJson(dte_fex_v3)
                         + "}";
                 driver.guardar_en_archivo(no_dtes.get(d), "fex", "JSON-NO-FIRMADO:: " + dte_sin_firmar);
-                driver.guardar_en_archivo_json(no_dtes.get(d), "fex", dte_sin_firmar);
+                driver.guardar_en_archivo_json(no_dtes.get(d), "fex", gson.toJson(dte_fex_v3));
 
                 // FIRMAR JSON CON JWT.
                 Ctrl_Firmar_Documento_JWT ctrl_firmar_documento_jwt = new Ctrl_Firmar_Documento_JWT();
@@ -795,7 +795,7 @@ public class MyResource implements Serializable {
                         + "\"dteJson\":" + gson.toJson(dte_fex_v3)
                         + "}";
                 driver.guardar_en_archivo(no_dtes.get(d), "fex", "JSON-NO-FIRMADO:: " + dte_sin_firmar);
-                driver.guardar_en_archivo_json(no_dtes.get(d), "fex", dte_sin_firmar);
+                driver.guardar_en_archivo_json(no_dtes.get(d), "fex", gson.toJson(dte_fex_v3));
 
                 // FIRMAR JSON CON JWT.
                 Ctrl_Firmar_Documento_JWT ctrl_firmar_documento_jwt = new Ctrl_Firmar_Documento_JWT();
@@ -878,7 +878,7 @@ public class MyResource implements Serializable {
                         + "\"dteJson\":" + gson.toJson(dte_nr_v3)
                         + "}";
                 driver.guardar_en_archivo(no_dtes.get(d), "nr", "JSON-NO-FIRMADO:: " + dte_sin_firmar);
-                driver.guardar_en_archivo_json(no_dtes.get(d), "nr", dte_sin_firmar);
+                driver.guardar_en_archivo_json(no_dtes.get(d), "nr", gson.toJson(dte_nr_v3));
 
                 // FIRMAR JSON CON JWT.
                 Ctrl_Firmar_Documento_JWT ctrl_firmar_documento_jwt = new Ctrl_Firmar_Documento_JWT();
@@ -949,7 +949,7 @@ public class MyResource implements Serializable {
                         + "\"dteJson\":" + gson.toJson(dte_nr_v3)
                         + "}";
                 driver.guardar_en_archivo(no_dtes.get(d), "nr", "JSON-NO-FIRMADO:: " + dte_sin_firmar);
-                driver.guardar_en_archivo_json(no_dtes.get(d), "nr", dte_sin_firmar);
+                driver.guardar_en_archivo_json(no_dtes.get(d), "nr", gson.toJson(dte_nr_v3));
 
                 // FIRMAR JSON CON JWT.
                 Ctrl_Firmar_Documento_JWT ctrl_firmar_documento_jwt = new Ctrl_Firmar_Documento_JWT();
@@ -1019,13 +1019,13 @@ public class MyResource implements Serializable {
                         + "\"passwordPri\":\"UNOSV2021*\","
                         + "\"dteJson\":" + gson.toJson(dte_invalidacion_v3)
                         + "}";
-                driver.guardar_en_archivo(no_dtes.get(d), "nr", "JSON-NO-FIRMADO:: " + dte_sin_firmar);
-                driver.guardar_en_archivo_json(no_dtes.get(d), "nr", dte_sin_firmar);
+                driver.guardar_en_archivo(no_dtes.get(d), "anulardte", "JSON-NO-FIRMADO:: " + dte_sin_firmar);
+                driver.guardar_en_archivo_json(no_dtes.get(d), "anulardte", dte_sin_firmar);
 
                 // FIRMAR JSON CON JWT.
                 Ctrl_Firmar_Documento_JWT ctrl_firmar_documento_jwt = new Ctrl_Firmar_Documento_JWT();
                 Json_Firmado dte_firmado = ctrl_firmar_documento_jwt.firmardocumento(dte_invalidacion_v3.getEmisor().getNit(), dte_sin_firmar);
-                driver.guardar_en_archivo(no_dtes.get(d), "nr", "JSON-FIRMADO:: " + new Gson().toJson(dte_firmado));
+                driver.guardar_en_archivo(no_dtes.get(d), "anulardte", "JSON-FIRMADO:: " + new Gson().toJson(dte_firmado));
 
                 // ENVIAR DOCUMENTO AL MINISTERIO DE HACIENDA.
                 JsonDTE json_dte = new JsonDTE();
@@ -1033,7 +1033,7 @@ public class MyResource implements Serializable {
                 json_dte.setAmbiente(dte_invalidacion_v3.getIdentificacion().getAmbiente());
                 json_dte.setIdEnvio(no_dtes.get(d));
                 json_dte.setDocumento(dte_firmado.getBody());
-                driver.guardar_en_archivo(no_dtes.get(d), "nr", "JSON-DTE:: " + new Gson().toJson(json_dte));
+                driver.guardar_en_archivo(no_dtes.get(d), "anulardte", "JSON-DTE:: " + new Gson().toJson(json_dte));
 
                 // GENERAR TOKEN MINISTERIO DE HACIENDA.
                 Cliente_Rest_MH cliente_rest_mh = new Cliente_Rest_MH();
@@ -1041,7 +1041,7 @@ public class MyResource implements Serializable {
                 Type listType1 = new TypeToken<TokenMH>() {
                 }.getType();
                 TokenMH token_mh = new Gson().fromJson(token_autenticacion, listType1);
-                driver.guardar_en_archivo(no_dtes.get(d), "nr", "AUTH-TOKEN-MH:: " + new Gson().toJson(token_mh));
+                driver.guardar_en_archivo(no_dtes.get(d), "anulardte", "AUTH-TOKEN-MH:: " + new Gson().toJson(token_mh));
 
                 // RESPUESTA DEL MINISTERIO DE HACIENDA.
                 String respuesta_mh = cliente_rest_mh.recepciondte(token_mh.getBody().getToken(), new Gson().toJson(json_dte));
@@ -1049,12 +1049,12 @@ public class MyResource implements Serializable {
                 }.getType();
                 RESPUESTA_RECEPCIONDTE_MH respuesta_recepciondte_mh = new Gson().fromJson(respuesta_mh, listType2);
                 ctrl_dte_invalidacion_v3.registro_db_respuesta_mh(ambiente, respuesta_recepciondte_mh, no_dtes.get(d));
-                driver.guardar_en_archivo(no_dtes.get(d), "nr", "RESPUESTA-DTE-MH:: " + new Gson().toJson(respuesta_recepciondte_mh));
+                driver.guardar_en_archivo(no_dtes.get(d), "anulardte", "RESPUESTA-DTE-MH:: " + new Gson().toJson(respuesta_recepciondte_mh));
             }
 
             resultado = "ID-DTE PROCESADOS: " + no_dtes.toString();
         } catch (Exception ex) {
-            System.out.println("PROYECTO:api-grupoterra-svfel-v3|CLASE:" + this.getClass().getName() + "|METODO:recepciondte_nr_v3()|ERROR:" + ex.toString());
+            System.out.println("PROYECTO:api-grupoterra-svfel-v3|CLASE:" + this.getClass().getName() + "|METODO:anulardte_v3()|ERROR:" + ex.toString());
         }
 
         return resultado;

@@ -3,7 +3,7 @@ package Controladores;
 import ClienteServicio.Cliente_Rest_Jasper;
 import ClienteServicio.Cliente_Rest_SendMail;
 import Entidades.Adjunto;
-import Entidades.DTE_ND_V3;
+import Entidades.DTE_CR_V3;
 import Entidades.Mensaje_Correo;
 import Entidades.RESPUESTA_RECEPCIONDTE_MH;
 import com.google.gson.Gson;
@@ -20,14 +20,14 @@ import java.util.List;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 
-public class Ctrl_DTE_ND_V3 implements Serializable {
+public class Ctrl_DTE_CR_V3 implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    public Ctrl_DTE_ND_V3() {
+    public Ctrl_DTE_CR_V3() {
     }
 
-    public List<Long> extraer_documento_jde_nd_v3(String ambiente) {
+    public List<Long> extraer_documento_jde_cr_v3(String ambiente) {
         List<Long> resultado = new ArrayList<>();
         Connection conn = null;
 
@@ -63,12 +63,12 @@ public class Ctrl_DTE_ND_V3 implements Serializable {
                     + esquema + ".F5542FEL@" + dblink + " F "
                     + "WHERE "
                     + "F.FESTCD='000' AND "
-                    + "F.FEDCTO='SD'";
+                    + "F.FEDCTO='S3'";
             Statement stmt = conn.createStatement();
             // System.out.println(cadenasql);
             ResultSet rs = stmt.executeQuery(cadenasql);
             while (rs.next()) {
-                Long ID_DTE = ctrl_base_datos.ObtenerLong("SELECT NVL(MAX(F.ID_DTE), 0) + 1 MAXIMO FROM DTE_ND_V3 F", conn);
+                Long ID_DTE = ctrl_base_datos.ObtenerLong("SELECT NVL(MAX(F.ID_DTE), 0) + 1 MAXIMO FROM DTE_CR_V3 F", conn);
                 String KCOO_JDE = rs.getString(1);
                 String MCU_JDE = rs.getString(2);
                 String DOCO_JDE = rs.getString(3);
@@ -82,7 +82,7 @@ public class Ctrl_DTE_ND_V3 implements Serializable {
                 String JEVER_JDE = rs.getString(11);
                 Long ID_EMISOR = ctrl_base_datos.ObtenerLong("SELECT F.ID_EMISOR FROM EMISOR_ESTABLECIMIENTO_V3 F WHERE F.CODPUNTOVENTA='" + MCU_JDE.trim() + "'", conn);
 
-                cadenasql = "INSERT INTO DTE_ND_V3 ("
+                cadenasql = "INSERT INTO DTE_CR_V3 ("
                         + "ID_DTE, "
                         + "KCOO_JDE, "
                         + "MCU_JDE, "
@@ -134,28 +134,25 @@ public class Ctrl_DTE_ND_V3 implements Serializable {
                 stmt1.executeUpdate(cadenasql);
                 stmt1.close();
 
-                Ctrl_Identificacion_ND_V3 ctrl_identificacion_nd_v3 = new Ctrl_Identificacion_ND_V3();
-                String result_identificacion = ctrl_identificacion_nd_v3.extraer_identificacion_jde_nd_v3(ID_DTE, ambiente, DCTO_JDE.trim(), MCU_JDE.trim(), CRCD_JDE.trim(), IVD_JDE.trim(), conn);
+                /* Ctrl_Identificacion_CR_V3 ctrl_identificacion_cr_v3 = new Ctrl_Identificacion_CR_V3();
+                String result_identificacion = ctrl_identificacion_cr_v3.extraer_identificacion_jde_cr_v3(ID_DTE, ambiente, DCTO_JDE.trim(), MCU_JDE.trim(), CRCD_JDE.trim(), IVD_JDE.trim(), conn);
 
-                Ctrl_DocumentoRelacionando_ND_V3 ctrl_documento_relacionando_nd_v3 = new Ctrl_DocumentoRelacionando_ND_V3();
-                String result_documento_relacionado = ctrl_documento_relacionando_nd_v3.extraer_documento_relacionado_jde_nd_v3(ID_DTE, ambiente, JEVER_JDE, KCOO_JDE, DOCO_JDE, DCTO_JDE, conn);
-                
-                Ctrl_Receptor_ND_V3 ctrl_receptor_nd_v3 = new Ctrl_Receptor_ND_V3();
-                String result_recepor = ctrl_receptor_nd_v3.extraer_receptor_jde_nd_v3(ID_DTE, ambiente, AN8_JDE.trim(), SHAN_JDE.trim(), conn);
+                Ctrl_Receptor_CR_V3 ctrl_receptor_cr_v3 = new Ctrl_Receptor_CR_V3();
+                String result_recepor = ctrl_receptor_cr_v3.extraer_receptor_jde_cr_v3(ID_DTE, ambiente, AN8_JDE.trim(), SHAN_JDE.trim(), conn);
 
-                Ctrl_CuerpoDocumento_ND_V3 ctrl_cuerpo_documento_nd_v3 = new Ctrl_CuerpoDocumento_ND_V3();
-                String result_cuerpo_documento = ctrl_cuerpo_documento_nd_v3.extraer_cuerpo_documento_jde_nd_v3(ID_DTE, ambiente, KCOO_JDE.trim(), DOCO_JDE.trim(), DCTO_JDE.trim(), JEVER_JDE.trim(), result_documento_relacionado, conn);
+                Ctrl_CuerpoDocumento_CR_V3 ctrl_cuerpo_documento_cr_v3 = new Ctrl_CuerpoDocumento_CR_V3();
+                String result_cuerpo_documento = ctrl_cuerpo_documento_cr_v3.extraer_cuerpo_documento_jde_cr_v3(ID_DTE, ambiente, KCOO_JDE.trim(), DOCO_JDE.trim(), DCTO_JDE.trim(), JEVER_JDE.trim(), conn);
 
-                Ctrl_Resumen_ND_V3 ctrl_resumen_nd_v3 = new Ctrl_Resumen_ND_V3();
-                String result_resumen = ctrl_resumen_nd_v3.extraer_resumen_jde_nd_v3(ID_DTE, ambiente, conn);
+                Ctrl_Resumen_CR_V3 ctrl_resumen_cr_v3 = new Ctrl_Resumen_CR_V3();
+                String result_resumen = ctrl_resumen_cr_v3.extraer_resumen_jde_cr_v3(ID_DTE, ambiente, conn);
 
-                Ctrl_Extension_ND_V3 ctrl_extension_nd_v3 = new Ctrl_Extension_ND_V3();
-                String result_extension = ctrl_extension_nd_v3.extraer_extension_jde_nd_v3(ID_DTE, ambiente, AN8_JDE.trim(), conn);
+                Ctrl_Extension_CR_V3 ctrl_extension_cr_v3 = new Ctrl_Extension_CR_V3();
+                String result_extension = ctrl_extension_cr_v3.extraer_extension_jde_cr_v3(ID_DTE, ambiente, AN8_JDE.trim(), conn);
 
-                Ctrl_Apendice_ND_V3 ctrl_apendice_nd_v3 = new Ctrl_Apendice_ND_V3();
-                String result_apendice = ctrl_apendice_nd_v3.extraer_apendice_jde_nd_v3(ID_DTE, ambiente, DOCO_JDE.trim(), DCTO_JDE.trim(), MCU_JDE.trim(), conn);
+                Ctrl_Apendice_CR_V3 ctrl_apendice_cr_v3 = new Ctrl_Apendice_CR_V3();
+                String result_apendice = ctrl_apendice_cr_v3.extraer_apendice_jde_cr_v3(ID_DTE, ambiente, DOCO_JDE.trim(), DCTO_JDE.trim(), MCU_JDE.trim(), conn);
 
-                resultado.add(ID_DTE);
+                resultado.add(ID_DTE); */
             }
             rs.close();
             stmt.close();
@@ -167,10 +164,10 @@ public class Ctrl_DTE_ND_V3 implements Serializable {
                 conn.rollback();
                 conn.setAutoCommit(true);
 
-                System.out.println("PROYECTO:api-grupoterra-svfel-v3|CLASE:" + this.getClass().getName() + "|METODO:extraer_documento_jde_nd_v3()|ERROR:" + ex.toString());
+                System.out.println("PROYECTO:api-grupoterra-svfel-v3|CLASE:" + this.getClass().getName() + "|METODO:extraer_documento_jde_cr_v3()|ERROR:" + ex.toString());
                 resultado.clear();
             } catch (Exception ex1) {
-                System.out.println("PROYECTO:api-grupoterra-svfel-v3|CLASE:" + this.getClass().getName() + "|METODO:extraer_documento_jde_nd_v3()-rollback|ERROR:" + ex1.toString());
+                System.out.println("PROYECTO:api-grupoterra-svfel-v3|CLASE:" + this.getClass().getName() + "|METODO:extraer_documento_jde_cr_v3()-rollback|ERROR:" + ex1.toString());
                 resultado.clear();
             }
 
@@ -180,7 +177,7 @@ public class Ctrl_DTE_ND_V3 implements Serializable {
                     conn.close();
                 }
             } catch (Exception ex) {
-                System.out.println("PROYECTO:api-grupoterra-svfel-v3|CLASE:" + this.getClass().getName() + "|METODO:extraer_documento_jde_nd_v3()-finally|ERROR:" + ex.toString());
+                System.out.println("PROYECTO:api-grupoterra-svfel-v3|CLASE:" + this.getClass().getName() + "|METODO:extraer_documento_jde_cr_v3()-finally|ERROR:" + ex.toString());
                 resultado.clear();
             }
         }
@@ -188,8 +185,8 @@ public class Ctrl_DTE_ND_V3 implements Serializable {
         return resultado;
     }
 
-    public DTE_ND_V3 generar_json_dte_nd_v3(String ambiente, Long id_dte) {
-        DTE_ND_V3 resultado = new DTE_ND_V3();
+    public DTE_CR_V3 generar_json_dte_cr_v3(String ambiente, Long id_dte) {
+        DTE_CR_V3 resultado = new DTE_CR_V3();
         Connection conn = null;
 
         try {
@@ -198,31 +195,32 @@ public class Ctrl_DTE_ND_V3 implements Serializable {
 
             conn.setAutoCommit(false);
 
-            Ctrl_Identificacion_ND_V3 ctrl_identificacion_nd_v3 = new Ctrl_Identificacion_ND_V3();
-            resultado.setIdentificacion(ctrl_identificacion_nd_v3.obtener_identificacion_nd_v3(id_dte, conn));
+            /* Ctrl_Identificacion_CR_V3 ctrl_identificacion_cr_v3 = new Ctrl_Identificacion_CR_V3();
+            resultado.setIdentificacion(ctrl_identificacion_cr_v3.obtener_identificacion_cr_v3(id_dte, conn));
 
-            Ctrl_DocumentoRelacionando_ND_V3 ctrl_documento_relacionando_nd_v3 = new Ctrl_DocumentoRelacionando_ND_V3();
-            resultado.setDocumentoRelacionado(ctrl_documento_relacionando_nd_v3.obtener_documento_relacionado_nd_v3(id_dte, conn));
+            resultado.setDocumentoRelacionado(null);
 
-            Ctrl_Emisor_ND_V3 ctrl_emisor_nd_v3 = new Ctrl_Emisor_ND_V3();
-            resultado.setEmisor(ctrl_emisor_nd_v3.obtener_emisor_nd_v3(id_dte, conn));
+            Ctrl_Emisor_CR_V3 ctrl_emisor_cr_v3 = new Ctrl_Emisor_CR_V3();
+            resultado.setEmisor(ctrl_emisor_cr_v3.obtener_emisor_cr_v3(id_dte, conn));
 
-            Ctrl_Receptor_ND_V3 ctrl_receptor_nd_v3 = new Ctrl_Receptor_ND_V3();
-            resultado.setReceptor(ctrl_receptor_nd_v3.obtener_receptor_nd_v3(id_dte, conn));
+            Ctrl_Receptor_CR_V3 ctrl_receptor_cr_v3 = new Ctrl_Receptor_CR_V3();
+            resultado.setReceptor(ctrl_receptor_cr_v3.obtener_receptor_cr_v3(id_dte, conn));
+
+            resultado.setOtrosDocumentos(null);
 
             resultado.setVentaTercero(null);
 
-            Ctrl_CuerpoDocumento_ND_V3 ctrl_cuerpo_documento_nd_v3 = new Ctrl_CuerpoDocumento_ND_V3();
-            resultado.setCuerpoDocumento(ctrl_cuerpo_documento_nd_v3.obtener_cuerpo_documento_nd_v3(id_dte, conn));
+            Ctrl_CuerpoDocumento_CR_V3 ctrl_cuerpo_documento_cr_v3 = new Ctrl_CuerpoDocumento_CR_V3();
+            resultado.setCuerpoDocumento(ctrl_cuerpo_documento_cr_v3.obtener_cuerpo_documento_cr_v3(id_dte, conn));
 
-            Ctrl_Resumen_ND_V3 ctrl_resumen_nd_v3 = new Ctrl_Resumen_ND_V3();
-            resultado.setResumen(ctrl_resumen_nd_v3.obtener_resumen_nd_v3(id_dte, conn));
+            Ctrl_Resumen_CR_V3 ctrl_resumen_cr_v3 = new Ctrl_Resumen_CR_V3();
+            resultado.setResumen(ctrl_resumen_cr_v3.obtener_resumen_cr_v3(id_dte, conn));
 
-            Ctrl_Extension_ND_V3 ctrl_extension_nd_v3 = new Ctrl_Extension_ND_V3();
-            resultado.setExtension(ctrl_extension_nd_v3.obtener_extension_nd_v3(id_dte, conn));
+            Ctrl_Extension_CR_V3 ctrl_extension_cr_v3 = new Ctrl_Extension_CR_V3();
+            resultado.setExtension(ctrl_extension_cr_v3.obtener_extension_cr_v3(id_dte, conn));
 
-            Ctrl_Apendice_ND_V3 ctrl_apendice_nd_v3 = new Ctrl_Apendice_ND_V3();
-            resultado.setApendice(ctrl_apendice_nd_v3.obtener_apendice_nd_v3(id_dte, conn));
+            Ctrl_Apendice_CR_V3 ctrl_apendice_cr_v3 = new Ctrl_Apendice_CR_V3();
+            resultado.setApendice(ctrl_apendice_cr_v3.obtener_apendice_cr_v3(id_dte, conn)); */
 
             conn.commit();
             conn.setAutoCommit(true);
@@ -231,9 +229,9 @@ public class Ctrl_DTE_ND_V3 implements Serializable {
                 conn.rollback();
                 conn.setAutoCommit(true);
 
-                System.out.println("PROYECTO:api-grupoterra-svfel-v3|CLASE:" + this.getClass().getName() + "|METODO:generar_dte_nd_v3()|ERROR:" + ex.toString());;
+                System.out.println("PROYECTO:api-grupoterra-svfel-v3|CLASE:" + this.getClass().getName() + "|METODO:generar_dte_cr_v3()|ERROR:" + ex.toString());;
             } catch (Exception ex1) {
-                System.out.println("PROYECTO:api-grupoterra-svfel-v3|CLASE:" + this.getClass().getName() + "|METODO:generar_dte_nd_v3()-rollback|ERROR:" + ex.toString());
+                System.out.println("PROYECTO:api-grupoterra-svfel-v3|CLASE:" + this.getClass().getName() + "|METODO:generar_dte_cr_v3()-rollback|ERROR:" + ex.toString());
             }
         } finally {
             try {
@@ -241,7 +239,7 @@ public class Ctrl_DTE_ND_V3 implements Serializable {
                     conn.close();
                 }
             } catch (Exception ex) {
-                System.out.println("PROYECTO:api-grupoterra-svfel-v3|CLASE:" + this.getClass().getName() + "|METODO:generar_dte_nd_v3()-finally|ERROR:" + ex.toString());
+                System.out.println("PROYECTO:api-grupoterra-svfel-v3|CLASE:" + this.getClass().getName() + "|METODO:generar_dte_cr_v3()-finally|ERROR:" + ex.toString());
             }
         }
 
@@ -267,7 +265,7 @@ public class Ctrl_DTE_ND_V3 implements Serializable {
 
             conn.setAutoCommit(false);
 
-            String cadenasql = "UPDATE DTE_ND_V3 SET "
+            String cadenasql = "UPDATE DTE_CR_V3 SET "
                     + "RESPONSE_VERSION=" + respuesta_recepciondte_mh.getVersion() + ", "
                     + "RESPONSE_AMBIENTE='" + respuesta_recepciondte_mh.getAmbiente() + "', "
                     + "RESPONSE_VERSIONAPP=" + respuesta_recepciondte_mh.getVersionApp() + ", "
@@ -286,13 +284,13 @@ public class Ctrl_DTE_ND_V3 implements Serializable {
             stmt.executeUpdate(cadenasql);
             stmt.close();
 
-            String NUMEROCONTROL = ctrl_base_datos.ObtenerString("SELECT F.NUMEROCONTROL FROM IDENTIFICACION_ND_V3 F WHERE F.ID_DTE=" + id_dte, conn);
-            String KCOO_JDE = ctrl_base_datos.ObtenerString("SELECT F.KCOO_JDE FROM DTE_ND_V3 F WHERE F.ID_DTE=" + id_dte, conn);
-            String DOCO_JDE = ctrl_base_datos.ObtenerString("SELECT F.DOCO_JDE FROM DTE_ND_V3 F WHERE F.ID_DTE=" + id_dte, conn);
-            String DCTO_JDE = ctrl_base_datos.ObtenerString("SELECT F.DCTO_JDE FROM DTE_ND_V3 F WHERE F.ID_DTE=" + id_dte, conn);
-            String DOC_JDE = ctrl_base_datos.ObtenerString("SELECT F.DOC_JDE FROM DTE_ND_V3 F WHERE F.ID_DTE=" + id_dte, conn);
-            String DCT_JDE = ctrl_base_datos.ObtenerString("SELECT F.DCT_JDE FROM DTE_ND_V3 F WHERE F.ID_DTE=" + id_dte, conn);
-            String AEXP_JDE = ctrl_base_datos.ObtenerString("SELECT REPLACE(TO_CHAR(F.MONTOTOTALOPERACION,'9999999999D99MI'),'.','') AEXP_JDE FROM RESUMEN_ND_V3 F WHERE F.ID_DTE=" + id_dte, conn);
+            String NUMEROCONTROL = ctrl_base_datos.ObtenerString("SELECT F.NUMEROCONTROL FROM IDENTIFICACION_CR_V3 F WHERE F.ID_DTE=" + id_dte, conn);
+            String KCOO_JDE = ctrl_base_datos.ObtenerString("SELECT F.KCOO_JDE FROM DTE_CR_V3 F WHERE F.ID_DTE=" + id_dte, conn);
+            String DOCO_JDE = ctrl_base_datos.ObtenerString("SELECT F.DOCO_JDE FROM DTE_CR_V3 F WHERE F.ID_DTE=" + id_dte, conn);
+            String DCTO_JDE = ctrl_base_datos.ObtenerString("SELECT F.DCTO_JDE FROM DTE_CR_V3 F WHERE F.ID_DTE=" + id_dte, conn);
+            String DOC_JDE = ctrl_base_datos.ObtenerString("SELECT F.DOC_JDE FROM DTE_CR_V3 F WHERE F.ID_DTE=" + id_dte, conn);
+            String DCT_JDE = ctrl_base_datos.ObtenerString("SELECT F.DCT_JDE FROM DTE_CR_V3 F WHERE F.ID_DTE=" + id_dte, conn);
+            String AEXP_JDE = ctrl_base_datos.ObtenerString("SELECT REPLACE(TO_CHAR(F.TOTALPAGAR,'9999999999D99MI'),'.','') AEXP_JDE FROM RESUMEN_CR_V3 F WHERE F.ID_DTE=" + id_dte, conn);
 
             cadenasql = "UPDATE " + esquema + ".F5542FEL@" + dblink + " SET "
                     + "FESTCD='" + respuesta_recepciondte_mh.getCodigoMsg().trim() + "', "
@@ -390,7 +388,7 @@ public class Ctrl_DTE_ND_V3 implements Serializable {
                     + "</tr>"
                     + "<tr>"
                     + "<td>Tipo Documento</td>"
-                    + "<td>Nota de Débito</td>"
+                    + "<td>Comprobante de Crédito Fiscal</td>"
                     + "</tr>"
                     + "</table>"
                     + "</body>"
@@ -400,10 +398,10 @@ public class Ctrl_DTE_ND_V3 implements Serializable {
                 List<Adjunto> files = new ArrayList<>();
                 
                 Cliente_Rest_Jasper cliente_rest_jasper = new Cliente_Rest_Jasper();
-                InputStream inputstream = cliente_rest_jasper.reporte_nd_pdf(id_dte.toString());
-                File TargetFile = new File("/FELSV3/pdf/felsv_nd_" + id_dte + ".pdf");
+                InputStream inputstream = cliente_rest_jasper.reporte_cr_pdf(id_dte.toString());
+                File TargetFile = new File("/FELSV3/pdf/felsv_cr_" + id_dte + ".pdf");
                 FileUtils.copyInputStreamToFile(inputstream, TargetFile);
-
+                
                 Adjunto adjunto = new Adjunto();
                 adjunto.setName(respuesta_recepciondte_mh.getCodigoGeneracion() + ".pdf");
                 adjunto.setType("application/pdf");
@@ -414,7 +412,7 @@ public class Ctrl_DTE_ND_V3 implements Serializable {
                 adjunto.setPath(null);
                 files.add(adjunto);
                 
-                File TargetFileJson = new File("/FELSV3/json/jsondte_nd_" + id_dte + ".json");
+                File TargetFileJson = new File("/FELSV3/json/jsondte_cr_" + id_dte + ".json");
                 
                 Adjunto adjunto_json = new Adjunto();
                 adjunto_json.setName(respuesta_recepciondte_mh.getCodigoGeneracion() + ".json");
@@ -442,9 +440,9 @@ public class Ctrl_DTE_ND_V3 implements Serializable {
                 // System.out.println("Notificación Correo: " + resul_envio_correo);
             } else {
                 List<Adjunto> files = new ArrayList<>();
-                File TargetFileJson = new File("/FELSV3/json/jsondte_nd_" + id_dte + ".json");
+                File TargetFileJson = new File("/FELSV3/json/jsondte_cr_" + id_dte + ".json");
                 Adjunto adjunto_json = new Adjunto();
-                adjunto_json.setName("jsondte_nd_" + id_dte + ".json");
+                adjunto_json.setName("jsondte_cr_" + id_dte + ".json");
                 adjunto_json.setType("application/json");
                 InputStream inputstream_mail_json = new FileInputStream(TargetFileJson);
                 byte[] bytes_json = IOUtils.toByteArray(inputstream_mail_json);
