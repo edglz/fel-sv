@@ -167,25 +167,10 @@ public class Ctrl_CuerpoDocumento_CCF_V3 implements Serializable {
                 PRECIOUNIPROMO = CANTIDAD * PRECIOUNIPROMO.doubleValue();
 
                 Number VENTANOSUJ = 0.00;
-                Number VENTAEXENTA;
-                Number VENTAGRAVADA;
+                Number VENTAEXENTA = 0.00;
+                Number VENTAGRAVADA = (CANTIDAD * PRECIOUNI.doubleValue()) - MONTODESCU.doubleValue();
                 Number PSV = 0.00;
-                Number NOGRAVADO;
-                if (rs.getString(8).equals("Y")) {
-                    if (rs.getString(9).trim().equals("EX") || rs.getString(9).trim().equals("EZ") || rs.getString(9).trim().equals("ET1")) {
-                        VENTAEXENTA = (CANTIDAD * PRECIOUNI.doubleValue()) - MONTODESCU.doubleValue();
-                        VENTAGRAVADA = 0.00;
-                        NOGRAVADO = 0.00;
-                    } else {
-                        VENTAEXENTA = 0.00;
-                        VENTAGRAVADA = (CANTIDAD * PRECIOUNI.doubleValue()) - MONTODESCU.doubleValue();
-                        NOGRAVADO = 0.00;
-                    }
-                } else {
-                    VENTAEXENTA = 0.00;
-                    VENTAGRAVADA = 0.00;
-                    NOGRAVADO = (CANTIDAD * PRECIOUNI.doubleValue()) - MONTODESCU.doubleValue();
-                }
+                Number NOGRAVADO = 0.00;
 
                 cadenasql = "INSERT INTO CUERPO_DOCU_CCF_V3 ( "
                         + "ID_DTE, "
@@ -322,21 +307,11 @@ public class Ctrl_CuerpoDocumento_CCF_V3 implements Serializable {
                     ID_CAT_011 = Long.valueOf("2");
 
                     Number PRECIOUNIFLETE_TEMP = PRECIOUNIFLETE.doubleValue() / CANTIDAD;
-                    if (rs.getString(8).equals("Y")) {
-                        if (rs.getString(9).trim().equals("EX") || rs.getString(9).trim().equals("EZ") || rs.getString(9).trim().equals("ET1")) {
-                            VENTAEXENTA = PRECIOUNIFLETE;
-                            VENTAGRAVADA = 0.00;
-                            NOGRAVADO = 0.00;
-                        } else {
-                            VENTAEXENTA = 0.00;
-                            VENTAGRAVADA = PRECIOUNIFLETE;
-                            NOGRAVADO = 0.00;
-                        }
-                    } else {
-                        VENTAEXENTA = 0.00;
-                        VENTAGRAVADA = 0.00;
-                        NOGRAVADO = PRECIOUNIFLETE;
-                    }
+                    VENTANOSUJ = 0.00;
+                    VENTAEXENTA = 0.00;
+                    VENTAGRAVADA = PRECIOUNIFLETE;
+                    PSV = 0.00;
+                    NOGRAVADO = 0.00;
 
                     cadenasql = "INSERT INTO CUERPO_DOCU_CCF_V3 ( "
                             + "ID_DTE, "
@@ -428,72 +403,61 @@ public class Ctrl_CuerpoDocumento_CCF_V3 implements Serializable {
                 }
 
                 // EXTRAE EL IEC DEL PRODUCTO SI APLICA.
-                if (PRECIOUNIIEC.doubleValue() > 0.00) {
-                    contador++;
-                    ID_CUERPO_DOCUMENTO = Long.valueOf(contador.toString());
-                    ID_CAT_011 = Long.valueOf("4");
-                    Long ID_CAT_015_IEC = Long.valueOf("9");
-                    Long ID_CAT_014_IEC = Long.valueOf("56");
+                if (!rs.getString(9).trim().equals("EX") && !rs.getString(9).trim().equals("EZ") && !rs.getString(9).trim().equals("ET1")) {
+                    if (PRECIOUNIIEC.doubleValue() > 0.00) {
+                        contador++;
+                        ID_CUERPO_DOCUMENTO = Long.valueOf(contador.toString());
+                        ID_CAT_011 = Long.valueOf("4");
+                        Long ID_CAT_015_IEC = Long.valueOf("9");
+                        Long ID_CAT_014_IEC = Long.valueOf("56");
 
-                    Number PRECIOUNIIEC_TEMP = PRECIOUNIIEC.doubleValue() / CANTIDAD;
-                    if (rs.getString(8).equals("Y")) {
-                        if (rs.getString(9).trim().equals("EX") || rs.getString(9).trim().equals("EZ") || rs.getString(9).trim().equals("ET1")) {
-                            VENTAEXENTA = PRECIOUNIIEC;
-                            VENTAGRAVADA = 0.00;
-                            NOGRAVADO = 0.00;
-                        } else {
-                            VENTAEXENTA = 0.00;
-                            VENTAGRAVADA = PRECIOUNIIEC;
-                            NOGRAVADO = 0.00;
-                        }
-                    } else {
+                        Number PRECIOUNIIEC_TEMP = PRECIOUNIIEC.doubleValue() / CANTIDAD;
+                        VENTANOSUJ = 0.00;
                         VENTAEXENTA = 0.00;
-                        VENTAGRAVADA = 0.00;
-                        NOGRAVADO = PRECIOUNIIEC;
-                    }
+                        VENTAGRAVADA = PRECIOUNIIEC;
+                        PSV = 0.00;
+                        NOGRAVADO = 0.00;
 
-                    cadenasql = "INSERT INTO CUERPO_DOCU_CCF_V3 ( "
-                            + "ID_DTE, "
-                            + "ID_CUERPO_DOCUMENTO,"
-                            + "ID_CAT_011, "
-                            + "NUMERODOCUMENTO, "
-                            + "CANTIDAD, "
-                            + "CODIGO, "
-                            + "ID_CAT_015, "
-                            + "ID_CAT_014, "
-                            + "DESCRIPCION, "
-                            + "PRECIOUNI, "
-                            + "MONTODESCU, "
-                            + "VENTANOSUJ, "
-                            + "VENTAEXENTA, "
-                            + "VENTAGRAVADA, "
-                            + "PSV, "
-                            + "NOGRAVADO) VALUES ("
-                            + ID_DTE + ","
-                            + ID_CUERPO_DOCUMENTO + ","
-                            + ID_CAT_011 + ","
-                            + NUMERODOCUMENTO + ","
-                            + CANTIDAD + ",'"
-                            + "IEC" + "',"
-                            + ID_CAT_015_IEC + ","
-                            + ID_CAT_014_IEC + ",'"
-                            + "IEC " + DESCRIPCION + "',"
-                            + PRECIOUNIIEC_TEMP + ","
-                            + "0" + ","
-                            + VENTANOSUJ + ","
-                            + VENTAEXENTA + ","
-                            + VENTAGRAVADA + ","
-                            + PSV + ","
-                            + NOGRAVADO + ")";
-                    stmt1 = conn.createStatement();
-                    System.out.println(cadenasql);
-                    stmt1.executeUpdate(cadenasql);
-                    stmt1.close();
+                        cadenasql = "INSERT INTO CUERPO_DOCU_CCF_V3 ( "
+                                + "ID_DTE, "
+                                + "ID_CUERPO_DOCUMENTO,"
+                                + "ID_CAT_011, "
+                                + "NUMERODOCUMENTO, "
+                                + "CANTIDAD, "
+                                + "CODIGO, "
+                                + "ID_CAT_015, "
+                                + "ID_CAT_014, "
+                                + "DESCRIPCION, "
+                                + "PRECIOUNI, "
+                                + "MONTODESCU, "
+                                + "VENTANOSUJ, "
+                                + "VENTAEXENTA, "
+                                + "VENTAGRAVADA, "
+                                + "PSV, "
+                                + "NOGRAVADO) VALUES ("
+                                + ID_DTE + ","
+                                + ID_CUERPO_DOCUMENTO + ","
+                                + ID_CAT_011 + ","
+                                + NUMERODOCUMENTO + ","
+                                + CANTIDAD + ",'"
+                                + "IEC" + "',"
+                                + ID_CAT_015_IEC + ","
+                                + ID_CAT_014_IEC + ",'"
+                                + "IEC " + DESCRIPCION + "',"
+                                + PRECIOUNIIEC_TEMP + ","
+                                + "0" + ","
+                                + VENTANOSUJ + ","
+                                + VENTAEXENTA + ","
+                                + VENTAGRAVADA + ","
+                                + PSV + ","
+                                + NOGRAVADO + ")";
+                        stmt1 = conn.createStatement();
+                        System.out.println(cadenasql);
+                        stmt1.executeUpdate(cadenasql);
+                        stmt1.close();
 
-                    // EXTRAE EL IMPUESTO APLICADO A LA LINEA DEL IEC.
-                    NUM_TRIBUTO = 0;
-                    if (rs.getString(8).equals("Y")) {
-                        NUM_TRIBUTO++;
+                        // EXTRAE EL IMPUESTO APLICADO A LA LINEA DEL IEC.
+                        NUM_TRIBUTO = 1;
                         Long ID_CAT_015_TRIBUTO = ctrl_base_datos.ObtenerLong("SELECT C.ID_CAT FROM CAT_015 C WHERE C.VALOR_JDE LIKE '%[" + rs.getString(9) + "]%'", conn);
                         Number TRIBUTO_VALOR = ctrl_base_datos.ObtenerDouble("SELECT F.TATXR1/100000 FROM " + esquema + ".F4008@" + dblink + " F WHERE TRIM(F.TATXA1)='" + rs.getString(9) + "' AND F.TAITM=0", conn);
                         TRIBUTO_VALOR = VENTAGRAVADA.doubleValue() * TRIBUTO_VALOR.doubleValue();
@@ -548,21 +512,11 @@ public class Ctrl_CuerpoDocumento_CCF_V3 implements Serializable {
                     ID_CAT_011 = Long.valueOf("2");
 
                     Number PRECIOUNIPROMO_TEMP = PRECIOUNIPROMO.doubleValue() / CANTIDAD;
-                    if (rs.getString(8).equals("Y")) {
-                        if (rs.getString(9).trim().equals("EX") || rs.getString(9).trim().equals("EZ") || rs.getString(9).trim().equals("ET1")) {
-                            VENTAEXENTA = PRECIOUNIPROMO;
-                            VENTAGRAVADA = 0.00;
-                            NOGRAVADO = 0.00;
-                        } else {
-                            VENTAEXENTA = 0.00;
-                            VENTAGRAVADA = PRECIOUNIPROMO;
-                            NOGRAVADO = 0.00;
-                        }
-                    } else {
-                        VENTAEXENTA = 0.00;
-                        VENTAGRAVADA = 0.00;
-                        NOGRAVADO = PRECIOUNIPROMO;
-                    }
+                    VENTANOSUJ = 0.00;
+                    VENTAEXENTA = 0.00;
+                    VENTAGRAVADA = PRECIOUNIPROMO;
+                    PSV = 0.00;
+                    NOGRAVADO = 0.00;
 
                     cadenasql = "INSERT INTO CUERPO_DOCU_CCF_V3 ( "
                             + "ID_DTE, "
@@ -602,7 +556,7 @@ public class Ctrl_CuerpoDocumento_CCF_V3 implements Serializable {
                     stmt1.executeUpdate(cadenasql);
                     stmt1.close();
 
-                    // EXTRAE EL IMPUESTO APLICADO A LA LINEA DEL IEC.
+                    // EXTRAE EL IMPUESTO APLICADO A LA LINEA DEL PROMOCIÓN.
                     NUM_TRIBUTO = 0;
                     if (rs.getString(8).equals("Y")) {
                         NUM_TRIBUTO++;
@@ -651,6 +605,21 @@ public class Ctrl_CuerpoDocumento_CCF_V3 implements Serializable {
                             }
                         }
                     }
+                }
+            }
+            rs.close();
+            stmt.close();
+
+            cadenasql = "SELECT F.ID_DTE, F.ID_CUERPO_DOCUMENTO, F.VENTAGRAVADA FROM CUERPO_DOCU_CCF_V3 F WHERE F.ID_DTE=" + id_dte + " ORDER BY F.ID_DTE, F.ID_CUERPO_DOCUMENTO";
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery(cadenasql);
+            while (rs.next()) {
+                Integer no_impuestos = ctrl_base_datos.ObtenerEntero("SELECT COUNT(*) NUMERO FROM CUERPO_TRIBUTO_CCF_V3 F WHERE F.ID_DTE=" + rs.getString(1) + " AND F.ID_CUERPO_DOCUMENTO=" + rs.getString(2), conn);
+                if (no_impuestos == 0) {
+                    cadenasql = "UPDATE CUERPO_DOCU_CCF_V3 SET VENTAEXENTA=" + rs.getDouble(3) + ", VENTAGRAVADA=0.00 WHERE ID_DTE=" + rs.getString(1) + " AND ID_CUERPO_DOCUMENTO=" + rs.getString(2);
+                    Statement stmt1 = conn.createStatement();
+                    stmt1.executeUpdate(cadenasql);
+                    stmt1.close();
                 }
             }
             rs.close();

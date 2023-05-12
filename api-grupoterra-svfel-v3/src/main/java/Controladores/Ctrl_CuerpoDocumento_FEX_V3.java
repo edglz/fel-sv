@@ -158,20 +158,8 @@ public class Ctrl_CuerpoDocumento_FEX_V3 implements Serializable {
                 }
                 PRECIOUNIPROMO = CANTIDAD * PRECIOUNIPROMO.doubleValue();
 
-                Number VENTAGRAVADA;
-                Number NOGRAVADO;
-                if (rs.getString(8).equals("Y")) {
-                    if (rs.getString(9).trim().equals("EX") || rs.getString(9).trim().equals("EZ") || rs.getString(9).trim().equals("ET1")) {
-                        VENTAGRAVADA = (CANTIDAD * PRECIOUNI.doubleValue()) - MONTODESCU.doubleValue();
-                        NOGRAVADO = 0.00;
-                    } else {
-                        VENTAGRAVADA = (CANTIDAD * PRECIOUNI.doubleValue()) - MONTODESCU.doubleValue();
-                        NOGRAVADO = 0.00;
-                    }
-                } else {
-                    VENTAGRAVADA = 0.00;
-                    NOGRAVADO = (CANTIDAD * PRECIOUNI.doubleValue()) - MONTODESCU.doubleValue();
-                }
+                Number VENTAGRAVADA = (CANTIDAD * PRECIOUNI.doubleValue()) - MONTODESCU.doubleValue();
+                Number NOGRAVADO = 0.00;
 
                 cadenasql = "INSERT INTO CUERPO_DOCU_FEX_V3 ( "
                         + "ID_DTE, "
@@ -298,18 +286,8 @@ public class Ctrl_CuerpoDocumento_FEX_V3 implements Serializable {
                     ID_CAT_011 = Long.valueOf("2");
 
                     Number PRECIOUNIFLETE_TEMP = PRECIOUNIFLETE.doubleValue() / CANTIDAD;
-                    if (rs.getString(8).equals("Y")) {
-                        if (rs.getString(9).trim().equals("EX") || rs.getString(9).trim().equals("EZ") || rs.getString(9).trim().equals("ET1")) {
-                            VENTAGRAVADA = PRECIOUNIFLETE;
-                            NOGRAVADO = 0.00;
-                        } else {
-                            VENTAGRAVADA = PRECIOUNIFLETE;
-                            NOGRAVADO = 0.00;
-                        }
-                    } else {
-                        VENTAGRAVADA = 0.00;
-                        NOGRAVADO = PRECIOUNIFLETE;
-                    }
+                    VENTAGRAVADA = PRECIOUNIFLETE;
+                    NOGRAVADO = 0.00;
 
                     cadenasql = "INSERT INTO CUERPO_DOCU_FEX_V3 ( "
                             + "ID_DTE, "
@@ -399,18 +377,8 @@ public class Ctrl_CuerpoDocumento_FEX_V3 implements Serializable {
                     Long ID_CAT_014_IEC = Long.valueOf("56");
 
                     Number PRECIOUNIIEC_TEMP = PRECIOUNIIEC.doubleValue() / CANTIDAD;
-                    if (rs.getString(8).equals("Y")) {
-                        if (rs.getString(9).trim().equals("EX") || rs.getString(9).trim().equals("EZ") || rs.getString(9).trim().equals("ET1")) {
-                            VENTAGRAVADA = PRECIOUNIIEC;
-                            NOGRAVADO = 0.00;
-                        } else {
-                            VENTAGRAVADA = PRECIOUNIIEC;
-                            NOGRAVADO = 0.00;
-                        }
-                    } else {
-                        VENTAGRAVADA = 0.00;
-                        NOGRAVADO = PRECIOUNIIEC;
-                    }
+                    VENTAGRAVADA = PRECIOUNIIEC;
+                    NOGRAVADO = 0.00;
 
                     cadenasql = "INSERT INTO CUERPO_DOCU_FEX_V3 ( "
                             + "ID_DTE, "
@@ -442,12 +410,33 @@ public class Ctrl_CuerpoDocumento_FEX_V3 implements Serializable {
                     stmt1.close();
 
                     // EXTRAE EL IMPUESTO APLICADO A LA LINEA DEL IEC.
-                    NUM_TRIBUTO = 0;
-                    if (rs.getString(8).equals("Y")) {
+                    NUM_TRIBUTO = 1;
+                    Long ID_CAT_015_TRIBUTO = ctrl_base_datos.ObtenerLong("SELECT C.ID_CAT FROM CAT_015 C WHERE C.VALOR_JDE LIKE '%[" + rs.getString(9) + "]%'", conn);
+                    Number TRIBUTO_VALOR = ctrl_base_datos.ObtenerDouble("SELECT F.TATXR1/100000 FROM " + esquema + ".F4008@" + dblink + " F WHERE TRIM(F.TATXA1)='" + rs.getString(9) + "' AND F.TAITM=0", conn);
+                    TRIBUTO_VALOR = VENTAGRAVADA.doubleValue() * TRIBUTO_VALOR.doubleValue();
+                    if (TRIBUTO_VALOR.doubleValue() > 0.00) {
+                        cadenasql = "INSERT INTO CUERPO_TRIBUTO_FEX_V3 ( "
+                                + "ID_DTE, "
+                                + "ID_CUERPO_DOCUMENTO, "
+                                + "NUM_TRIBUTO, "
+                                + "ID_CAT_015, "
+                                + "VALOR) VALUES ("
+                                + ID_DTE + ","
+                                + ID_CUERPO_DOCUMENTO + ","
+                                + NUM_TRIBUTO + ","
+                                + ID_CAT_015_TRIBUTO + ","
+                                + TRIBUTO_VALOR + ")";
+                        stmt1 = conn.createStatement();
+                        System.out.println(cadenasql);
+                        stmt1.executeUpdate(cadenasql);
+                        stmt1.close();
+                    }
+
+                    if (rs.getString(9).trim().equals("EIVAC")) {
                         NUM_TRIBUTO++;
-                        Long ID_CAT_015_TRIBUTO = ctrl_base_datos.ObtenerLong("SELECT C.ID_CAT FROM CAT_015 C WHERE C.VALOR_JDE LIKE '%[" + rs.getString(9) + "]%'", conn);
-                        Number TRIBUTO_VALOR = ctrl_base_datos.ObtenerDouble("SELECT F.TATXR1/100000 FROM " + esquema + ".F4008@" + dblink + " F WHERE TRIM(F.TATXA1)='" + rs.getString(9) + "' AND F.TAITM=0", conn);
-                        TRIBUTO_VALOR = VENTAGRAVADA.doubleValue() * TRIBUTO_VALOR.doubleValue();
+                        Long ID_CAT_015_TRIBUTO_EIVAC = Long.valueOf("18");
+                        Number TRIBUTO_VALOR_EIVAC = ctrl_base_datos.ObtenerDouble("SELECT F.TATXR2/100000 FROM " + esquema + ".F4008@" + dblink + " F WHERE TRIM(F.TATXA1)='" + rs.getString(9) + "' AND F.TAITM=0", conn);
+                        TRIBUTO_VALOR = VENTAGRAVADA.doubleValue() * TRIBUTO_VALOR_EIVAC.doubleValue();
                         if (TRIBUTO_VALOR.doubleValue() > 0.00) {
                             cadenasql = "INSERT INTO CUERPO_TRIBUTO_FEX_V3 ( "
                                     + "ID_DTE, "
@@ -458,36 +447,12 @@ public class Ctrl_CuerpoDocumento_FEX_V3 implements Serializable {
                                     + ID_DTE + ","
                                     + ID_CUERPO_DOCUMENTO + ","
                                     + NUM_TRIBUTO + ","
-                                    + ID_CAT_015_TRIBUTO + ","
+                                    + ID_CAT_015_TRIBUTO_EIVAC + ","
                                     + TRIBUTO_VALOR + ")";
                             stmt1 = conn.createStatement();
                             System.out.println(cadenasql);
                             stmt1.executeUpdate(cadenasql);
                             stmt1.close();
-                        }
-
-                        if (rs.getString(9).trim().equals("EIVAC")) {
-                            NUM_TRIBUTO++;
-                            Long ID_CAT_015_TRIBUTO_EIVAC = Long.valueOf("18");
-                            Number TRIBUTO_VALOR_EIVAC = ctrl_base_datos.ObtenerDouble("SELECT F.TATXR2/100000 FROM " + esquema + ".F4008@" + dblink + " F WHERE TRIM(F.TATXA1)='" + rs.getString(9) + "' AND F.TAITM=0", conn);
-                            TRIBUTO_VALOR = VENTAGRAVADA.doubleValue() * TRIBUTO_VALOR_EIVAC.doubleValue();
-                            if (TRIBUTO_VALOR.doubleValue() > 0.00) {
-                                cadenasql = "INSERT INTO CUERPO_TRIBUTO_FEX_V3 ( "
-                                        + "ID_DTE, "
-                                        + "ID_CUERPO_DOCUMENTO, "
-                                        + "NUM_TRIBUTO, "
-                                        + "ID_CAT_015, "
-                                        + "VALOR) VALUES ("
-                                        + ID_DTE + ","
-                                        + ID_CUERPO_DOCUMENTO + ","
-                                        + NUM_TRIBUTO + ","
-                                        + ID_CAT_015_TRIBUTO_EIVAC + ","
-                                        + TRIBUTO_VALOR + ")";
-                                stmt1 = conn.createStatement();
-                                System.out.println(cadenasql);
-                                stmt1.executeUpdate(cadenasql);
-                                stmt1.close();
-                            }
                         }
                     }
                 }
@@ -499,18 +464,8 @@ public class Ctrl_CuerpoDocumento_FEX_V3 implements Serializable {
                     ID_CAT_011 = Long.valueOf("2");
 
                     Number PRECIOUNIPROMO_TEMP = PRECIOUNIPROMO.doubleValue() / CANTIDAD;
-                    if (rs.getString(8).equals("Y")) {
-                        if (rs.getString(9).trim().equals("EX") || rs.getString(9).trim().equals("EZ") || rs.getString(9).trim().equals("ET1")) {
-                            VENTAGRAVADA = PRECIOUNIPROMO;
-                            NOGRAVADO = 0.00;
-                        } else {
-                            VENTAGRAVADA = PRECIOUNIPROMO;
-                            NOGRAVADO = 0.00;
-                        }
-                    } else {
-                        VENTAGRAVADA = 0.00;
-                        NOGRAVADO = PRECIOUNIPROMO;
-                    }
+                    VENTAGRAVADA = PRECIOUNIPROMO;
+                    NOGRAVADO = 0.00;
 
                     cadenasql = "INSERT INTO CUERPO_DOCU_FEX_V3 ( "
                             + "ID_DTE, "
