@@ -48,7 +48,6 @@ public class Ctrl_DTE_V3 implements Serializable {
             String cadenasql = "SELECT DISTINCT F.SDKCOO, F.SDDOCO, F.SDDCTO, F.SDDOC, F.SDDCT, F.SDMCU, F.SDAN8, F.SDSHAN, F.SDCRCD, F.SDIVD, '" + STCD + "' STCD, '-' CRSREF01, '-' CRSREF02, '-' CRSREF03, '-' CRSREF04, '-' CRSREF05, '" + tabla_sales_orders + "' TABLA, TRIM(F.SDTXA1) SDTXA1, NVL(TRIM(G.ABAC30),'-') ABAC30 "
                     + "FROM " + esquema + "." + tabla_sales_orders + "@" + dblink + " F LEFT JOIN " + esquema + ".F0101@" + dblink + " G ON (F.SDSHAN=G.ABAN8) "
                     + "WHERE (TRIM(F.SDKCOO) IN (SELECT C.KCOO_JDE FROM EMISOR_KCOO_V3 C)) AND (F.SDDOC > 0) AND (TRIM(F.SDLTTR) NOT IN ('904','902','900','980')) AND (TRIM(F.SDDCTO) IN ('S3','C3','SD')) AND (TRIM(F.SDCRMD) IS NULL) AND (F.SDIVD >= " + ivd + ")";
-
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(cadenasql);
             while (rs.next()) {
@@ -116,7 +115,7 @@ public class Ctrl_DTE_V3 implements Serializable {
                         + "SET SDCRMD='4' "
                         + "WHERE SDKCOO='" + rs.getString(1) + "' AND SDDOCO=" + rs.getString(2) + " AND SDDCTO='" + rs.getString(3) + "' AND SDDOC=" + rs.getString(4) + " AND SDDCT='" + rs.getString(5) + "'";
                 stmt1 = conn.createStatement();
-                // System.out.println(cadenasql);
+                System.out.println(cadenasql);
                 stmt1.executeUpdate(cadenasql);
                 stmt1.close();
                 resultado++;
@@ -127,8 +126,9 @@ public class Ctrl_DTE_V3 implements Serializable {
             // EXTRAE NOTAS DE REMISIÓN DESDE JDE.
             cadenasql = "SELECT DISTINCT F.NRKCOO, F.NRDOCO, F.NRDCTO, F.NRN001, F.NRURCD, F.NRMCU, F.NRAN8, F.NRSHAN, F.NRCRCD, F.NRURDT, '" + STCD + "' STCD, '-' CRSREF01, '-' CRSREF02, '-' CRSREF03, '-' CRSREF04, '-' CRSREF05, 'F554211N' TABLA, TRIM(F.NRTXA1) NRTXA1, NVL(TRIM(G.ABAC30),'-') ABAC30 "
                     + "FROM " + esquema + ".F554211N@" + dblink + " F LEFT JOIN " + esquema + ".F0101@" + dblink + " G ON (F.NRAN8=G.ABAN8) "
-                    + "WHERE (TRIM(F.NRKCOO) IN (SELECT C.KCOO_JDE FROM EMISOR_KCOO_V3 C)) AND (F.NRN001 > 0) AND (TRIM(F.NRLTTR) NOT IN ('904','902','900','980')) AND (TRIM(F.NRDCTO) IN ('S3','C3','SD')) AND (TRIM(F.NREV01) IN ('N')) AND (F.NRURDT = " + ivd + ")";
+                    + "WHERE (TRIM(F.NRKCOO) IN (SELECT C.KCOO_JDE FROM EMISOR_KCOO_V3 C)) AND (F.NRN001 > 0) AND (TRIM(F.NRLTTR) NOT IN ('904','902','900','980')) AND (TRIM(F.NRDCTO) IN ('S3','C3','SD')) AND (TRIM(F.NREV01) IN ('N')) AND (F.NRURDT >= " + ivd + ")";
             stmt = conn.createStatement();
+            // System.out.println(cadenasql);
             rs = stmt.executeQuery(cadenasql);
             while (rs.next()) {
                 String DCTO = "NR";
@@ -183,7 +183,7 @@ public class Ctrl_DTE_V3 implements Serializable {
                         + "SET NREV01='P' "
                         + "WHERE NRKCOO='" + rs.getString(1) + "' AND NRDOCO=" + rs.getString(2) + " AND NRDCTO='" + rs.getString(3) + "' AND NRN001=" + rs.getString(4) + " AND NRURCD='" + rs.getString(5) + "'";
                 stmt1 = conn.createStatement();
-                // System.out.println(cadenasql);
+                System.out.println(cadenasql);
                 stmt1.executeUpdate(cadenasql);
                 stmt1.close();
                 resultado++;

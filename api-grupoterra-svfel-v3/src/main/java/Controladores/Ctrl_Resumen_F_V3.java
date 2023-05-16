@@ -141,7 +141,16 @@ public class Ctrl_Resumen_F_V3 implements Serializable {
             Number PAGOS_MONTOPAGO = null;
             String PAGOS_REFERENCIA = null;
             Long ID_CAT_018 = Long.valueOf("1");
-            Number PAGOS_PERIODO = 1;
+            String AN8_JDE = ctrl_base_datos.ObtenerString("SELECT F.AN8_JDE FROM DTE_F_V3 F WHERE F.ID_DTE=" + ID_DTE, conn);
+            String dias_credito = ctrl_base_datos.ObtenerString("SELECT F.AITRAR FROM " + esquema + ".F03012@" + dblink + " F WHERE F.AIAN8=" + AN8_JDE, conn);
+            Integer no_dias_credito;
+            try {
+                no_dias_credito = Integer.valueOf(dias_credito.trim());
+            } catch(NumberFormatException ex) {
+                System.out.println("DIAS CREDITO: 0");
+                no_dias_credito = 0;
+            }
+            Number PAGOS_PERIODO = no_dias_credito;
             String NUMPAGOELECTRONICO = null;
 
             String cadenasql = "INSERT INTO RESUMEN_F_V3 ("

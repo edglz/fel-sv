@@ -51,11 +51,11 @@ public class Ctrl_Extension_NC_V3 implements Serializable {
             String NOMBENTREGA = "UNO EL SALVADOR";
             String DOCUENTREGA = "06140404600015";
             
-            String NOMBRECIBE = ctrl_base_datos.ObtenerString("SELECT TRIM(F.WWMLNM) NOMBRECIBE FROM " + esquema + ".F0111@" + dblink + " F WHERE F.WWAN8=" + AN8_JDE + " AND TRIM(F.WWALPH)='FELSV'", conn);
+            String NOMBRECIBE = ctrl_base_datos.ObtenerString("SELECT TRIM(F.WWMLNM) NOMBRECIBE FROM " + esquema + ".F0111@" + dblink + " F WHERE F.WWAN8=" + AN8_JDE + " AND TRIM(F.WWTYC)='S'", conn);
             if (NOMBRECIBE == null) {
                 NOMBRECIBE = "Sin registro";
             }
-            String DOCURECIBE = ctrl_base_datos.ObtenerString("SELECT TRIM(F.WWNICK) DOCURECIBE FROM " + esquema + ".F0111@" + dblink + " F WHERE F.WWAN8=" + AN8_JDE + " AND TRIM(F.WWALPH)='FELSV'", conn);
+            String DOCURECIBE = ctrl_base_datos.ObtenerString("SELECT TRIM(F.WWNICK) DOCURECIBE FROM " + esquema + ".F0111@" + dblink + " F WHERE F.WWAN8=" + AN8_JDE + " AND TRIM(F.WWTYC)='S'", conn);
             if (DOCURECIBE == null) {
                 DOCURECIBE = "Sin registro";
             }
