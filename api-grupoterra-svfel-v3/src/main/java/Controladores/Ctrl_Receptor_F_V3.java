@@ -64,7 +64,7 @@ public class Ctrl_Receptor_F_V3 implements Serializable {
             if(ID_CAT_022 == null) {
                 ID_CAT_022 = Long.valueOf("1");
             }
-            String NUM_DOCUMENTO = ctrl_base_datos.ObtenerString("SELECT NVL(REPLACE(TRIM(F.ABTAX),'-',''),'-') FROM " + esquema + ".F0101@" + dblink + " F WHERE F.ABAN8=" + AN8_JDE, conn);
+            String NUM_DOCUMENTO = ctrl_base_datos.ObtenerString("SELECT NVL(REPLACE(TRIM(F.ABTX2),'-',''),'-') FROM " + esquema + ".F0101@" + dblink + " F WHERE F.ABAN8=" + AN8_JDE, conn);
             NUM_DOCUMENTO = NUM_DOCUMENTO.replaceAll(" ", "");
             String NRC = "NULL";
             
@@ -132,7 +132,7 @@ public class Ctrl_Receptor_F_V3 implements Serializable {
             if(ID_CAT_022_SHAN == null) {
                 ID_CAT_022_SHAN = Long.valueOf("1");
             }
-            String NUM_DOCUMENTO_SHAN = ctrl_base_datos.ObtenerString("SELECT NVL(REPLACE(TRIM(F.ABTAX),'-',''),'-') FROM " + esquema + ".F0101@" + dblink + " F WHERE F.ABAN8=" + SHAN_JDE, conn);
+            String NUM_DOCUMENTO_SHAN = ctrl_base_datos.ObtenerString("SELECT NVL(REPLACE(TRIM(F.ABTX2),'-',''),'-') FROM " + esquema + ".F0101@" + dblink + " F WHERE F.ABAN8=" + SHAN_JDE, conn);
             NUM_DOCUMENTO_SHAN = NUM_DOCUMENTO_SHAN.replaceAll(" ", "");
             String NRC_SHAN = "NULL";
             

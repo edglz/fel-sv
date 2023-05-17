@@ -154,16 +154,19 @@ public class Ctrl_Apendice_NC_V3 implements Serializable {
             String sid;
             String user_db;
             String pass_db;
+            String esquema_db;
             if (ambiente.equals("PY")) {
                 host_ip = "10.252.7.207";
                 sid = "jdepy";
                 user_db = "CRPDTA";
                 pass_db = "CRPDTA";
+                esquema_db = "CRPDTA";
             } else {
                 host_ip = "10.252.7.201";
                 sid = "jdepd";
                 user_db = "PRODDTA";
                 pass_db = "PRODDTA";
+                esquema_db = "PRODDTA";
             }
             
             // EXTRAER LAS OBSERVACIONES DE JDE.
@@ -171,7 +174,7 @@ public class Ctrl_Apendice_NC_V3 implements Serializable {
             Connection conn_jde = DriverManager.getConnection("jdbc:oracle:thin:@//" + host_ip + ":1521/" + sid, user_db, pass_db);
             
             String cadenasql = "SELECT REPLACE(REGEXP_REPLACE(REPLACE(UTL_RAW.CAST_TO_VARCHAR2(DBMS_LOB.SUBSTR(D.GDTXFT,DBMS_LOB.GETLENGTH(D.GDTXFT),1)),CHR(0),''), '<.+?>|(' || '&' || 'nbsp;)'), CHR(13) || CHR(10) ) DESCRIPCION "
-                    + "FROM PRODDTA.F00165 D "
+                    + "FROM " + esquema_db + ".F00165 D "
                     + "WHERE D.GDOBNM = 'GT4201A   ' AND D.GDTXKY = '" + DOCO_JDE + "|" + DCTO_JDE + "|" + KCOO_JDE + "' AND D.GDMOSEQN=1";
             Statement stmt_jde = conn_jde.createStatement();
             ResultSet rs_jde = stmt_jde.executeQuery(cadenasql);
