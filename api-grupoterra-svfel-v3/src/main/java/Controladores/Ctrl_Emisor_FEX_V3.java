@@ -75,7 +75,7 @@ public class Ctrl_Emisor_FEX_V3 implements Serializable {
             
             String Regimen = ctrl_base_datos.ObtenerString("SELECT C.CODIGO FROM CAT_028 C WHERE C.VALOR_JDE IN (SELECT TRIM(G.ABAC27) FROM " + esquema + ".F0101@" + dblink + " G WHERE G.ABAN8=" + AN8_JDE + ")", conn);
             if(Regimen == null) {
-                Regimen = "EX-1.1000.000";
+                Regimen = "EX 1.1000.000";
             }
             resultado.setRegimen(Regimen);
         } catch (Exception ex) {

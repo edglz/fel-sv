@@ -76,7 +76,9 @@ CASE WHEN RES.MONTOTOTALOPERACION > 11428.57 THEN EXT.NOMBRECIBE ELSE '-' END in
 CASE WHEN RES.MONTOTOTALOPERACION > 11428.57 THEN EXT.DOCURECIBE ELSE '-' END infoReceptorDocResponsable,
 DTE.SHAN_JDE infoEnviarACodigo,
 SHI.NOMBRE || ' ' || SHI.DIRECCION_COMPLEMENTO infoEnviarANombre,
-APE.VALOR apendiceSellos,
+(SELECT NVL(APE.VALOR,'-') FROM APENDICE_ND_V3 APE WHERE APE.ID_DTE=IDE.ID_DTE AND APE.ID_APENDICE=1) apendiceSellos,
+(SELECT NVL(APE.VALOR,'-') FROM APENDICE_ND_V3 APE WHERE APE.ID_DTE=IDE.ID_DTE AND APE.ID_APENDICE=2) apendiceContrato,
+(SELECT NVL(APE.VALOR,'-') FROM APENDICE_ND_V3 APE WHERE APE.ID_DTE=IDE.ID_DTE AND APE.ID_APENDICE=3) apendiceperiodoFac,
 DTE.AN8_JDE infoCodigoClienteJde,
 'https://webapp.dtes.mh.gob.sv/consultaPublica?ambiente=' || C01.CODIGO || '&codGen=' || IDE.CODIGOGENERACION || '&fechaEmi=' || TO_CHAR(IDE.FECHA_HORA_EMISION, 'YYYY-MM-DD') QR
 FROM
@@ -102,7 +104,6 @@ LEFT JOIN CAT_014 C14 ON (CUE.ID_CAT_014=C14.ID_CAT)
 LEFT JOIN RESUMEN_ND_V3 RES ON (DTE.ID_DTE=RES.ID_DTE)
 LEFT JOIN CAT_016 C16 ON (RES.ID_CAT_016=C16.ID_CAT)
 LEFT JOIN EXTENSION_ND_V3 EXT ON (DTE.ID_DTE=EXT.ID_DTE)
-LEFT JOIN APENDICE_ND_V3 APE ON (DTE.ID_DTE=APE.ID_DTE)
 LEFT JOIN SHIPTO_ND_V3 SHI ON (DTE.ID_DTE=SHI.ID_DTE)
 LEFT JOIN CAT_001 C01 ON (IDE.ID_CAT_001=C01.ID_CAT)
 WHERE 
@@ -357,6 +358,14 @@ CUE.ID_CUERPO_DOCUMENTO]]>
 	<field name="APENDICESELLOS" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.name" value="APENDICESELLOS"/>
 		<property name="com.jaspersoft.studio.field.label" value="APENDICESELLOS"/>
+	</field>
+	<field name="APENDICECONTRATO" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="APENDICECONTRATO"/>
+		<property name="com.jaspersoft.studio.field.label" value="APENDICECONTRATO"/>
+	</field>
+	<field name="APENDICEPERIODOFAC" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="APENDICEPERIODOFAC"/>
+		<property name="com.jaspersoft.studio.field.label" value="APENDICEPERIODOFAC"/>
 	</field>
 	<field name="INFOCODIGOCLIENTEJDE" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.name" value="INFOCODIGOCLIENTEJDE"/>
@@ -1479,7 +1488,7 @@ CUE.ID_CUERPO_DOCUMENTO]]>
 		</band>
 	</detail>
 	<summary>
-		<band height="190">
+		<band height="230">
 			<staticText>
 				<reportElement x="292" y="40" width="250" height="10" uuid="4168610b-7c89-4480-9342-2db9ca10db9c">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="12bef44e-5013-4d7f-8b4d-bfbec0a70952"/>
@@ -2350,6 +2359,76 @@ CUE.ID_CUERPO_DOCUMENTO]]>
 				</textElement>
 				<text><![CDATA[Apéndice]]></text>
 			</staticText>
+			<staticText>
+				<reportElement x="0" y="190" width="70" height="20" uuid="922e462c-239d-45e0-afbb-2fd5ab082144">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="12bef44e-5013-4d7f-8b4d-bfbec0a70952"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box leftPadding="2" rightPadding="0">
+					<pen lineWidth="0.5" lineStyle="Solid"/>
+					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font fontName="Arial" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[No. Contrato:]]></text>
+			</staticText>
+			<textField textAdjust="StretchHeight">
+				<reportElement stretchType="RelativeToTallestObject" x="70" y="190" width="522" height="20" uuid="795b140d-c50b-4fc3-b529-0720288e321c">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="12bef44e-5013-4d7f-8b4d-bfbec0a70952"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box leftPadding="2">
+					<pen lineWidth="0.5" lineStyle="Solid"/>
+					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{APENDICECONTRATO}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="210" width="70" height="20" uuid="4f1751b2-74a7-4801-b221-5f086d3520fc">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="12bef44e-5013-4d7f-8b4d-bfbec0a70952"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box leftPadding="2" rightPadding="0">
+					<pen lineWidth="0.5" lineStyle="Solid"/>
+					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font fontName="Arial" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Período Facturación:]]></text>
+			</staticText>
+			<textField textAdjust="StretchHeight">
+				<reportElement stretchType="RelativeToTallestObject" x="70" y="210" width="522" height="20" uuid="52efc86d-b0be-432a-b08e-f8740fbf6c0b">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="12bef44e-5013-4d7f-8b4d-bfbec0a70952"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box leftPadding="2">
+					<pen lineWidth="0.5" lineStyle="Solid"/>
+					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{APENDICEPERIODOFAC}]]></textFieldExpression>
+			</textField>
 		</band>
 	</summary>
 </jasperReport>

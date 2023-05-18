@@ -113,7 +113,10 @@ public class Ctrl_Resumen_FEX_V3 implements Serializable {
                 no_dias_credito = 0;
             }
             Number PAGOS_PERIODO = no_dias_credito;
-            Long ID_CAT_031 = Long.valueOf("1");
+            Long ID_CAT_031 = ctrl_base_datos.ObtenerLong("SELECT C.ID_CAT FROM CAT_031 C WHERE C.VALOR_JDE IN (SELECT TRIM(G.ABAC16) FROM " + esquema + ".F0101@" + dblink + " G WHERE G.ABAN8=" + AN8_JDE + ")", conn);
+            if (ID_CAT_031 == null) {
+                ID_CAT_031 = Long.valueOf("1");
+            }
             String NUMPAGOELECTRONICO = null;
             String OBSERVACIONES = "Factura de Exportación";
             String cadenasql = "INSERT INTO RESUMEN_FEX_V3 ("

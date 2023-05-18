@@ -66,7 +66,9 @@ CASE WHEN RES.MONTOTOTALOPERACION > 11428.57 THEN EXT.NOMBRECIBE ELSE '-' END No
 CASE WHEN RES.MONTOTOTALOPERACION > 11428.57 THEN EXT.DOCURECIBE ELSE '-' END Documento_Receptor_Responsable,
 DTE.SHAN_JDE Enviar_A_Codigo,
 SHI.NOMBRECOMERCIAL || ' ' || SHI.DIRECCION_COMPLEMENTO Enviar_A_Nombre,
-APE.VALOR Sellos,
+(SELECT NVL(APE.VALOR,'-') FROM APENDICE_NR_V3 APE WHERE APE.ID_DTE=IDE.ID_DTE AND APE.ID_APENDICE=1) apendiceSellos,
+(SELECT NVL(APE.VALOR,'-') FROM APENDICE_NR_V3 APE WHERE APE.ID_DTE=IDE.ID_DTE AND APE.ID_APENDICE=2) apendiceContrato,
+(SELECT NVL(APE.VALOR,'-') FROM APENDICE_NR_V3 APE WHERE APE.ID_DTE=IDE.ID_DTE AND APE.ID_APENDICE=3) apendiceperiodoFac,
 RES.TOTALLETRAS Valor_Letras,
 RES.MONTOTOTALOPERACION Monto_Total_Operacion,
 DTE.AN8_JDE Codigo_Cliente_JDE,
@@ -87,7 +89,6 @@ LEFT JOIN CAT_011 C11 ON (CUE.ID_CAT_011=C11.ID_CAT)
 LEFT JOIN CAT_014 C14 ON (CUE.ID_CAT_014=C14.ID_CAT)
 LEFT JOIN RESUMEN_NR_V3 RES ON (DTE.ID_DTE=RES.ID_DTE)
 LEFT JOIN EXTENSION_NR_V3 EXT ON (DTE.ID_DTE=EXT.ID_DTE)
-LEFT JOIN APENDICE_NR_V3 APE ON (DTE.ID_DTE=APE.ID_DTE)
 LEFT JOIN SHIPTO_NR_V3 SHI ON (DTE.ID_DTE=SHI.ID_DTE)
 LEFT JOIN CAT_001 C01 ON (IDE.ID_CAT_001=C01.ID_CAT)
 LEFT JOIN CAT_022 C22 ON (REP.ID_CAT_022=C22.ID_CAT)
@@ -300,9 +301,17 @@ CUE.ID_CUERPO_DOCUMENTO]]>
 		<property name="com.jaspersoft.studio.field.name" value="ENVIAR_A_NOMBRE"/>
 		<property name="com.jaspersoft.studio.field.label" value="ENVIAR_A_NOMBRE"/>
 	</field>
-	<field name="SELLOS" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.name" value="SELLOS"/>
-		<property name="com.jaspersoft.studio.field.label" value="SELLOS"/>
+	<field name="APENDICESELLOS" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="APENDICESELLOS"/>
+		<property name="com.jaspersoft.studio.field.label" value="APENDICESELLOS"/>
+	</field>
+	<field name="APENDICECONTRATO" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="APENDICECONTRATO"/>
+		<property name="com.jaspersoft.studio.field.label" value="APENDICECONTRATO"/>
+	</field>
+	<field name="APENDICEPERIODOFAC" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="APENDICEPERIODOFAC"/>
+		<property name="com.jaspersoft.studio.field.label" value="APENDICEPERIODOFAC"/>
 	</field>
 	<field name="VALOR_LETRAS" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.name" value="VALOR_LETRAS"/>
@@ -2029,7 +2038,7 @@ CUE.ID_CUERPO_DOCUMENTO]]>
 				<textElement textAlignment="Left" verticalAlignment="Top">
 					<font fontName="Arial" size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{SELLOS}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{APENDICESELLOS}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="292" y="130" width="250" height="10" uuid="d2827a01-8165-449e-a29a-d3d00c50ca64">

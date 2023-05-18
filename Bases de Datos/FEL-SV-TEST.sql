@@ -158,7 +158,7 @@ SELECT F.* FROM CUERPO_TRIBUTO_ND_V3 F WHERE F.ID_DTE IN (1);
 SELECT F.* FROM RESUMEN_ND_V3 F WHERE F.ID_DTE IN (1);
 SELECT F.* FROM RESUMEN_TRIBUTO_ND_V3 F WHERE F.ID_DTE IN (1);
 SELECT F.* FROM EXTENSION_ND_V3 F WHERE F.ID_DTE IN (1);
-SELECT F.* FROM APENDICE_ND_V3 F WHERE F.ID_DTE IN (1);
+SELECT F.* FROM APENDICE_ND_V3 F WHERE F.ID_DTE IN (85);
 -- ***************************************************************************************************************************
 -- *          FACTURA ELECTRÓNICA.                                                                                           *
 -- ***************************************************************************************************************************
@@ -216,7 +216,7 @@ SELECT F.* FROM CUERPO_TRIBUTO_FEX_V3 F WHERE F.ID_DTE IN (122);
 SELECT F.* FROM RESUMEN_FEX_V3 F WHERE F.ID_DTE IN (122);
 SELECT F.* FROM RESUMEN_TRIBUTO_FEX_V3 F WHERE F.ID_DTE IN (122);
 SELECT F.* FROM EXTENSION_FEX_V3 F WHERE F.ID_DTE IN (122);
-SELECT F.* FROM APENDICE_FEX_V3 F WHERE F.ID_DTE IN (122);
+SELECT F.* FROM APENDICE_FEX_V3 F WHERE F.ID_DTE IN (128);
 -- ***************************************************************************************************************************
 -- *          NOTA DE REMISION.                                                                                              *
 -- ***************************************************************************************************************************
@@ -323,3 +323,12 @@ COMMIT;
 
 SELECT F.* FROM CRPDTA.F5504001@JDEPY F;
 SELECT F.* FROM CRPDTA.F550401A@JDEPY F;
+
+
+
+SELECT C.ID_CAT, C.CODIGO, LENGTH(C.CODIGO) LONGITUD, LPAD(C.CODIGO, 5, '0') NUEVO, C.VALOR, C.VALOR_JDE 
+FROM CAT_019 C
+WHERE LENGTH(C.CODIGO) = 4;
+
+UPDATE CAT_019 SET CODIGO=LPAD(CODIGO, 5, '0') WHERE LENGTH(CODIGO) = 4;
+COMMIT;
