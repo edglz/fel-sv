@@ -309,7 +309,7 @@ public class Ctrl_CuerpoDocumento_FEX_V3 implements Serializable {
                             + ID_CAT_014 + ",'"
                             + "FLETE " + DESCRIPCION + "',"
                             + PRECIOUNIFLETE_TEMP + ","
-                            + "0" + ","
+                            + "0.00,"
                             + VENTAGRAVADA + ","
                             + NOGRAVADO + ")";
                     stmt1 = conn.createStatement();
@@ -373,7 +373,7 @@ public class Ctrl_CuerpoDocumento_FEX_V3 implements Serializable {
                     contador++;
                     ID_CUERPO_DOCUMENTO = Long.valueOf(contador.toString());
                     ID_CAT_011 = Long.valueOf("4");
-                    Long ID_CAT_015_IEC = Long.valueOf("9");
+                    // Long ID_CAT_015_IEC = Long.valueOf("9");
                     Long ID_CAT_014_IEC = Long.valueOf("56");
 
                     Number PRECIOUNIIEC_TEMP = PRECIOUNIIEC.doubleValue() / CANTIDAD;
@@ -397,11 +397,10 @@ public class Ctrl_CuerpoDocumento_FEX_V3 implements Serializable {
                             + ID_CAT_011 + ","
                             + CANTIDAD + ",'"
                             + "IEC" + "',"
-                            + ID_CAT_015_IEC + ","
                             + ID_CAT_014_IEC + ",'"
                             + "IEC " + DESCRIPCION + "',"
                             + PRECIOUNIIEC_TEMP + ","
-                            + "0" + ","
+                            + "0.00" + ","
                             + VENTAGRAVADA + ","
                             + NOGRAVADO + ")";
                     stmt1 = conn.createStatement();
@@ -487,7 +486,7 @@ public class Ctrl_CuerpoDocumento_FEX_V3 implements Serializable {
                             + ID_CAT_014 + ",'"
                             + "PROMOCIÓN " + DESCRIPCION + "',"
                             + PRECIOUNIPROMO_TEMP + ","
-                            + "0" + ","
+                            + "0.00" + ","
                             + VENTAGRAVADA + ","
                             + NOGRAVADO + ")";
                     stmt1 = conn.createStatement();
@@ -495,7 +494,7 @@ public class Ctrl_CuerpoDocumento_FEX_V3 implements Serializable {
                     stmt1.executeUpdate(cadenasql);
                     stmt1.close();
 
-                    // EXTRAE EL IMPUESTO APLICADO A LA LINEA DEL IEC.
+                    // EXTRAE EL IMPUESTO APLICADO A LA LINEA DEL PROMOCIÓN.
                     NUM_TRIBUTO = 0;
                     if (rs.getString(8).equals("Y")) {
                         NUM_TRIBUTO++;

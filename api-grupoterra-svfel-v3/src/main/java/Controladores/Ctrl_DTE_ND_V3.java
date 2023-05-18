@@ -439,7 +439,7 @@ public class Ctrl_DTE_ND_V3 implements Serializable {
                 
                 Cliente_Rest_SendMail cliente_rest_sendmail = new Cliente_Rest_SendMail();
                 String resul_envio_correo = cliente_rest_sendmail.sendmail(new Gson().toJson(mensaje_correo));
-                // System.out.println("Notificación Correo: " + resul_envio_correo);
+                System.out.println("Notificación Correo: " + resul_envio_correo);
             } else {
                 List<Adjunto> files = new ArrayList<>();
                 File TargetFileJson = new File("/FELSV3/json/jsondte_nd_" + id_dte + ".json");
@@ -466,7 +466,7 @@ public class Ctrl_DTE_ND_V3 implements Serializable {
                 
                 Cliente_Rest_SendMail cliente_rest_sendmail = new Cliente_Rest_SendMail();
                 String resul_envio_correo = cliente_rest_sendmail.sendmail(new Gson().toJson(mensaje_correo));
-                // System.out.println("Notificación Correo: " + resul_envio_correo);
+                System.out.println("Notificación Correo: " + resul_envio_correo);
             }
         } catch (Exception ex) {
             try {
