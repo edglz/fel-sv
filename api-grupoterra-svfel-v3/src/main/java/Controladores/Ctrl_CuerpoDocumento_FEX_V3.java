@@ -124,7 +124,7 @@ public class Ctrl_CuerpoDocumento_FEX_V3 implements Serializable {
                 if (MONTODESCU.doubleValue() < 0.00) {
                     MONTODESCU = MONTODESCU.doubleValue() * -1;
                 }
-                PRECIOUNI = PRECIOUNI.doubleValue() - MONTODESCU.doubleValue();
+                PRECIOUNI = PRECIOUNI.doubleValue() + MONTODESCU.doubleValue();
                 MONTODESCU = CANTIDAD * MONTODESCU.doubleValue();
 
                 // EXTRAE EL FLETE SI APLICA MAYOR A 0.00
@@ -376,7 +376,7 @@ public class Ctrl_CuerpoDocumento_FEX_V3 implements Serializable {
                     // Long ID_CAT_015_IEC = Long.valueOf("9");
                     Long ID_CAT_014_IEC = Long.valueOf("56");
 
-                    Number PRECIOUNIIEC_TEMP = PRECIOUNIIEC.doubleValue() / CANTIDAD;
+                    // Number PRECIOUNIIEC_TEMP = PRECIOUNIIEC.doubleValue() / CANTIDAD;
                     VENTAGRAVADA = PRECIOUNIIEC;
                     NOGRAVADO = 0.00;
 
@@ -395,11 +395,11 @@ public class Ctrl_CuerpoDocumento_FEX_V3 implements Serializable {
                             + ID_DTE + ","
                             + ID_CUERPO_DOCUMENTO + ","
                             + ID_CAT_011 + ","
-                            + CANTIDAD + ",'"
+                            + "1" + ",'"
                             + "IEC" + "',"
                             + ID_CAT_014_IEC + ",'"
                             + "IEC " + DESCRIPCION + "',"
-                            + PRECIOUNIIEC_TEMP + ","
+                            + VENTAGRAVADA + ","
                             + "0.00" + ","
                             + VENTAGRAVADA + ","
                             + NOGRAVADO + ")";
@@ -410,8 +410,10 @@ public class Ctrl_CuerpoDocumento_FEX_V3 implements Serializable {
 
                     // EXTRAE EL IMPUESTO APLICADO A LA LINEA DEL IEC.
                     NUM_TRIBUTO = 1;
-                    Long ID_CAT_015_TRIBUTO = ctrl_base_datos.ObtenerLong("SELECT C.ID_CAT FROM CAT_015 C WHERE C.VALOR_JDE LIKE '%[" + rs.getString(9) + "]%'", conn);
-                    Number TRIBUTO_VALOR = ctrl_base_datos.ObtenerDouble("SELECT F.TATXR1/100000 FROM " + esquema + ".F4008@" + dblink + " F WHERE TRIM(F.TATXA1)='" + rs.getString(9) + "' AND F.TAITM=0", conn);
+                    // Long ID_CAT_015_TRIBUTO = ctrl_base_datos.ObtenerLong("SELECT C.ID_CAT FROM CAT_015 C WHERE C.VALOR_JDE LIKE '%[" + rs.getString(9) + "]%'", conn);
+                    Long ID_CAT_015_TRIBUTO = ctrl_base_datos.ObtenerLong("SELECT C.ID_CAT FROM CAT_015 C WHERE C.VALOR_JDE LIKE '%[EIVAK]%'", conn);
+                    // Number TRIBUTO_VALOR = ctrl_base_datos.ObtenerDouble("SELECT F.TATXR1/100000 FROM " + esquema + ".F4008@" + dblink + " F WHERE TRIM(F.TATXA1)='" + rs.getString(9) + "' AND F.TAITM=0", conn);
+                    Number TRIBUTO_VALOR = ctrl_base_datos.ObtenerDouble("SELECT F.TATXR1/100000 FROM " + esquema + ".F4008@" + dblink + " F WHERE TRIM(F.TATXA1)='EIVAK' AND F.TAITM=0", conn);
                     TRIBUTO_VALOR = VENTAGRAVADA.doubleValue() * TRIBUTO_VALOR.doubleValue();
                     if (TRIBUTO_VALOR.doubleValue() > 0.00) {
                         cadenasql = "INSERT INTO CUERPO_TRIBUTO_FEX_V3 ( "
@@ -431,7 +433,7 @@ public class Ctrl_CuerpoDocumento_FEX_V3 implements Serializable {
                         stmt1.close();
                     }
 
-                    if (rs.getString(9).trim().equals("EIVAC")) {
+                    /* if (rs.getString(9).trim().equals("EIVAC")) {
                         NUM_TRIBUTO++;
                         Long ID_CAT_015_TRIBUTO_EIVAC = Long.valueOf("18");
                         Number TRIBUTO_VALOR_EIVAC = ctrl_base_datos.ObtenerDouble("SELECT F.TATXR2/100000 FROM " + esquema + ".F4008@" + dblink + " F WHERE TRIM(F.TATXA1)='" + rs.getString(9) + "' AND F.TAITM=0", conn);
@@ -453,7 +455,7 @@ public class Ctrl_CuerpoDocumento_FEX_V3 implements Serializable {
                             stmt1.executeUpdate(cadenasql);
                             stmt1.close();
                         }
-                    }
+                    } */
                 }
 
                 // EXTRAE LA PROMOCIÓN DEL PRODUCTO SI APLICA.

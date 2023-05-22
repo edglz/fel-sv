@@ -66,7 +66,17 @@ public class Ctrl_Receptor_NR_V3 implements Serializable {
             
             String NUM_DOCUMENTO = ctrl_base_datos.ObtenerString("SELECT NVL(REPLACE(TRIM(F.ABTX2),'-',''),'-') FROM " + esquema + ".F0101@" + dblink + " F WHERE F.ABAN8=" + AN8_JDE, conn);
             NUM_DOCUMENTO = NUM_DOCUMENTO.replaceAll(" ", "");
-            String NRC = "NULL";
+            
+            String NRC;
+            if (ID_CAT_022 == Long.valueOf("1")) {
+                NRC = ctrl_base_datos.ObtenerString("SELECT NVL(REPLACE(TRIM(F.ABTAX),'-',''),'-') FROM " + esquema + ".F0101@" + dblink + " F WHERE F.ABAN8=" + AN8_JDE, conn);
+                NRC = NRC.replaceAll(" ", "");
+                if (NRC.length() > 8) {
+                    NRC = NRC.substring(0, 8);
+                }
+            } else {
+                NRC = "NULL";
+            }
             
             String NOMBRE = ctrl_base_datos.ObtenerString("SELECT UPPER(NVL(TRIM(F.WWMLNM),'-') || (SELECT NVL(TRIM(F.ALADD1),' ') FROM " + esquema + ".F0116@" + dblink + " F WHERE ROWNUM=1 AND F.ALAN8=" + AN8_JDE + ")) NOMBRE_FISCAL FROM " + esquema + ".F0111@" + dblink + " F WHERE F.WWIDLN=0 AND F.WWAN8=" + AN8_JDE, conn);
             NOMBRE = NOMBRE.replaceAll("'", "");
@@ -140,7 +150,17 @@ public class Ctrl_Receptor_NR_V3 implements Serializable {
             
             String NUM_DOCUMENTO_SHAN = ctrl_base_datos.ObtenerString("SELECT NVL(REPLACE(TRIM(F.ABTX2),'-',''),'-') FROM " + esquema + ".F0101@" + dblink + " F WHERE F.ABAN8=" + SHAN_JDE, conn);
             NUM_DOCUMENTO_SHAN = NUM_DOCUMENTO_SHAN.replaceAll(" ", "");
-            String NRC_SHAN = "NULL";
+            
+            String NRC_SHAN;
+            if (ID_CAT_022_SHAN == Long.valueOf("1")) {
+                NRC_SHAN = ctrl_base_datos.ObtenerString("SELECT NVL(REPLACE(TRIM(F.ABTAX),'-',''),'-') FROM " + esquema + ".F0101@" + dblink + " F WHERE F.ABAN8=" + SHAN_JDE, conn);
+                NRC_SHAN = NRC_SHAN.replaceAll(" ", "");
+                if (NRC_SHAN.length() > 8) {
+                    NRC_SHAN = NRC_SHAN.substring(0, 8);
+                }
+            } else {
+                NRC_SHAN = "NULL";
+            }
             
             String NOMBRE_SHAN = ctrl_base_datos.ObtenerString("SELECT UPPER(NVL(TRIM(F.WWMLNM),'-') || (SELECT NVL(TRIM(F.ALADD1),' ') FROM " + esquema + ".F0116@" + dblink + " F WHERE ROWNUM=1 AND F.ALAN8=" + SHAN_JDE + ")) NOMBRE_FISCAL FROM " + esquema + ".F0111@" + dblink + " F WHERE F.WWIDLN=0 AND F.WWAN8=" + SHAN_JDE, conn);
             NOMBRE_SHAN = NOMBRE_SHAN.replaceAll("'", "");
