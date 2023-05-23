@@ -1389,7 +1389,7 @@ CUE.ID_CUERPO_DOCUMENTO]]>
 		</band>
 	</detail>
 	<summary>
-		<band height="230">
+		<band height="290">
 			<staticText>
 				<reportElement x="292" y="40" width="250" height="10" uuid="f3df58c8-d2a6-45c6-bd45-bf04b7c8493f">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="12bef44e-5013-4d7f-8b4d-bfbec0a70952"/>
@@ -2296,7 +2296,7 @@ CUE.ID_CUERPO_DOCUMENTO]]>
 				<textFieldExpression><![CDATA[$F{APENDICECONTRATO}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="210" width="70" height="20" uuid="c464ed0a-8057-4b2a-9aa1-5a01de6adf0b">
+				<reportElement x="0" y="210" width="70" height="80" uuid="c464ed0a-8057-4b2a-9aa1-5a01de6adf0b">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="12bef44e-5013-4d7f-8b4d-bfbec0a70952"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
@@ -2314,7 +2314,7 @@ CUE.ID_CUERPO_DOCUMENTO]]>
 				<text><![CDATA[Período Facturación:]]></text>
 			</staticText>
 			<textField textAdjust="StretchHeight">
-				<reportElement stretchType="RelativeToTallestObject" x="70" y="210" width="522" height="20" uuid="cc26e231-db0e-4c2f-b252-8b4ecbd906ee">
+				<reportElement stretchType="RelativeToTallestObject" x="70" y="210" width="522" height="80" uuid="cc26e231-db0e-4c2f-b252-8b4ecbd906ee">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="12bef44e-5013-4d7f-8b4d-bfbec0a70952"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
