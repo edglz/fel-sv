@@ -30,7 +30,11 @@ public class Ctrl_Apendice_F_V3 implements Serializable {
                 Apendice_f apendice_f = new Apendice_f();
                 apendice_f.setCampo(ctrl_base_datos.ObtenerString("SELECT F.CAMPO FROM APENDICE_F_V3 F WHERE F.ID_DTE=" + id_dte + " AND F.ID_APENDICE=" + id_apendice, conn));
                 apendice_f.setEtiqueta(ctrl_base_datos.ObtenerString("SELECT F.ETIQUETA FROM APENDICE_F_V3 F WHERE F.ID_DTE=" + id_dte + " AND F.ID_APENDICE=" + id_apendice, conn));
-                apendice_f.setValor(ctrl_base_datos.ObtenerString("SELECT F.VALOR FROM APENDICE_F_V3 F WHERE F.ID_DTE=" + id_dte + " AND F.ID_APENDICE=" + id_apendice, conn));
+                String valor = ctrl_base_datos.ObtenerString("SELECT F.VALOR FROM APENDICE_F_V3 F WHERE F.ID_DTE=" + id_dte + " AND F.ID_APENDICE=" + id_apendice, conn);
+                if(valor.length() > 150) {
+                    valor = valor.substring(0, 149);
+                }
+                apendice_f.setValor(valor);
                 resultado.add(apendice_f);
             }
             rs.close();
@@ -119,9 +123,12 @@ public class Ctrl_Apendice_F_V3 implements Serializable {
             Cliente_Rest_JDE cliente_rest_jde = new Cliente_Rest_JDE();
             VALOR = cliente_rest_jde.obetener_texto_encabezado_orden_ventas("PET", ambiente, DOCO_JDE, DCTO_JDE, KCOO_JDE);
             if(VALOR == null) {
-                VALOR = "-";
+                VALOR = "SIN REGISTRO.";
             }
-            
+            VALOR = VALOR.replaceAll("\"", "");
+            if(VALOR == null) {
+                VALOR = "SIN REGISTRO.";
+            }
             cadenasql = "INSERT INTO APENDICE_F_V3 ("
                     + "ID_DTE, "
                     + "ID_APENDICE, "
