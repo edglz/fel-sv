@@ -63,7 +63,7 @@ public class Ctrl_DTE_CR_V3 implements Serializable {
                     + esquema + ".F5542FEL@" + dblink + " F "
                     + "WHERE "
                     + "F.FESTCD='000' AND "
-                    + "F.FEDCTO='S3'";
+                    + "F.FEDCTO='CR'";
             Statement stmt = conn.createStatement();
             // System.out.println(cadenasql);
             ResultSet rs = stmt.executeQuery(cadenasql);
@@ -134,14 +134,14 @@ public class Ctrl_DTE_CR_V3 implements Serializable {
                 stmt1.executeUpdate(cadenasql);
                 stmt1.close();
 
-                /* Ctrl_Identificacion_CR_V3 ctrl_identificacion_cr_v3 = new Ctrl_Identificacion_CR_V3();
+                Ctrl_Identificacion_CR_V3 ctrl_identificacion_cr_v3 = new Ctrl_Identificacion_CR_V3();
                 String result_identificacion = ctrl_identificacion_cr_v3.extraer_identificacion_jde_cr_v3(ID_DTE, ambiente, DCTO_JDE.trim(), MCU_JDE.trim(), CRCD_JDE.trim(), IVD_JDE.trim(), conn);
 
                 Ctrl_Receptor_CR_V3 ctrl_receptor_cr_v3 = new Ctrl_Receptor_CR_V3();
                 String result_recepor = ctrl_receptor_cr_v3.extraer_receptor_jde_cr_v3(ID_DTE, ambiente, AN8_JDE.trim(), SHAN_JDE.trim(), conn);
 
                 Ctrl_CuerpoDocumento_CR_V3 ctrl_cuerpo_documento_cr_v3 = new Ctrl_CuerpoDocumento_CR_V3();
-                String result_cuerpo_documento = ctrl_cuerpo_documento_cr_v3.extraer_cuerpo_documento_jde_cr_v3(ID_DTE, ambiente, KCOO_JDE.trim(), DOCO_JDE.trim(), DCTO_JDE.trim(), JEVER_JDE.trim(), conn);
+                String result_cuerpo_documento = ctrl_cuerpo_documento_cr_v3.extraer_cuerpo_documento_jde_cr_v3(ID_DTE, ambiente, KCOO_JDE.trim(), DOCO_JDE.trim(), DCT_JDE.trim(), conn);
 
                 Ctrl_Resumen_CR_V3 ctrl_resumen_cr_v3 = new Ctrl_Resumen_CR_V3();
                 String result_resumen = ctrl_resumen_cr_v3.extraer_resumen_jde_cr_v3(ID_DTE, ambiente, conn);
@@ -152,7 +152,7 @@ public class Ctrl_DTE_CR_V3 implements Serializable {
                 Ctrl_Apendice_CR_V3 ctrl_apendice_cr_v3 = new Ctrl_Apendice_CR_V3();
                 String result_apendice = ctrl_apendice_cr_v3.extraer_apendice_jde_cr_v3(ID_DTE, ambiente, DOCO_JDE.trim(), DCTO_JDE.trim(), MCU_JDE.trim(), conn);
 
-                resultado.add(ID_DTE); */
+                resultado.add(ID_DTE);
             }
             rs.close();
             stmt.close();
@@ -195,20 +195,14 @@ public class Ctrl_DTE_CR_V3 implements Serializable {
 
             conn.setAutoCommit(false);
 
-            /* Ctrl_Identificacion_CR_V3 ctrl_identificacion_cr_v3 = new Ctrl_Identificacion_CR_V3();
+            Ctrl_Identificacion_CR_V3 ctrl_identificacion_cr_v3 = new Ctrl_Identificacion_CR_V3();
             resultado.setIdentificacion(ctrl_identificacion_cr_v3.obtener_identificacion_cr_v3(id_dte, conn));
-
-            resultado.setDocumentoRelacionado(null);
 
             Ctrl_Emisor_CR_V3 ctrl_emisor_cr_v3 = new Ctrl_Emisor_CR_V3();
             resultado.setEmisor(ctrl_emisor_cr_v3.obtener_emisor_cr_v3(id_dte, conn));
 
             Ctrl_Receptor_CR_V3 ctrl_receptor_cr_v3 = new Ctrl_Receptor_CR_V3();
             resultado.setReceptor(ctrl_receptor_cr_v3.obtener_receptor_cr_v3(id_dte, conn));
-
-            resultado.setOtrosDocumentos(null);
-
-            resultado.setVentaTercero(null);
 
             Ctrl_CuerpoDocumento_CR_V3 ctrl_cuerpo_documento_cr_v3 = new Ctrl_CuerpoDocumento_CR_V3();
             resultado.setCuerpoDocumento(ctrl_cuerpo_documento_cr_v3.obtener_cuerpo_documento_cr_v3(id_dte, conn));
@@ -220,7 +214,7 @@ public class Ctrl_DTE_CR_V3 implements Serializable {
             resultado.setExtension(ctrl_extension_cr_v3.obtener_extension_cr_v3(id_dte, conn));
 
             Ctrl_Apendice_CR_V3 ctrl_apendice_cr_v3 = new Ctrl_Apendice_CR_V3();
-            resultado.setApendice(ctrl_apendice_cr_v3.obtener_apendice_cr_v3(id_dte, conn)); */
+            resultado.setApendice(ctrl_apendice_cr_v3.obtener_apendice_cr_v3(id_dte, conn));
 
             conn.commit();
             conn.setAutoCommit(true);
@@ -290,7 +284,7 @@ public class Ctrl_DTE_CR_V3 implements Serializable {
             String DCTO_JDE = ctrl_base_datos.ObtenerString("SELECT F.DCTO_JDE FROM DTE_CR_V3 F WHERE F.ID_DTE=" + id_dte, conn);
             String DOC_JDE = ctrl_base_datos.ObtenerString("SELECT F.DOC_JDE FROM DTE_CR_V3 F WHERE F.ID_DTE=" + id_dte, conn);
             String DCT_JDE = ctrl_base_datos.ObtenerString("SELECT F.DCT_JDE FROM DTE_CR_V3 F WHERE F.ID_DTE=" + id_dte, conn);
-            String AEXP_JDE = ctrl_base_datos.ObtenerString("SELECT REPLACE(TO_CHAR(F.TOTALPAGAR,'9999999999D99MI'),'.','') AEXP_JDE FROM RESUMEN_CR_V3 F WHERE F.ID_DTE=" + id_dte, conn);
+            String AEXP_JDE = ctrl_base_datos.ObtenerString("SELECT REPLACE(TO_CHAR(F.TOTALIVARETENIDO,'9999999999D99MI'),'.','') AEXP_JDE FROM RESUMEN_CR_V3 F WHERE F.ID_DTE=" + id_dte, conn);
 
             cadenasql = "UPDATE " + esquema + ".F5542FEL@" + dblink + " SET "
                     + "FESTCD='" + respuesta_recepciondte_mh.getCodigoMsg().trim() + "', "
@@ -388,7 +382,7 @@ public class Ctrl_DTE_CR_V3 implements Serializable {
                     + "</tr>"
                     + "<tr>"
                     + "<td>Tipo Documento</td>"
-                    + "<td>Comprobante de Crédito Fiscal</td>"
+                    + "<td>Comprobante de Retención.</td>"
                     + "</tr>"
                     + "</table>"
                     + "</body>"
