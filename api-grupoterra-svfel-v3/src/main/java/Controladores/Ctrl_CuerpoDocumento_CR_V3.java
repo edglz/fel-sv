@@ -86,7 +86,12 @@ public class Ctrl_CuerpoDocumento_CR_V3 implements Serializable {
                 Long ID_CAT_002 = ctrl_base_datos.ObtenerLong("SELECT C.ID_CAT FROM CAT_002 C WHERE C.CODIGO='" + rs.getString(1) + "'", conn);
                 Long ID_CAT_007 = ctrl_base_datos.ObtenerLong("SELECT C.ID_CAT FROM CAT_007 C WHERE C.CODIGO='" + rs.getString(2) + "'", conn);
                 String NUMDOCUMENTO = rs.getString(3);
-                NUMDOCUMENTO = NUMDOCUMENTO.substring(0, 36);
+                if(NUMDOCUMENTO == null) {
+                    NUMDOCUMENTO = "SIN REGISTRO";
+                }
+                if(NUMDOCUMENTO.length() > 36) {
+                    NUMDOCUMENTO = NUMDOCUMENTO.substring(0, 36);
+                }
                 String FECHAEMISION = rs.getString(4);
                 Number MONTOSUJETOGRAV = rs.getDouble(5);
                 Long ID_CAT_006 = ctrl_base_datos.ObtenerLong("SELECT C.ID_CAT FROM CAT_006 C WHERE C.CODIGO='" + rs.getString(6) + "'", conn);
