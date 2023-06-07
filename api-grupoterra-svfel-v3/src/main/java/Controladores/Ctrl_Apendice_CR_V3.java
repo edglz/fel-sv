@@ -130,6 +130,9 @@ public class Ctrl_Apendice_CR_V3 implements Serializable {
             if(VALOR == null) {
                 VALOR = "SIN REGISTRO.";
             }
+            if(VALOR.trim().equals("")) {
+                VALOR = "SIN REGISTRO.";
+            }
             cadenasql = "INSERT INTO APENDICE_CR_V3 ("
                     + "ID_DTE, "
                     + "ID_APENDICE, "

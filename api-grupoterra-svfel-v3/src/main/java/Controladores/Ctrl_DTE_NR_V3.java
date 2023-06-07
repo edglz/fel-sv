@@ -51,7 +51,7 @@ public class Ctrl_DTE_NR_V3 implements Serializable {
                     + "F.FEKCOO, "
                     + "F.FEMCU, "
                     + "F.FEDOCO, "
-                    + "'S3' FEDCTO, "
+                    + "CASE WHEN F.FEDCTO='NR' THEN 'S3' WHEN F.FEDCTO='NI' THEN 'ZQ' END FEDCTO, "
                     + "F.FEDOC, "
                     + "F.FEDCT, "
                     + "F.FEAN8, "
@@ -63,7 +63,7 @@ public class Ctrl_DTE_NR_V3 implements Serializable {
                     + esquema + ".F5542FEL@" + dblink + " F "
                     + "WHERE "
                     + "F.FESTCD='000' AND "
-                    + "F.FEDCTO='NR'";
+                    + "F.FEDCTO IN ('NR','NI')";
             Statement stmt = conn.createStatement();
             // System.out.println(cadenasql);
             ResultSet rs = stmt.executeQuery(cadenasql);
@@ -128,7 +128,7 @@ public class Ctrl_DTE_NR_V3 implements Serializable {
 
                 cadenasql = "UPDATE " + esquema + ".F5542FEL@" + dblink + " "
                         + "SET FESTCD='999' "
-                        + "WHERE FEKCOO='" + KCOO_JDE + "' AND FEDOCO=" + DOCO_JDE + " AND FEDCTO='NR' AND FEDOC=" + DOC_JDE + " AND FEDCT='" + DCT_JDE + "'";
+                        + "WHERE FEKCOO='" + KCOO_JDE + "' AND FEDOCO=" + DOCO_JDE + " AND FEDCTO IN ('NR','NI') AND FEDOC=" + DOC_JDE + " AND FEDCT='" + DCT_JDE + "'";
                 stmt1 = conn.createStatement();
                 System.out.println(cadenasql);
                 stmt1.executeUpdate(cadenasql);
@@ -296,7 +296,7 @@ public class Ctrl_DTE_NR_V3 implements Serializable {
                     + "FECRSREF02='" + respuesta_recepciondte_mh.getCodigoGeneracion() + "', "
                     + "FECRSREF03='" + respuesta_recepciondte_mh.getSelloRecibido() + "', "
                     + "FEAEXP=" + AEXP_JDE + " "
-                    + "WHERE FEKCOO='" + KCOO_JDE + "' AND FEDOCO=" + DOCO_JDE + " AND FEDCTO='NR' AND FEDOC=" + DOC_JDE + " AND FEDCT='" + DCT_JDE + "'";
+                    + "WHERE FEKCOO='" + KCOO_JDE + "' AND FEDOCO=" + DOCO_JDE + " AND FEDCTO IN ('NR','NI') AND FEDOC=" + DOC_JDE + " AND FEDCT='" + DCT_JDE + "'";
             stmt = conn.createStatement();
             System.out.println(cadenasql);
             stmt.executeUpdate(cadenasql);

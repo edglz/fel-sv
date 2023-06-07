@@ -9,42 +9,43 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import org.glassfish.jersey.client.ClientConfig;
 
-public class Cliente_Rest_JDE implements Serializable {
+public class Cliente_Rest_IATA implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private static final String BASE_URI = "http://JDE-REST-API:8017/jde/";
+    private static final String BASE_URI = "http://192.200.107.149:8283/RestNotaRemisionIATA/services/genticketszq";
     private ClientConfig clientConfig;
     private Client client;
 
-    public Cliente_Rest_JDE() {
+    public Cliente_Rest_IATA() {
         try {
             this.clientConfig = new ClientConfig();
             this.clientConfig.register(String.class);
             this.client = ClientBuilder.newClient(this.clientConfig);
         } catch (Exception ex) {
-            System.out.println("CLASE: " + this.getClass().getName() + " METODO: Cliente_Rest_Menu ERROR: " + ex.toString());
+            System.out.println("CLASE: " + this.getClass().getName() + " METODO: Cliente_Rest_IATA ERROR: " + ex.toString());
         }
     }
 
-    public String obetener_texto_encabezado_orden_ventas(String division, String ambiente, String DOCO_JDE, String DCTO_JDE, String KCOO_JDE) {
-        String resultado = "";
+    public String genticketszq() {
+        String resultado;
 
         try {
-            WebTarget webTarget = this.client.target(BASE_URI).path("obetener_texto_encabezado_orden_ventas/" + division + "/" + ambiente + "/" + DOCO_JDE + "/" + DCTO_JDE + "/" + KCOO_JDE);
+            WebTarget webTarget = this.client.target(BASE_URI).path("getTicketsZQ");
             Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
             Response response = invocationBuilder.get();
-            System.out.println("CONEXION JDE-REST-API: " + response.getStatus());
+            System.out.println("CONEXION Cliente_Rest_IATA: " + response.getStatus());
             if (response.getStatus() == 200) {
                 resultado = response.readEntity(String.class);
             } else {
                 resultado = response.getStatus() + ": " + response.getStatusInfo();
             }
         } catch (Exception ex) {
-            resultado = ex.toString();
+            resultado = null;
+            System.out.println("1,ERROR (" + this.getClass().getName() + " - genticketszq):" + ex.toString());
         }
 
         return resultado;
     }
-
+    
 }

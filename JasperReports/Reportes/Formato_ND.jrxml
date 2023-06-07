@@ -66,6 +66,7 @@ RES.SUBTOTAL resumenSubTotal,
 (SELECT NVL(SUM(IMP.VALOR),0.00) FROM RESUMEN_TRIBUTO_ND_V3 IMP WHERE IMP.ID_CAT_015=1 AND IMP.ID_DTE=IDE.ID_DTE) resumenTotalIva,
 (SELECT NVL(SUM(IMP.VALOR),0.00) FROM RESUMEN_TRIBUTO_ND_V3 IMP WHERE IMP.ID_CAT_015=6 AND IMP.ID_DTE=IDE.ID_DTE) resumenCotrans,
 (SELECT NVL(SUM(IMP.VALOR),0.00) FROM RESUMEN_TRIBUTO_ND_V3 IMP WHERE IMP.ID_CAT_015=5 AND IMP.ID_DTE=IDE.ID_DTE) resumenFovial,
+RES.IVAPERCI1 resumenIvaPercibido,
 RES.MONTOTOTALOPERACION resumenTotalOperacion,
 RES.TOTALLETRAS resumenTotalLetras,
 DTE.DCTO_JDE || '-' || DTE.DOCO_JDE infoOrdenJde,
@@ -314,6 +315,10 @@ CUE.ID_CUERPO_DOCUMENTO]]>
 	<field name="RESUMENFOVIAL" class="java.math.BigDecimal">
 		<property name="com.jaspersoft.studio.field.name" value="RESUMENFOVIAL"/>
 		<property name="com.jaspersoft.studio.field.label" value="RESUMENFOVIAL"/>
+	</field>
+	<field name="RESUMENIVAPERCIBIDO" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="RESUMENIVAPERCIBIDO"/>
+		<property name="com.jaspersoft.studio.field.label" value="RESUMENIVAPERCIBIDO"/>
 	</field>
 	<field name="RESUMENTOTALOPERACION" class="java.math.BigDecimal">
 		<property name="com.jaspersoft.studio.field.name" value="RESUMENTOTALOPERACION"/>
@@ -1595,7 +1600,7 @@ CUE.ID_CUERPO_DOCUMENTO]]>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Arial" size="8" isBold="true"/>
 				</textElement>
-				<text><![CDATA[-]]></text>
+				<text><![CDATA[IVA Percibido 1%:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="292" y="130" width="250" height="10" uuid="e11eba0e-4d6f-4991-aa74-32695786d13d">
@@ -1757,7 +1762,7 @@ CUE.ID_CUERPO_DOCUMENTO]]>
 				<textElement textAlignment="Right" verticalAlignment="Top">
 					<font fontName="Arial" size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA["-"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{RESUMENIVAPERCIBIDO}]]></textFieldExpression>
 			</textField>
 			<textField textAdjust="StretchHeight" pattern="#,##0.00;(#,##0.00-)">
 				<reportElement stretchType="RelativeToTallestObject" x="542" y="130" width="50" height="10" uuid="518eb290-abbb-4f9c-b377-82b8344a0ac5">

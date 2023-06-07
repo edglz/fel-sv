@@ -85,19 +85,36 @@ public class Ctrl_CuerpoDocumento_NR_V3 implements Serializable {
                 dblink = "JDEPD";
             }
 
-            String cadenasql = "SELECT "
-                    + "TRIM(F.NRLNTY) tipoItem, "
-                    + "F.NRUORG cantidad, "
-                    + "TRIM(F.NRLITM) codigo, "
-                    + "TRIM(F.NRUOM) uniMedida, "
-                    + "TRIM(F.NRDL01) || TRIM(F.NRDL02) descripcion, "
-                    + "F.NRUPRC/10000 precioUni, "
-                    + "F.NRLNID lineaId, "
-                    + "TRIM(F.NRTAX1) aplicaImpuesto, "
-                    + "TRIM(F.NRTXA1) impuesto, "
-                    + "F.NRFVTR/10000 descuento "
-                    + "FROM " + esquema + ".F554211N@" + dblink + " F "
-                    + "WHERE F.NRKCOO='" + KCOO_JDE + "' AND F.NRDOCO=" + DOCO_JDE + " AND F.NRDCTO='" + DCTO_JDE + "' AND F.NRLNTY IN ('M','S','SX')";
+            String cadenasql;
+            if (DCTO_JDE.equals("S3")) {
+                cadenasql = "SELECT "
+                        + "TRIM(F.NRLNTY) tipoItem, "
+                        + "F.NRUORG cantidad, "
+                        + "TRIM(F.NRLITM) codigo, "
+                        + "TRIM(F.NRUOM) uniMedida, "
+                        + "TRIM(F.NRDL01) || TRIM(F.NRDL02) descripcion, "
+                        + "F.NRUPRC/10000 precioUni, "
+                        + "F.NRLNID lineaId, "
+                        + "TRIM(F.NRTAX1) aplicaImpuesto, "
+                        + "TRIM(F.NRTXA1) impuesto, "
+                        + "F.NRFVTR/10000 descuento "
+                        + "FROM " + esquema + ".F554211N@" + dblink + " F "
+                        + "WHERE F.NRKCOO='" + KCOO_JDE + "' AND F.NRDOCO=" + DOCO_JDE + " AND F.NRDCTO='" + DCTO_JDE + "' AND F.NRLNTY IN ('M','S','SX')";
+            } else {
+                cadenasql = "SELECT "
+                        + "TRIM(F.SDLNTY) tipoItem, "
+                        + "F.SDUORG cantidad, "
+                        + "TRIM(F.SDLITM) codigo, "
+                        + "TRIM(F.SDUOM) uniMedida, "
+                        + "TRIM(F.SDDSC1) || TRIM(F.SDDSC2) descripcion, "
+                        + "DECODE((SELECT CCCRCD FROM " + esquema + ".F0010@" + dblink + " G WHERE G.CCCO=F.SDKCOO), F.SDCRCD, F.SDUPRC, F.SDFUP)/10000 precioUni, "
+                        + "F.SDLNID lineaId, "
+                        + "TRIM(F.SDTAX1) aplicaImpuesto, "
+                        + "TRIM(F.SDTXA1) impuesto "
+                        + "FROM " + esquema + "." + tabla_sales_orders + "@" + dblink + " F "
+                        + "WHERE F.SDKCOO='" + KCOO_JDE + "' AND F.SDDOCO=" + DOCO_JDE + " AND F.SDDCTO='" + DCTO_JDE + "' AND F.SDLNTY IN ('M','S','SX')";
+            }
+            
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(cadenasql);
             Integer contador = 0;

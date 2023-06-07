@@ -138,8 +138,8 @@ public class Ctrl_DTE_CR_V3 implements Serializable {
                 String result_identificacion = ctrl_identificacion_cr_v3.extraer_identificacion_jde_cr_v3(ID_DTE, ambiente, DCTO_JDE.trim(), MCU_JDE.trim(), CRCD_JDE.trim(), IVD_JDE.trim(), conn);
 
                 Ctrl_Receptor_CR_V3 ctrl_receptor_cr_v3 = new Ctrl_Receptor_CR_V3();
-                String result_recepor = ctrl_receptor_cr_v3.extraer_receptor_jde_cr_v3(ID_DTE, ambiente, AN8_JDE.trim(), SHAN_JDE.trim(), conn);
-
+                String result_recepor = ctrl_receptor_cr_v3.extraer_receptor_jde_cr_v3(ID_DTE, ambiente, AN8_JDE.trim(), SHAN_JDE.trim(), KCOO_JDE.trim(), DOCO_JDE.trim(), DCT_JDE.trim(), conn);
+                
                 Ctrl_CuerpoDocumento_CR_V3 ctrl_cuerpo_documento_cr_v3 = new Ctrl_CuerpoDocumento_CR_V3();
                 String result_cuerpo_documento = ctrl_cuerpo_documento_cr_v3.extraer_cuerpo_documento_jde_cr_v3(ID_DTE, ambiente, KCOO_JDE.trim(), DOCO_JDE.trim(), DCT_JDE.trim(), conn);
 

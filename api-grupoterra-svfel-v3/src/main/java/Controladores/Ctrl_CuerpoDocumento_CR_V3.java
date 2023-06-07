@@ -73,7 +73,7 @@ public class Ctrl_CuerpoDocumento_CR_V3 implements Serializable {
                     + "F.CRTAX2/100 IVARETENIDO, "
                     + "'FELSV' DESCRIPCION "
                     + "FROM "
-                    + "CRPDTA.F5504001@JDEPY F "
+                    + esquema + ".F5504001@" + dblink + " F "
                     + "WHERE "
                     + "F.CRKCO='" + KCOO_JDE + "' AND F.CRN001=" + DOCO_JDE + " AND F.CRURCD='" + DCTO_JDE + "'";
             Statement stmt = conn.createStatement();
