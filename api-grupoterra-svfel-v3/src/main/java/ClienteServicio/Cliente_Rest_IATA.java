@@ -13,7 +13,8 @@ public class Cliente_Rest_IATA implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private static final String BASE_URI = "http://192.200.107.149:8283/RestNotaRemisionIATA/services/genticketszq";
+    // private static final String BASE_URI = "http://192.200.107.149:8283/RestNotaRemisionIATA/services/genticketszq";
+    private static final String BASE_URI = "http://10.254.7.203:8283/RestNotaRemisionIATA/services/genticketszq";
     private ClientConfig clientConfig;
     private Client client;
 
