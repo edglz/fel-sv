@@ -35,7 +35,7 @@ public class Cliente_Rest_IATA implements Serializable {
             WebTarget webTarget = this.client.target(BASE_URI).path("getTicketsZQ");
             Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
             Response response = invocationBuilder.get();
-            System.out.println("CONEXION Cliente_Rest_IATA: " + response.getStatus());
+            // System.out.println("CONEXION Cliente_Rest_IATA: " + response.getStatus());
             if (response.getStatus() == 200) {
                 resultado = response.readEntity(String.class);
             } else {

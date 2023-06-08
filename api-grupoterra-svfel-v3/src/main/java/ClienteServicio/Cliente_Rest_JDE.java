@@ -34,7 +34,7 @@ public class Cliente_Rest_JDE implements Serializable {
             WebTarget webTarget = this.client.target(BASE_URI).path("obetener_texto_encabezado_orden_ventas/" + division + "/" + ambiente + "/" + DOCO_JDE + "/" + DCTO_JDE + "/" + KCOO_JDE);
             Invocation.Builder invocationBuilder = webTarget.request(MediaType.APPLICATION_JSON);
             Response response = invocationBuilder.get();
-            System.out.println("CONEXION JDE-REST-API: " + response.getStatus());
+            // System.out.println("CONEXION JDE-REST-API: " + response.getStatus());
             if (response.getStatus() == 200) {
                 resultado = response.readEntity(String.class);
             } else {

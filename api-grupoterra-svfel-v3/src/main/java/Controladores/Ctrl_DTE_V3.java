@@ -9,6 +9,7 @@ import java.lang.reflect.Type;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Ctrl_DTE_V3 implements Serializable {
@@ -326,9 +327,14 @@ public class Ctrl_DTE_V3 implements Serializable {
             Cliente_Rest_IATA cliente_rest_iata = new Cliente_Rest_IATA();
             String json_iata = cliente_rest_iata.genticketszq();
 
-            Type respuesta_nr_zq_iata_type = new TypeToken<List<NR_ZQ_IATA>>() {
-            }.getType();
-            List<NR_ZQ_IATA> lista_nr_zq_iata = new Gson().fromJson(json_iata, respuesta_nr_zq_iata_type);
+            List<NR_ZQ_IATA> lista_nr_zq_iata = new ArrayList<>();
+            try {
+                Type respuesta_nr_zq_iata_type = new TypeToken<List<NR_ZQ_IATA>>() {
+                }.getType();
+                lista_nr_zq_iata = new Gson().fromJson(json_iata, respuesta_nr_zq_iata_type);
+            } catch (Exception ex_iata) {
+                System.out.println("WS-IATA-ZQ: " + ex_iata.toString());
+            }
 
             String ordenes_zq_iata = "";
             for (Integer i = 0; i < lista_nr_zq_iata.size(); i++) {
