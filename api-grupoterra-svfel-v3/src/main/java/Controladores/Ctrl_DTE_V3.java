@@ -69,6 +69,20 @@ public class Ctrl_DTE_V3 implements Serializable {
                         case "FCF":
                             DCTO = "FE";
                             break;
+                        case "TMP":
+                            cadenasql = "SELECT TRIM(F.CUCSTP) FROM " + esquema + ".F40071@" + dblink + " F WHERE F.CUAN8=" + rs.getString(7) + " AND CUPRFR=30";
+                            Statement stmt1 = conn.createStatement();
+                            ResultSet rs1 = stmt1.executeQuery(cadenasql);
+                            while (rs1.next()) {
+                                if (rs1.getString(1).equals("SVCLFACT")) {
+                                    DCTO = "FE";
+                                } else {
+                                    DCTO = "S3";
+                                }
+                            }
+                            rs1.close();
+                            stmt1.close();
+                            break;
                     }
                 }
 
