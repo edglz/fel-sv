@@ -54,7 +54,7 @@ public class Ctrl_DTE_V3 implements Serializable {
             // EXTRAE COMPROBANTES DE CRÉDITO FISCAL, FACTURAS CONSUMIDOR FINAL, FACTURAS DE EXPORACIÓN, NOTAS DE CRÉDITO Y NOTAS DE DÉBITO DESDE JDE.
             String cadenasql = "SELECT DISTINCT F.SDKCOO, F.SDDOCO, F.SDDCTO, F.SDDOC, F.SDDCT, F.SDMCU, F.SDAN8, F.SDSHAN, F.SDCRCD, F.SDIVD, '" + STCD + "' STCD, '-' CRSREF01, '-' CRSREF02, '-' CRSREF03, '-' CRSREF04, '-' CRSREF05, '" + tabla_sales_orders + "' TABLA, TRIM(F.SDTXA1) SDTXA1, NVL(TRIM(G.ABAC30),'-') ABAC30 "
                     + "FROM " + esquema + "." + tabla_sales_orders + "@" + dblink + " F LEFT JOIN " + esquema + ".F0101@" + dblink + " G ON (F.SDSHAN=G.ABAN8) "
-                    + "WHERE (TRIM(F.SDKCOO) IN (SELECT C.KCOO_JDE FROM EMISOR_KCOO_V3 C)) AND (F.SDDOC > 0) AND (TRIM(F.SDLTTR) NOT IN ('904','902','900','980')) AND (TRIM(F.SDDCTO) IN ('S3','C3','SD')) AND (TRIM(F.SDCRMD) IS NULL) AND (F.SDIVD >= " + ivd + ")";
+                    + "WHERE (TRIM(F.SDKCOO) IN (SELECT C.KCOO_JDE FROM EMISOR_KCOO_V3 C)) AND (F.SDDOC > 0) AND (F.SDDCT NOT IN ('LF','LA','LD')) AND (TRIM(F.SDLTTR) NOT IN ('904','902','900','980')) AND (TRIM(F.SDDCTO) IN ('S3','C3','SD')) AND (TRIM(F.SDCRMD) IS NULL) AND (F.SDIVD >= " + ivd + ")";
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(cadenasql);
             while (rs.next()) {

@@ -1,9 +1,11 @@
 package Controladores;
 
 import ClienteServicio.Cliente_Rest_Jasper;
+import ClienteServicio.Cliente_Rest_Printer;
 import ClienteServicio.Cliente_Rest_SendMail;
 import Entidades.Adjunto;
 import Entidades.DTE_ND_V3;
+import Entidades.Documento_Impresion;
 import Entidades.Mensaje_Correo;
 import Entidades.RESPUESTA_RECEPCIONDTE_MH;
 import com.google.gson.Gson;
@@ -440,6 +442,22 @@ public class Ctrl_DTE_ND_V3 implements Serializable {
                 Cliente_Rest_SendMail cliente_rest_sendmail = new Cliente_Rest_SendMail();
                 String resul_envio_correo = cliente_rest_sendmail.sendmail(new Gson().toJson(mensaje_correo));
                 System.out.println("Notificación Correo: " + resul_envio_correo);
+                
+                Documento_Impresion documento_impresion = new Documento_Impresion();
+                documento_impresion.setType("NA");
+                documento_impresion.setData(Base64.getEncoder().encodeToString(bytes));
+                documento_impresion.setName("NA");
+                documento_impresion.setExt("NA");
+                documento_impresion.setPath("NA");
+                String MCU_JDE = ctrl_base_datos.ObtenerString("SELECT F.MCU_JDE FROM DTE_ND_V3 F WHERE F.ID_DTE=" + id_dte, conn);
+                String IMPRESORA = ctrl_base_datos.ObtenerString("SELECT DISTINCT TRIM(F.NNPFA1) FROM " + esquema + ".F5500021@" + dblink + " F WHERE F.NNCO='" + KCOO_JDE + "' AND TRIM(F.NNMCU)='" + MCU_JDE + "' AND F.NNDCTO='" + DCTO_JDE + "'  AND F.NNDCT='" + DCT_JDE + "'", conn);
+                documento_impresion.setPrinter(IMPRESORA);
+                documento_impresion.setCopies(3);
+                
+                Cliente_Rest_Printer cliente_rest_printer = new Cliente_Rest_Printer("user", "apirestutils");
+                String resul_printer = cliente_rest_printer.printDocumentBase64(new Gson().toJson(documento_impresion));
+                System.out.println("JSON-IMPRESION: " + new Gson().toJson(documento_impresion));
+                System.out.println("Notificación Impresión: " + resul_printer);
             } else {
                 List<Adjunto> files = new ArrayList<>();
                 File TargetFileJson = new File("/FELSV3/json/jsondte_nd_" + id_dte + ".json");
