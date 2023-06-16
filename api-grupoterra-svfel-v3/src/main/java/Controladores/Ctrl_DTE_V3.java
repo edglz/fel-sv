@@ -146,7 +146,7 @@ public class Ctrl_DTE_V3 implements Serializable {
                             + "0" + ",'"
                             + rs.getString(18) + "')";
                     stmt1 = conn.createStatement();
-                    System.out.println(cadenasql);
+                    // System.out.println(cadenasql);
                     stmt1.executeUpdate(cadenasql);
                     stmt1.close();
 
@@ -154,7 +154,7 @@ public class Ctrl_DTE_V3 implements Serializable {
                             + "SET SDCRMD='4' "
                             + "WHERE SDKCOO='" + rs.getString(1) + "' AND SDDOCO=" + rs.getString(2) + " AND SDDCTO='" + rs.getString(3) + "' AND SDDOC=" + rs.getString(4) + " AND SDDCT='" + rs.getString(5) + "'";
                     stmt1 = conn.createStatement();
-                    System.out.println(cadenasql);
+                    // System.out.println(cadenasql);
                     stmt1.executeUpdate(cadenasql);
                     stmt1.close();
                     resultado++;
@@ -233,7 +233,7 @@ public class Ctrl_DTE_V3 implements Serializable {
                             + "0" + ",'"
                             + rs.getString(18) + "')";
                     stmt1 = conn.createStatement();
-                    System.out.println(cadenasql);
+                    // System.out.println(cadenasql);
                     stmt1.executeUpdate(cadenasql);
                     stmt1.close();
 
@@ -241,7 +241,7 @@ public class Ctrl_DTE_V3 implements Serializable {
                             + "SET NREV01='P' "
                             + "WHERE NRKCOO='" + rs.getString(1) + "' AND NRDOCO=" + rs.getString(2) + " AND NRDCTO='" + rs.getString(3) + "' AND NRN001=" + rs.getString(4) + " AND NRURCD='" + rs.getString(5) + "'";
                     stmt1 = conn.createStatement();
-                    System.out.println(cadenasql);
+                    // System.out.println(cadenasql);
                     stmt1.executeUpdate(cadenasql);
                     stmt1.close();
                     resultado++;
@@ -320,7 +320,7 @@ public class Ctrl_DTE_V3 implements Serializable {
                             + "0" + ",'"
                             + rs.getString(18) + "')";
                     stmt1 = conn.createStatement();
-                    System.out.println(cadenasql);
+                    // System.out.println(cadenasql);
                     stmt1.executeUpdate(cadenasql);
                     stmt1.close();
 
@@ -328,7 +328,7 @@ public class Ctrl_DTE_V3 implements Serializable {
                             + "SET CREV01='P' "
                             + "WHERE CRKCO='" + rs.getString(1) + "' AND CRN001=" + rs.getString(2) + " AND CRURCD='" + rs.getString(3) + "'";
                     stmt1 = conn.createStatement();
-                    System.out.println(cadenasql);
+                    // System.out.println(cadenasql);
                     stmt1.executeUpdate(cadenasql);
                     stmt1.close();
                     resultado++;
@@ -429,7 +429,7 @@ public class Ctrl_DTE_V3 implements Serializable {
                             + "0" + ",'"
                             + rs.getString(18) + "')";
                     stmt1 = conn.createStatement();
-                    System.out.println(cadenasql);
+                    // System.out.println(cadenasql);
                     stmt1.executeUpdate(cadenasql);
                     stmt1.close();
 
@@ -437,7 +437,7 @@ public class Ctrl_DTE_V3 implements Serializable {
                             + "SET SDCRMD='4' "
                             + "WHERE SDKCOO='" + rs.getString(1) + "' AND SDDOCO=" + rs.getString(2) + " AND SDDCTO='" + rs.getString(3) + "' AND SDDOC=" + rs.getString(4) + " AND SDDCT='" + rs.getString(5) + "'";
                     stmt1 = conn.createStatement();
-                    System.out.println(cadenasql);
+                    // System.out.println(cadenasql);
                     stmt1.executeUpdate(cadenasql);
                     stmt1.close();
                     resultado++;

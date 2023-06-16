@@ -124,7 +124,7 @@ public class Ctrl_DTE_FEX_V3 implements Serializable {
                         + ID_EMISOR + ","
                         + "null, null, null, null, null, null, null, null, null, null, null)";
                 Statement stmt1 = conn.createStatement();
-                System.out.println(cadenasql);
+                // System.out.println(cadenasql);
                 stmt1.executeUpdate(cadenasql);
                 stmt1.close();
 
@@ -132,7 +132,7 @@ public class Ctrl_DTE_FEX_V3 implements Serializable {
                         + "SET FESTCD='999' "
                         + "WHERE FEKCOO='" + KCOO_JDE + "' AND FEDOCO=" + DOCO_JDE + " AND FEDCTO='EX' AND FEDOC=" + DOC_JDE + " AND FEDCT='" + DCT_JDE + "'";
                 stmt1 = conn.createStatement();
-                System.out.println(cadenasql);
+                // System.out.println(cadenasql);
                 stmt1.executeUpdate(cadenasql);
                 stmt1.close();
 
@@ -277,7 +277,7 @@ public class Ctrl_DTE_FEX_V3 implements Serializable {
                     + "WHERE "
                     + "ID_DTE=" + id_dte;
             Statement stmt = conn.createStatement();
-            System.out.println(cadenasql);
+            // System.out.println(cadenasql);
             stmt.executeUpdate(cadenasql);
             stmt.close();
 
@@ -297,7 +297,7 @@ public class Ctrl_DTE_FEX_V3 implements Serializable {
                     + "FEAEXP=" + AEXP_JDE + " "
                     + "WHERE FEKCOO='" + KCOO_JDE + "' AND FEDOCO=" + DOCO_JDE + " AND FEDCTO='EX' AND FEDOC=" + DOC_JDE + " AND FEDCT='" + DCT_JDE + "'";
             stmt = conn.createStatement();
-            System.out.println(cadenasql);
+            // System.out.println(cadenasql);
             stmt.executeUpdate(cadenasql);
             stmt.close();
 
@@ -434,7 +434,7 @@ public class Ctrl_DTE_FEX_V3 implements Serializable {
                 
                 Cliente_Rest_SendMail cliente_rest_sendmail = new Cliente_Rest_SendMail();
                 String resul_envio_correo = cliente_rest_sendmail.sendmail(new Gson().toJson(mensaje_correo));
-                System.out.println("Notificación Correo: " + resul_envio_correo);
+                // System.out.println("Notificación Correo: " + resul_envio_correo);
                 
                 Documento_Impresion documento_impresion = new Documento_Impresion();
                 documento_impresion.setType("NA");
@@ -442,15 +442,16 @@ public class Ctrl_DTE_FEX_V3 implements Serializable {
                 documento_impresion.setName("NA");
                 documento_impresion.setExt("NA");
                 documento_impresion.setPath("NA");
-                String MCU_JDE = ctrl_base_datos.ObtenerString("SELECT F.MCU_JDE FROM DTE_FEX_V3 F WHERE F.ID_DTE=" + id_dte, conn);
-                String IMPRESORA = ctrl_base_datos.ObtenerString("SELECT DISTINCT TRIM(F.NNPFA1) FROM " + esquema + ".F5500021@" + dblink + " F WHERE F.NNCO='" + KCOO_JDE + "' AND TRIM(F.NNMCU)='" + MCU_JDE + "' AND F.NNDCTO='" + DCTO_JDE + "'  AND F.NNDCT='" + DCT_JDE + "'", conn);
+                String MCU_JDE_I = ctrl_base_datos.ObtenerString("SELECT TRIM(F.FEMCU) FROM " + esquema + ".F5542FEL@" + dblink + " F WHERE TRIM(F.FEKCOO)='" + KCOO_JDE + "' AND F.FEDOCO=" + DOCO_JDE + " AND F.FEDCT='" + DCT_JDE + "'", conn);
+                String DCTO_JDE_I = ctrl_base_datos.ObtenerString("SELECT F.FEDCTO FROM " + esquema + ".F5542FEL@" + dblink + " F WHERE TRIM(F.FEKCOO)='" + KCOO_JDE + "' AND F.FEDOCO=" + DOCO_JDE + " AND F.FEDCT='" + DCT_JDE + "'", conn);
+                String IMPRESORA = ctrl_base_datos.ObtenerString("SELECT DISTINCT TRIM(F.NOMBRE_IMPRESORA) FROM IMPRESORAS F WHERE F.MCU_JDE='" + MCU_JDE_I + "' AND F.DCTO_JDE='" + DCTO_JDE_I + "'", conn);
                 documento_impresion.setPrinter(IMPRESORA);
                 documento_impresion.setCopies(3);
                 
                 Cliente_Rest_Printer cliente_rest_printer = new Cliente_Rest_Printer("user", "apirestutils");
                 String resul_printer = cliente_rest_printer.printDocumentBase64(new Gson().toJson(documento_impresion));
-                System.out.println("JSON-IMPRESION: " + new Gson().toJson(documento_impresion));
-                System.out.println("Notificación Impresión: " + resul_printer);
+                // System.out.println("JSON-IMPRESION: " + new Gson().toJson(documento_impresion));
+                // System.out.println("Notificación Impresión: " + resul_printer);
             } else {
                 List<Adjunto> files = new ArrayList<>();
                 File TargetFileJson = new File("/FELSV3/json/jsondte_fex_" + id_dte + ".json");
